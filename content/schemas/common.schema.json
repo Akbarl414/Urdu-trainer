@@ -89,6 +89,27 @@
       "type": "string",
       "minLength": 1,
       "description": "English prose. Urdu inside prose goes in `backticks` so the validator can check the romanization."
+    },
+    "agreementForms": {
+      "type": "object",
+      "description": "The three forms of a word that agrees like -aa adjectives (acchaa / acchii / acche). m_pl doubles as the masculine oblique singular; f covers feminine singular and plural.",
+      "required": [
+        "m_sg",
+        "f",
+        "m_pl"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "m_sg": {
+          "$ref": "#/definitions/pair"
+        },
+        "f": {
+          "$ref": "#/definitions/pair"
+        },
+        "m_pl": {
+          "$ref": "#/definitions/pair"
+        }
+      }
     }
   }
 }

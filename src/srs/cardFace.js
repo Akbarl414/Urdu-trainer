@@ -53,7 +53,8 @@ function wordFace(id, parsed, source) {
     case 'situation_to_phrase':
       return {
         ...base,
-        prompt: { text: word.meaning_en, note: word.pos === 'phrase' ? 'phrase' : word.pos },
+        // Phrases are prompted by their situation (vocab `situation`, PLAN D22); meaning_en is the fallback.
+        prompt: { text: facet === 'situation_to_phrase' ? word.situation ?? word.meaning_en : word.meaning_en, note: word.pos === 'phrase' ? 'phrase' : word.pos },
         modes: ['speak', 'type'],
         defaultMode: 'speak',
         answers: [word.roman],

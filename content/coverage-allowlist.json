@@ -1,0 +1,7 @@
+{
+  "note": "For npm run check-coverage. from_lesson: Roman Urdu tokens taught in a lesson's grammar screens rather than as vocab; allowed from that lesson onward. names: people and places used in sentences. Every token must follow ROMANIZATION.md.",
+  "from_lesson": {
+    "lesson-001": ["huuN", "haiN", "hai"]
+  },
+  "names": []
+}

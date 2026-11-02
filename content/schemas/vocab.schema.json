@@ -85,10 +85,13 @@
         "notes": {
           "$ref": "common.schema.json#/definitions/prose"
         },
+        "literal": {
+          "$ref": "common.schema.json#/definitions/prose",
+          "description": "Word-for-word English for chunks and phrases (kyaa haal hai? = \"what state is?\"). Shown on the word card."
+        },
         "situation": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Phrases: the situation shown as the prompt for the situation_to_phrase facet."
+          "description": "Phrases (required): an English situation shown as the prompt for the situation_to_phrase facet. Must not give the phrase away.",
+          "$ref": "common.schema.json#/definitions/prose"
         },
         "hindi_variant": {
           "type": "object",
@@ -134,12 +137,22 @@
           "type": "string",
           "enum": [
             "m",
-            "f"
-          ]
+            "f",
+            "mf"
+          ],
+          "description": "m / f, or mf for person nouns whose gender follows the person meant (dost, doctor). mf nouns get no gender facet."
         },
         "marked": {
           "type": "boolean",
           "description": "True for masculine -aa nouns that inflect (laRkaa / laRke / laRkoN)."
+        },
+        "mass": {
+          "type": "boolean",
+          "description": "Nouns with no ordinary plural (paanii, chaae as a drink). Exempts plural/oblique_pl."
+        },
+        "plural_only": {
+          "type": "boolean",
+          "description": "Nouns that are grammatically plural even for one group (log, chaawal): roman is already the plural, verbs and adjectives agree in the plural."
         },
         "plural": {
           "$ref": "common.schema.json#/definitions/pair"
@@ -186,7 +199,11 @@
         },
         "variable": {
           "type": "boolean",
-          "description": "True for -aa adjectives that agree (acchaa / acchii / acche)."
+          "description": "True for words that agree like -aa adjectives: acchaa / acchii / acche, meraa / merii / mere, kaa / kii / ke. Requires agreement. Allowed on adjectives (required there), pronouns, postpositions and other."
+        },
+        "agreement": {
+          "$ref": "common.schema.json#/definitions/agreementForms",
+          "description": "Required when variable is true. Games generate agreement items from these forms only."
         }
       },
       "allOf": [
@@ -213,15 +230,21 @@
             "properties": {
               "pos": {
                 "const": "noun"
-              },
-              "marked": {
-                "const": true
               }
             },
             "required": [
-              "pos",
-              "marked"
-            ]
+              "pos"
+            ],
+            "not": {
+              "properties": {
+                "mass": {
+                  "const": true
+                }
+              },
+              "required": [
+                "mass"
+              ]
+            }
           },
           "then": {
             "required": [
@@ -265,6 +288,40 @@
           "then": {
             "required": [
               "variable"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "variable": {
+                "const": true
+              }
+            },
+            "required": [
+              "variable"
+            ]
+          },
+          "then": {
+            "required": [
+              "agreement"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "pos": {
+                "const": "phrase"
+              }
+            },
+            "required": [
+              "pos"
+            ]
+          },
+          "then": {
+            "required": [
+              "situation"
             ]
           }
         }

@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "exercise.schema.json",
   "title": "Exercise types",
-  "description": "Hints use the trailing \"(...)\" convention: text in the last pair of parentheses of a prompt is hidden behind a Hint button, and using it caps the grade at Hard.",
+  "description": "Hints go in the optional `hint` field (shown behind a Hint button; using it caps the grade at Hard). Prompts here are roman/ur/en triples that are reused in reveals, so the German app's trailing \"(...)\" hint convention is not used (PLAN D22).",
   "definitions": {
     "fill-blank": {
       "type": "object",
@@ -26,6 +26,10 @@
           "type": "string",
           "minLength": 1,
           "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "hint": {
+          "$ref": "common.schema.json#/definitions/prose",
+          "description": "Optional nudge shown behind a Hint button. Urdu inside `backticks`. Must not simply state the answer."
         },
         "tags": {
           "type": "array",
@@ -83,6 +87,10 @@
           "minLength": 1,
           "description": "Shown after answering. Urdu inside `backticks`."
         },
+        "hint": {
+          "$ref": "common.schema.json#/definitions/prose",
+          "description": "Optional nudge shown behind a Hint button. Urdu inside `backticks`. Must not simply state the answer."
+        },
         "tags": {
           "type": "array",
           "items": {
@@ -138,6 +146,10 @@
           "minLength": 1,
           "description": "Shown after answering. Urdu inside `backticks`."
         },
+        "hint": {
+          "$ref": "common.schema.json#/definitions/prose",
+          "description": "Optional nudge shown behind a Hint button. Urdu inside `backticks`. Must not simply state the answer."
+        },
         "tags": {
           "type": "array",
           "items": {
@@ -188,6 +200,10 @@
           "type": "string",
           "minLength": 1,
           "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "hint": {
+          "$ref": "common.schema.json#/definitions/prose",
+          "description": "Optional nudge shown behind a Hint button. Urdu inside `backticks`. Must not simply state the answer."
         },
         "tags": {
           "type": "array",
@@ -249,6 +265,10 @@
           "minLength": 1,
           "description": "Shown after answering. Urdu inside `backticks`."
         },
+        "hint": {
+          "$ref": "common.schema.json#/definitions/prose",
+          "description": "Optional nudge shown behind a Hint button. Urdu inside `backticks`. Must not simply state the answer."
+        },
         "tags": {
           "type": "array",
           "items": {
@@ -304,6 +324,10 @@
           "minLength": 1,
           "description": "Shown after answering. Urdu inside `backticks`."
         },
+        "hint": {
+          "$ref": "common.schema.json#/definitions/prose",
+          "description": "Optional nudge shown behind a Hint button. Urdu inside `backticks`. Must not simply state the answer."
+        },
         "tags": {
           "type": "array",
           "items": {
@@ -354,6 +378,10 @@
           "minLength": 1,
           "description": "Shown after answering. Urdu inside `backticks`."
         },
+        "hint": {
+          "$ref": "common.schema.json#/definitions/prose",
+          "description": "Optional nudge shown behind a Hint button. Urdu inside `backticks`. Must not simply state the answer."
+        },
         "tags": {
           "type": "array",
           "items": {
@@ -403,6 +431,10 @@
           "type": "string",
           "minLength": 1,
           "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "hint": {
+          "$ref": "common.schema.json#/definitions/prose",
+          "description": "Optional nudge shown behind a Hint button. Urdu inside `backticks`. Must not simply state the answer."
         },
         "tags": {
           "type": "array",

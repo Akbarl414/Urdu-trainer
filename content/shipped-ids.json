@@ -1,1 +1,30 @@
-{"note":"Ids of shipped content. Never remove or rename an id; set retired:true instead. Append new ids with: npm run lock-ids","ids":[]}
+{
+  "note": "Ids of shipped content. Never remove or rename an id; set retired:true instead. Append new ids with: npm run lock-ids",
+  "ids": [
+    "exercise:lesson-001/e01",
+    "exercise:lesson-001/e02",
+    "exercise:lesson-001/e03",
+    "exercise:lesson-001/e04",
+    "exercise:lesson-001/e05",
+    "exercise:lesson-001/e06",
+    "exercise:lesson-001/e07",
+    "exercise:lesson-001/e08",
+    "exercise:lesson-001/e09",
+    "exercise:lesson-001/e10",
+    "exercise:lesson-001/e11",
+    "exercise:lesson-001/e12",
+    "lesson:lesson-001",
+    "unit:unit-01",
+    "vocab:vocab-unit-01",
+    "word:aap",
+    "word:aap-kaise-hain",
+    "word:alhamdulillaah",
+    "word:assalaam-o-alaikum",
+    "word:aur",
+    "word:bhii",
+    "word:kyaa-haal-hai",
+    "word:main",
+    "word:thiik",
+    "word:wa-alaikum-assalaam"
+  ]
+}

@@ -9,7 +9,9 @@ const UNIT_NUM = /^unit-(\d{2})$/;
 const MAX_WORDS_PER_UNIT = 80;
 
 /** Keys whose string (or string-array) values are Roman Urdu. */
-const ROMAN_KEYS = new Set(['roman', 'answer', 'altAnswers', 'tokens', 'answerOrders', 'forms', 'speaker']);
+const ROMAN_KEYS = new Set(['roman', 'answer', 'altAnswers', 'tokens', 'answerOrders', 'forms']);
+/** English prose keys: Urdu inside `backticks` is checked against the scheme. */
+const PROSE_KEYS = new Set(['body', 'heading', 'notes', 'explanation', 'hint', 'setting', 'situation', 'literal', 'instruction', 'prompt']);
 const isUrKey = (k) => k === 'ur' || k.endsWith('_ur');
 
 const lessonNumber = (id) => Number(LESSON_NUM.exec(id)?.[1] ?? NaN);
@@ -108,6 +110,7 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
         err(v, `duplicate word id "${word.id}" (also in ${label(wordById.get(word.id).vocab)})`);
         continue;
       }
+      if (word.id.startsWith('seed-')) err(v, `word id "${word.id}": the "seed-" prefix is reserved for the removed Phase 2 test cards (PLAN D21)`);
       claim(v, word.id, 'word');
       wordById.set(word.id, { word, vocab: v });
     }
@@ -151,7 +154,7 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
           for (const m of checkUrdu(v, { allowBlank: true })) err(it, `${here} ("${v}") ${m}`);
           continue;
         }
-        if ((k === 'body' || k === 'heading' || k === 'notes' || k === 'explanation') && typeof v === 'string') {
+        if (PROSE_KEYS.has(k) && typeof v === 'string') {
           checkProse(it, v, here, exempt);
           continue;
         }
@@ -194,7 +197,62 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
         if (intro.data.unit !== v.data.unit) err(v, `${path} is introduced in ${word.introduced_in}, which belongs to ${intro.data.unit}, not ${v.data.unit}`);
         if (!intro.data.new_vocab.includes(word.id)) err(v, `${path} says it is introduced in ${word.introduced_in}, but that lesson's new_vocab does not list it`);
       }
+      checkForms(v, word, path);
     });
+  }
+
+  // Inflection fields feed games that generate phrases (PLAN §8), so the regular patterns are checked.
+  function checkForms(v, word, path) {
+    const ends = (pair, roman, ur) => pair.roman.endsWith(roman) && (ur === null || pair.ur.endsWith(ur));
+    if (word.pos === 'noun') {
+      if (word.marked && word.gender !== 'm') err(v, `${path} is marked, so it must be masculine (gender "m")`);
+      if (word.mass && word.plural_only) err(v, `${path} cannot be both mass and plural_only`);
+      if (word.marked && word.plural && word.oblique_pl) {
+        const stem = word.roman.replace(/aa$/, '');
+        if (!word.roman.endsWith('aa')) err(v, `${path} is marked but its roman does not end in "aa"`);
+        else {
+          if (word.plural.roman !== `${stem}e` || !/ے$/.test(word.plural.ur)) err(v, `${path}.plural should be "${stem}e" (ending in ے) for a marked noun`);
+          if (word.oblique_pl.roman !== `${stem}oN` || !/وں$/.test(word.oblique_pl.ur)) err(v, `${path}.oblique_pl should be "${stem}oN" (ending in وں) for a marked noun`);
+        }
+      } else if (word.plural && word.oblique_pl && word.gender === 'f') {
+        const ii = word.roman.endsWith('ii');
+        const want = ii ? `${word.roman.slice(0, -2)}iyaaN` : `${word.roman}eN`;
+        if (word.plural.roman !== want) warnings.push(`${label(v)}: ${path}.plural is "${word.plural.roman}"; the regular feminine plural would be "${want}". Fine if it is a real exception.`);
+      } else if (word.plural && !word.marked && (word.gender === 'm' || word.plural_only) && word.plural.roman !== word.roman && !word.loanword) {
+        warnings.push(`${label(v)}: ${path}.plural "${word.plural.roman}" differs from the singular; unmarked masculine nouns normally don't change. Fine if it is a real exception.`);
+      }
+      if (word.oblique_pl && !ends(word.oblique_pl, 'oN', 'وں')) err(v, `${path}.oblique_pl should end in "oN" / وں`);
+    }
+    if (word.variable !== undefined && ['noun', 'verb', 'phrase', 'adverb'].includes(word.pos)) err(v, `${path}: "variable" is only for adjectives, pronouns, postpositions and other (a ${word.pos} doesn't agree like acchaa)`);
+    if (word.agreement) {
+      if (!word.variable) err(v, `${path} has agreement forms but variable is not true`);
+      const { m_sg, f, m_pl } = word.agreement;
+      if (m_sg.roman !== word.roman) err(v, `${path}.agreement.m_sg.roman ("${m_sg.roman}") should equal the word's roman ("${word.roman}")`);
+      if (!m_sg.roman.endsWith('aa')) err(v, `${path}.agreement.m_sg should end in "aa"`);
+      else {
+        const stem = m_sg.roman.slice(0, -2);
+        if (f.roman !== `${stem}ii` || !/ی$/.test(f.ur)) err(v, `${path}.agreement.f should be "${stem}ii" (ending in ی)`);
+        if (m_pl.roman !== `${stem}e` || !/ے$/.test(m_pl.ur)) err(v, `${path}.agreement.m_pl should be "${stem}e" (ending in ے)`);
+      }
+    }
+  }
+
+  function checkDialogue(l, dialogue) {
+    const ids = new Set();
+    let learners = 0;
+    dialogue.speakers.forEach((sp, i) => {
+      if (ids.has(sp.id)) err(l, `dialogue.speakers[${i}] duplicate speaker id "${sp.id}"`);
+      ids.add(sp.id);
+      if (sp.learner) learners++;
+      else if (!sp.gender) err(l, `dialogue.speakers[${i}] (${sp.id}) needs a gender (only the learner's role has none)`);
+    });
+    if (learners > 1) err(l, `dialogue has ${learners} learner speakers; at most one`);
+    const used = new Set();
+    dialogue.lines.forEach((line, i) => {
+      if (!ids.has(line.speaker)) err(l, `dialogue.lines[${i}].speaker "${line.speaker}" is not in dialogue.speakers`);
+      used.add(line.speaker);
+    });
+    for (const id of ids) if (!used.has(id)) warnings.push(`${label(l)}: dialogue speaker "${id}" has no lines`);
   }
 
   // ---- 4. lessons -------------------------------------------------------
@@ -223,6 +281,7 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
       if (gids.has(g.id)) err(l, `duplicate game item id "${g.id}"`);
       gids.add(g.id);
     });
+    checkDialogue(l, d.dialogue);
     checkTree(l, { grammar: d.grammar, dialogue: d.dialogue, exercises: d.exercises, game_items: d.game_items }, '', d.order);
   }
   for (const [wid, byLessons] of introducedCount) {

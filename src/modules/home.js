@@ -2,7 +2,6 @@
 import { h } from '../ui/dom.js';
 import { store } from '../db/storage.js';
 import { getContent } from '../db/contentLoader.js';
-import { withSeed } from '../srs/seed.js';
 import { describeCard } from '../srs/cardFace.js';
 import { buildQueue } from '../srs/queue.js';
 import { reviewsDoneToday } from '../srs/stats.js';
@@ -11,7 +10,7 @@ export function render(container) {
   const content = getContent();
   const data = store.data;
   const cards = Object.keys(data.srs.decks.main.cards).length;
-  const source = withSeed(content);
+  const source = content;
   const now = Date.now();
   const plan = buildQueue({
     cards: data.srs.decks.main.cards,
@@ -49,7 +48,6 @@ export function render(container) {
         h('h2', {}, 'Review'),
         h('p', {}, plan.dueTotal === 0 ? 'Nothing due right now.' : `${plan.dueTotal} due${plan.held ? ` · ${plan.queue.length} in today's session` : ''}.`),
         h('a', { class: 'btn', href: '#/review' }, 'Start review'),
-        h('p', { class: 'small muted' }, h('a', { href: '#/debug/seed' }, 'Add or remove test cards')),
       ),
       h(
         'section',

@@ -1,0 +1,173 @@
+{
+  "id": "vocab-unit-01",
+  "unit": "unit-01",
+  "words": [
+    {
+      "id": "assalaam-o-alaikum",
+      "pos": "phrase",
+      "roman": "assalaam-o-alaikum",
+      "ur": "السلام علیکم",
+      "meaning_en": "hello (peace be upon you)",
+      "literal": "peace be upon you",
+      "situation": "You arrive at your partner's family home and the door opens. Greet them.",
+      "example": {
+        "roman": "assalaam-o-alaikum! aap kaise haiN?",
+        "ur": "السلام علیکم! آپ کیسے ہیں؟",
+        "en": "Hello! How are you?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-001",
+      "notes": "The everyday greeting in Pakistan, for anyone, at any time of day. The person arriving says it first, and younger people greet elders first. Between friends it is often shortened to `salaam`.",
+      "hindi_variant": {
+        "roman": "namaste",
+        "devanagari": "नमस्ते",
+        "note": "The usual greeting in Hindi films and TV. Pakistani Urdu speakers say assalaam-o-alaikum."
+      }
+    },
+    {
+      "id": "wa-alaikum-assalaam",
+      "pos": "phrase",
+      "roman": "wa-alaikum-assalaam",
+      "ur": "وعلیکم السلام",
+      "meaning_en": "hello (the reply: and peace be upon you)",
+      "literal": "and upon you be peace",
+      "situation": "Someone greets you with assalaam-o-alaikum. Reply.",
+      "example": {
+        "roman": "wa-alaikum-assalaam! Thiik huuN, aur aap?",
+        "ur": "وعلیکم السلام! ٹھیک ہوں، اور آپ؟",
+        "en": "And peace be upon you! I'm fine, and you?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-001",
+      "notes": "Only ever a reply to `assalaam-o-alaikum`. Never say it first."
+    },
+    {
+      "id": "main",
+      "pos": "pronoun",
+      "roman": "maiN",
+      "ur": "میں",
+      "meaning_en": "I",
+      "example": {
+        "roman": "maiN Thiik huuN.",
+        "ur": "میں ٹھیک ہوں۔",
+        "en": "I'm fine."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-001",
+      "notes": "Goes with `huuN`: `maiN Thiik huuN` is \"I'm fine\". The same Urdu spelling میں also means \"in\" (`meN`); you'll meet that in Unit 4."
+    },
+    {
+      "id": "thiik",
+      "pos": "adjective",
+      "roman": "Thiik",
+      "ur": "ٹھیک",
+      "meaning_en": "fine, well, all right",
+      "example": {
+        "roman": "alhamdulillaah, Thiik huuN.",
+        "ur": "الحمد للہ، ٹھیک ہوں۔",
+        "en": "I'm fine, thank God."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-001",
+      "notes": "Never changes, whether you mean a man, a woman or a thing. On its own, `Thiik hai` means \"OK\" or \"fine, agreed\".",
+      "variable": false
+    },
+    {
+      "id": "aap",
+      "pos": "pronoun",
+      "roman": "aap",
+      "ur": "آپ",
+      "meaning_en": "you (polite)",
+      "example": {
+        "roman": "aap Thiik haiN?",
+        "ur": "آپ ٹھیک ہیں؟",
+        "en": "Are you all right?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-001",
+      "notes": "The respectful \"you\": for elders, in-laws, guests and anyone you don't know well. It always takes `haiN`, even for one person. Lesson 2 covers the two other words for \"you\"."
+    },
+    {
+      "id": "aap-kaise-hain",
+      "pos": "phrase",
+      "roman": "aap kaise haiN?",
+      "ur": "آپ کیسے ہیں؟",
+      "meaning_en": "how are you? (polite)",
+      "literal": "you how are?",
+      "situation": "Your partner's father sits down next to you. Ask him politely how he is.",
+      "example": {
+        "roman": "wa-alaikum-assalaam! aap kaise haiN?",
+        "ur": "وعلیکم السلام! آپ کیسے ہیں؟",
+        "en": "And peace be upon you! How are you?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-001",
+      "notes": "Asking a woman, say `aap kaisii haiN?`. The ending changes for a woman; Unit 2 shows the pattern behind it.",
+      "forms": ["aap kaisii haiN?"]
+    },
+    {
+      "id": "kyaa-haal-hai",
+      "pos": "phrase",
+      "roman": "kyaa haal hai?",
+      "ur": "کیا حال ہے؟",
+      "meaning_en": "how are you? how are things?",
+      "literal": "what state is?",
+      "situation": "Your cousin rings for a chat. Ask how things are, in a relaxed way.",
+      "example": {
+        "roman": "assalaam-o-alaikum! kyaa haal hai?",
+        "ur": "السلام علیکم! کیا حال ہے؟",
+        "en": "Hello! How are things?"
+      },
+      "register": "informal",
+      "introduced_in": "lesson-001",
+      "notes": "Friendly, and the same whether you ask a man or a woman. Common answers are `Thiik hai` (\"it's fine\") or `maiN Thiik huuN`. To an elder you don't know well, `aap kaise haiN?` is more respectful."
+    },
+    {
+      "id": "alhamdulillaah",
+      "pos": "phrase",
+      "roman": "alhamdulillaah",
+      "ur": "الحمد للہ",
+      "meaning_en": "thank God (praise be to God)",
+      "literal": "all praise is for God",
+      "situation": "Someone asks how you are. Before saying you're well, give thanks to God, as most Pakistanis do.",
+      "example": {
+        "roman": "maiN Thiik huuN, alhamdulillaah.",
+        "ur": "میں ٹھیک ہوں، الحمد للہ۔",
+        "en": "I'm fine, thank God."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-001",
+      "notes": "An Arabic phrase used by Muslims and heard constantly in Pakistani conversation, above all in answers to \"how are you?\". It can go before or after the rest: `alhamdulillaah, Thiik huuN` or `Thiik huuN, alhamdulillaah`."
+    },
+    {
+      "id": "aur",
+      "pos": "other",
+      "roman": "aur",
+      "ur": "اور",
+      "meaning_en": "and",
+      "example": {
+        "roman": "maiN Thiik huuN. aur aap?",
+        "ur": "میں ٹھیک ہوں۔ اور آپ؟",
+        "en": "I'm fine. And you?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-001",
+      "notes": "`aur aap?` (\"and you?\") is the quickest way to return a question."
+    },
+    {
+      "id": "bhii",
+      "pos": "other",
+      "roman": "bhii",
+      "ur": "بھی",
+      "meaning_en": "too, also",
+      "example": {
+        "roman": "maiN bhii Thiik huuN.",
+        "ur": "میں بھی ٹھیک ہوں۔",
+        "en": "I'm fine too."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-001",
+      "notes": "Comes straight after the word it adds to: `maiN bhii` is \"me too\", \"I also\"."
+    }
+  ]
+}

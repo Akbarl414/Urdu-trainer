@@ -4,7 +4,6 @@
 const routes = {
   '': () => import('./modules/home.js'),
   '/review': () => import('./modules/review/review.js'),
-  '/debug/seed': () => import('./modules/debug/seed.js'),
   '/debug/voices': () => import('./modules/debug/voices.js'),
 };
 

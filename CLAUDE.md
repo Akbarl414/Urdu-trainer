@@ -37,7 +37,7 @@ One scheme everywhere, defined in `content/ROMANIZATION.md` and enforced by `src
 
 ## Commands
 
-`npm run dev` · `validate` · `lock-ids` · `test` (Node's built-in runner, `tests/*.test.js`) · `build` (validates first) · `preview`. A phase is done when `validate`, `test` and `build` all pass, there is no horizontal scroll at phone width, no change touches stored data without a migration, and uncertainties are reported.
+`npm run dev` · `validate` · `check-coverage` (warnings only) · `lock-ids` · `test` (Node's built-in runner, `tests/*.test.js`) · `build` (validates first) · `preview`. A phase is done when `validate`, `test` and `build` all pass, there is no horizontal scroll at phone width, no change touches stored data without a migration, and uncertainties are reported.
 
 ## Layout rules
 

@@ -1,0 +1,217 @@
+{
+  "id": "lesson-001",
+  "unit": "unit-01",
+  "order": 1,
+  "title": "Salaam and how are you?",
+  "can_do": "You can greet someone and say how you are.",
+  "context": "family",
+  "grammar": [
+    {
+      "heading": "The verb comes last",
+      "body": "In English the verb sits in the middle: \"I am fine\". In Urdu it goes at the very end. So `maiN Thiik huuN` is, word for word, \"I fine am\". Questions work the same way: `aap kaise haiN?` is \"you how are?\". Who, then the rest, then the verb.",
+      "table": {
+        "headers": ["Urdu", "Word for word"],
+        "rows": [
+          [{ "roman": "maiN Thiik huuN.", "ur": "میں ٹھیک ہوں۔", "en": "I'm fine." }, "I · fine · am"],
+          [{ "roman": "aap kaise haiN?", "ur": "آپ کیسے ہیں؟", "en": "How are you?" }, "you · how · are?"],
+          [{ "roman": "kyaa haal hai?", "ur": "کیا حال ہے؟", "en": "How are things?" }, "what · state · is?"]
+        ]
+      }
+    },
+    {
+      "heading": "One word each for \"am\", \"are\" and \"is\"",
+      "body": "Urdu picks the word for \"am / are / is\" to match who you're talking about. With `maiN` (I) it is always `huuN`. With `aap` (you) it is always `haiN`. For a thing, such as `haal` (how things are), it is `hai`. Since `huuN` can only mean \"I am\", people often leave out `maiN`: `Thiik huuN` already says \"I'm fine\".",
+      "table": {
+        "headers": ["Who", "Word", "Example"],
+        "rows": [
+          ["I: `maiN`", "`huuN`", { "roman": "maiN Thiik huuN.", "ur": "میں ٹھیک ہوں۔", "en": "I'm fine." }],
+          ["you: `aap`", "`haiN`", { "roman": "aap Thiik haiN?", "ur": "آپ ٹھیک ہیں؟", "en": "Are you all right?" }],
+          ["a thing: `haal`", "`hai`", { "roman": "kyaa haal hai?", "ur": "کیا حال ہے؟", "en": "How are things?" }]
+        ]
+      }
+    },
+    {
+      "heading": "Greetings come in pairs",
+      "body": "`assalaam-o-alaikum` (\"peace be upon you\") is the greeting, and `wa-alaikum-assalaam` (\"and upon you be peace\") is the reply. The person arriving greets first, and younger people greet elders first. You can't go wrong with these two, with anyone, at any time of day.",
+      "examples": [
+        { "roman": "assalaam-o-alaikum!", "ur": "السلام علیکم!", "en": "Hello! (Peace be upon you.)" },
+        { "roman": "wa-alaikum-assalaam!", "ur": "وعلیکم السلام!", "en": "Hello! (And upon you be peace.)" }
+      ]
+    },
+    {
+      "heading": "Asking how someone is",
+      "body": "To a man, say `aap kaise haiN?`. To a woman, say `aap kaisii haiN?`. The ending changes for a woman; Unit 2 explains why. With family and friends, `kyaa haal hai?` works for anyone. In the answer, most people add `alhamdulillaah` (\"thank God\"), then return the question with `aur aap?` (\"and you?\").",
+      "examples": [
+        { "roman": "aap kaise haiN?", "ur": "آپ کیسے ہیں؟", "en": "How are you? (to a man)" },
+        { "roman": "aap kaisii haiN?", "ur": "آپ کیسی ہیں؟", "en": "How are you? (to a woman)" },
+        { "roman": "alhamdulillaah, Thiik huuN. aur aap?", "ur": "الحمد للہ، ٹھیک ہوں۔ اور آپ؟", "en": "Fine, thank God. And you?" },
+        { "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too." }
+      ]
+    }
+  ],
+  "new_vocab": [
+    "assalaam-o-alaikum",
+    "wa-alaikum-assalaam",
+    "main",
+    "thiik",
+    "aap",
+    "aap-kaise-hain",
+    "kyaa-haal-hai",
+    "alhamdulillaah",
+    "aur",
+    "bhii"
+  ],
+  "exercises": [
+    {
+      "id": "e01",
+      "type": "multiple-choice",
+      "prompt": "Your partner's father opens the front door. What do you say first?",
+      "options": [
+        { "roman": "assalaam-o-alaikum!", "ur": "السلام علیکم!", "en": "Peace be upon you!" },
+        { "roman": "wa-alaikum-assalaam!", "ur": "وعلیکم السلام!", "en": "And upon you be peace!" },
+        { "roman": "alhamdulillaah!", "ur": "الحمد للہ!", "en": "Thank God!" }
+      ],
+      "answerIndex": 0,
+      "explanation": "You're the one arriving, so you greet first with `assalaam-o-alaikum`. `wa-alaikum-assalaam` is only ever the reply.",
+      "tags": ["greetings"]
+    },
+    {
+      "id": "e02",
+      "type": "listen",
+      "audio_text": { "roman": "kyaa haal hai?", "ur": "کیا حال ہے؟", "en": "How are things?" },
+      "options": ["How are things?", "I'm fine.", "And you?", "Hello!"],
+      "answerIndex": 0,
+      "explanation": "`kyaa haal hai?` is a friendly \"how are you?\". Word for word: \"what state is?\".",
+      "tags": ["greetings"]
+    },
+    {
+      "id": "e03",
+      "type": "fill-blank",
+      "sentence": { "roman": "maiN Thiik ___.", "ur": "میں ٹھیک ___۔", "en": "I'm fine." },
+      "answer": "huuN",
+      "answer_ur": "ہوں",
+      "hint": "Which word always goes with `maiN`?",
+      "explanation": "With `maiN` (I) the verb is always `huuN`, and it goes at the end.",
+      "tags": ["honaa", "word-order"]
+    },
+    {
+      "id": "e04",
+      "type": "choose-form",
+      "sentence": { "roman": "aap Thiik ___?", "ur": "آپ ٹھیک ___؟", "en": "Are you all right?" },
+      "options": [
+        { "roman": "huuN", "ur": "ہوں" },
+        { "roman": "haiN", "ur": "ہیں" },
+        { "roman": "hai", "ur": "ہے" }
+      ],
+      "answerIndex": 1,
+      "explanation": "`aap` always takes `haiN`, even when you're talking to just one person.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e05",
+      "type": "fill-blank",
+      "sentence": { "roman": "kyaa haal ___?", "ur": "کیا حال ___؟", "en": "How are things?" },
+      "answer": "hai",
+      "answer_ur": "ہے",
+      "hint": "You're asking about `haal` (how things are), not about \"I\" or \"you\".",
+      "explanation": "`haal` is a thing, so it takes `hai` (is).",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e06",
+      "type": "error-spot",
+      "sentence": { "roman": "maiN Thiik haiN.", "ur": "میں ٹھیک ہیں۔", "en": "I'm fine." },
+      "answer": "maiN Thiik huuN.",
+      "answer_ur": "میں ٹھیک ہوں۔",
+      "explanation": "`maiN` needs `huuN`. `haiN` goes with `aap`.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e07",
+      "type": "reorder",
+      "sentence": { "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too." },
+      "tokens": ["maiN", "bhii", "Thiik", "huuN"],
+      "answerOrders": [["maiN", "bhii", "Thiik", "huuN"]],
+      "explanation": "`bhii` (too) comes straight after `maiN`, and the verb `huuN` goes last.",
+      "tags": ["word-order"]
+    },
+    {
+      "id": "e08",
+      "type": "reorder",
+      "sentence": { "roman": "aap kaise haiN?", "ur": "آپ کیسے ہیں؟", "en": "How are you?" },
+      "tokens": ["aap", "kaise", "haiN"],
+      "answerOrders": [
+        ["aap", "kaise", "haiN"],
+        ["kaise", "haiN", "aap"]
+      ],
+      "explanation": "The usual order puts the verb last: `aap kaise haiN?`. In relaxed speech you'll also hear `kaise haiN aap?`, which is fine too.",
+      "tags": ["word-order"]
+    },
+    {
+      "id": "e09",
+      "type": "choose-form",
+      "sentence": { "roman": "aap ___ haiN?", "ur": "آپ ___ ہیں؟", "en": "How are you? (asking your partner's mother)" },
+      "options": [
+        { "roman": "kaise", "ur": "کیسے" },
+        { "roman": "kaisii", "ur": "کیسی" }
+      ],
+      "answerIndex": 1,
+      "explanation": "You're asking a woman, so `aap kaisii haiN?`. To a man it's `aap kaise haiN?`.",
+      "tags": ["greetings"]
+    },
+    {
+      "id": "e10",
+      "type": "multiple-choice",
+      "prompt": "Your partner's mother asks you this. Which reply fits?",
+      "sentence": { "roman": "kyaa haal hai?", "ur": "کیا حال ہے؟", "en": "How are things?" },
+      "options": [
+        { "roman": "alhamdulillaah, Thiik huuN.", "ur": "الحمد للہ، ٹھیک ہوں۔", "en": "Fine, thank God." },
+        { "roman": "wa-alaikum-assalaam!", "ur": "وعلیکم السلام!", "en": "And upon you be peace!" },
+        { "roman": "aap kaise haiN?", "ur": "آپ کیسے ہیں؟", "en": "How are you?" }
+      ],
+      "answerIndex": 0,
+      "explanation": "Say how you are, and add `alhamdulillaah` the way most people do. `wa-alaikum-assalaam` only answers a greeting.",
+      "tags": ["greetings"]
+    },
+    {
+      "id": "e11",
+      "type": "transform",
+      "from": { "roman": "maiN Thiik huuN.", "ur": "میں ٹھیک ہوں۔", "en": "I'm fine." },
+      "instruction": "Say the same about `aap` (you) instead of `maiN` (I).",
+      "answers": [{ "roman": "aap Thiik haiN.", "ur": "آپ ٹھیک ہیں۔" }],
+      "explanation": "Swap `maiN` for `aap`, and `huuN` for `haiN`. `Thiik` stays the same.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e12",
+      "type": "translate",
+      "en": "I'm fine, thank God. And you?",
+      "answers": [
+        { "roman": "maiN Thiik huuN, alhamdulillaah. aur aap?", "ur": "میں ٹھیک ہوں، الحمد للہ۔ اور آپ؟" },
+        { "roman": "alhamdulillaah, maiN Thiik huuN. aur aap?", "ur": "الحمد للہ، میں ٹھیک ہوں۔ اور آپ؟" },
+        { "roman": "Thiik huuN, alhamdulillaah. aur aap?", "ur": "ٹھیک ہوں، الحمد للہ۔ اور آپ؟" },
+        { "roman": "alhamdulillaah, Thiik huuN. aur aap?", "ur": "الحمد للہ، ٹھیک ہوں۔ اور آپ؟" }
+      ],
+      "self_grade": true,
+      "explanation": "`alhamdulillaah` can go before or after, and you can drop `maiN` because `huuN` already means \"I am\".",
+      "tags": ["honaa"]
+    }
+  ],
+  "dialogue": {
+    "setting": "You're visiting your partner's parents for the first time. Their mum opens the door, and their dad comes to say hello a moment later.",
+    "speakers": [
+      { "id": "you", "en": "You", "learner": true },
+      { "id": "mum", "en": "Partner's mum", "gender": "f" },
+      { "id": "dad", "en": "Partner's dad", "gender": "m" }
+    ],
+    "lines": [
+      { "speaker": "you", "roman": "assalaam-o-alaikum!", "ur": "السلام علیکم!", "en": "Hello! (Peace be upon you.)" },
+      { "speaker": "mum", "roman": "wa-alaikum-assalaam! kyaa haal hai?", "ur": "وعلیکم السلام! کیا حال ہے؟", "en": "And peace be upon you! How are you?" },
+      { "speaker": "you", "roman": "alhamdulillaah, Thiik huuN. aap kaisii haiN?", "ur": "الحمد للہ، ٹھیک ہوں۔ آپ کیسی ہیں؟", "en": "Fine, thank God. How are you?" },
+      { "speaker": "mum", "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too." },
+      { "speaker": "you", "roman": "assalaam-o-alaikum! aap kaise haiN?", "ur": "السلام علیکم! آپ کیسے ہیں؟", "en": "Hello! How are you?" },
+      { "speaker": "dad", "roman": "wa-alaikum-assalaam! alhamdulillaah, Thiik huuN. aur aap?", "ur": "وعلیکم السلام! الحمد للہ، ٹھیک ہوں۔ اور آپ؟", "en": "And peace be upon you! Fine, thank God. And you?" },
+      { "speaker": "you", "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too." }
+    ]
+  }
+}

@@ -26,7 +26,7 @@ test('empty content is valid', () => {
 // ---- romanization -----------------------------------------------------------
 test('rejects bad romanization in words, sentences, exercises and dialogue', () => {
   let b = makeBundle(); word(b, 'kitaab').example.roman = 'Kitaab yahaaN hai.'; failsWith(b, /capital "K"/);
-  b = makeBundle(); lesson(b).dialogue[0].roman = 'theek hai'; failsWith(b, /"ee"/);
+  b = makeBundle(); lesson(b).dialogue.lines[0].roman = 'theek hai'; failsWith(b, /"ee"/);
   b = makeBundle(); ex(b, 'e01').answer = 'Thiik hoon'; failsWith(b, /"oo"/);
   b = makeBundle(); ex(b, 'e06').answers[0].roman = 'bahut shukriya 5'; failsWith(b, /not allowed/);
   b = makeBundle(); word(b, 'kitaab').roman = 'kitNaab'; failsWith(b, /plain "n"/);
@@ -44,8 +44,8 @@ test('rejects missing ur and Arabic look-alike characters', () => {
   b = makeBundle(); word(b, 'kitaab').example.ur = ''; failsWith(b, /ur/);
   b = makeBundle(); word(b, 'acchaa').ur = 'اچھا'.replace('ا', 'ا') + 'ي'; failsWith(b, /look-alike U\+064A/);
   b = makeBundle(); word(b, 'larkaa').plural.ur = 'لڑكے'; failsWith(b, /look-alike U\+0643/);
-  b = makeBundle(); lesson(b).dialogue[0].ur = 'هيلو'; failsWith(b, /look-alike/);
-  b = makeBundle(); lesson(b).dialogue[0].ur = 'hello'; failsWith(b, /Latin letters|no Urdu-script/);
+  b = makeBundle(); lesson(b).dialogue.lines[0].ur = 'هيلو'; failsWith(b, /look-alike/);
+  b = makeBundle(); lesson(b).dialogue.lines[0].ur = 'hello'; failsWith(b, /Latin letters|no Urdu-script/);
 });
 
 // ---- loanwords ---------------------------------------------------------------
@@ -55,13 +55,13 @@ const asTv = (b) => Object.assign(word(b, 'phone'), { roman: 'tv', forms: ['tv',
 test('loanword exemption: listed loanwords pass in sentences from the lesson they are introduced in', () => {
   const b = makeBundle();
   asTv(b);
-  lesson(b).dialogue[1].roman = 'mera tv kahaaN hai?';
+  lesson(b).dialogue.lines[1].roman = 'meraa tv kahaaN hai?';
   assert.deepEqual(run(b).errors, []);
 });
 
 test('loanword exemption: an unlisted English word is still rejected', () => {
   const b = makeBundle();
-  lesson(b).dialogue[1].roman = 'mera computer kahaaN hai?';
+  lesson(b).dialogue.lines[1].roman = 'meraa computer kahaaN hai?';
   failsWith(b, /"c" is only used/);
 });
 
@@ -76,7 +76,7 @@ test('loanword exemption: not valid before the lesson that introduces it', () =>
   l2.file = 'lesson-002.json';
   l2.data = { ...l2.data, id: 'lesson-002', order: 2, new_vocab: ['phone'], review: true };
   b.lessons.push(l2);
-  lesson(b).dialogue[1].roman = 'mera tv kahaaN hai?';
+  lesson(b).dialogue.lines[1].roman = 'meraa tv kahaaN hai?';
   failsWith(b, /dialogue.*"v"/);
 });
 
@@ -167,4 +167,67 @@ test('unlocked ids are reported but are not errors', () => {
   assert.deepEqual(errors, []);
   assert.ok(unlockedIds.includes('word:larkaa'));
   assert.ok(unlockedIds.includes('lesson:lesson-001'));
+});
+
+// ---- Phase 3a schema additions (PLAN D22) -----------------------------------------
+test('the seed- word id prefix is reserved (D21)', () => {
+  const b = makeBundle();
+  b.vocabs[0].data.words.push({ ...word(b, 'kitaab'), id: 'seed-kitaab' });
+  lesson(b).new_vocab.push('seed-kitaab');
+  failsWith(b, /"seed-" prefix is reserved/);
+});
+
+test('nouns: every countable noun needs plural and oblique_pl; mass nouns are exempt', () => {
+  let b = makeBundle(); delete word(b, 'kitaab').plural; failsWith(b, /plural/);
+  b = makeBundle(); delete word(b, 'kitaab').oblique_pl; failsWith(b, /oblique_pl/);
+  b = makeBundle(); delete word(b, 'kitaab').plural; delete word(b, 'kitaab').oblique_pl; word(b, 'kitaab').mass = true;
+  assert.deepEqual(run(b).errors, []);
+  b = makeBundle(); word(b, 'kitaab').mass = true; word(b, 'kitaab').plural_only = true; failsWith(b, /both mass and plural_only/);
+});
+
+test('nouns: marked means masculine -aa with regular -e / -oN forms', () => {
+  let b = makeBundle(); word(b, 'larkaa').gender = 'f'; failsWith(b, /must be masculine/);
+  b = makeBundle(); word(b, 'larkaa').plural = { roman: 'laRkii', ur: 'لڑکی' }; failsWith(b, /plural should be "laRke"/);
+  b = makeBundle(); word(b, 'larkaa').oblique_pl = { roman: 'laRkoN', ur: 'لڑکون' }; failsWith(b, /oblique_pl should be "laRkoN"/);
+  b = makeBundle(); word(b, 'kitaab').oblique_pl = { roman: 'kitaabeN', ur: 'کتابیں' }; failsWith(b, /should end in "oN"/);
+});
+
+test('nouns: irregular feminine plurals are warnings, not errors; mf gender is allowed', () => {
+  let b = makeBundle(); word(b, 'kitaab').plural = { roman: 'kitaabiyaaN', ur: 'کتابیاں' };
+  const r = run(b);
+  assert.deepEqual(r.errors, []);
+  assert.ok(r.warnings.some((w) => /regular feminine plural would be "kitaabeN"/.test(w)));
+  b = makeBundle(); word(b, 'kitaab').gender = 'mf'; assert.deepEqual(run(b).errors, []);
+  b = makeBundle(); word(b, 'kitaab').gender = 'n'; failsWith(b, /gender/);
+});
+
+test('variable words need agreement forms that follow -aa / -ii / -e', () => {
+  let b = makeBundle(); delete word(b, 'acchaa').agreement; failsWith(b, /agreement/);
+  b = makeBundle(); word(b, 'acchaa').agreement.f = { roman: 'acche', ur: 'اچھے' }; failsWith(b, /agreement.f should be "acchii"/);
+  b = makeBundle(); word(b, 'acchaa').agreement.m_pl = { roman: 'acche', ur: 'اچھی' }; failsWith(b, /agreement.m_pl/);
+  b = makeBundle(); word(b, 'acchaa').agreement.m_sg = { roman: 'acchii', ur: 'اچھی' }; failsWith(b, /m_sg.roman/);
+  b = makeBundle(); word(b, 'larkaa').variable = false; failsWith(b, /only for adjectives/);
+  b = makeBundle(); word(b, 'acchaa').variable = false; failsWith(b, /variable is not true/);
+});
+
+test('phrases need a situation, checked like prose', () => {
+  let b = makeBundle(); delete word(b, 'shukriyaa').situation; failsWith(b, /situation/);
+  b = makeBundle(); word(b, 'shukriyaa').situation = 'You say `theek` to it.'; failsWith(b, /"ee"/);
+});
+
+test('dialogue: speakers are declared, the learner has no gender, everyone else does', () => {
+  let b = makeBundle(); lesson(b).dialogue.lines[0].speaker = 'nobody'; failsWith(b, /"nobody" is not in dialogue.speakers/);
+  b = makeBundle(); delete lesson(b).dialogue.speakers[0].gender; failsWith(b, /needs a gender/);
+  b = makeBundle(); lesson(b).dialogue.speakers[0].learner = true; failsWith(b, /at most one/);
+  b = makeBundle(); lesson(b).dialogue.speakers.push({ ...lesson(b).dialogue.speakers[0] }); failsWith(b, /duplicate speaker id/);
+  b = makeBundle(); delete lesson(b).dialogue.setting; failsWith(b, /setting/);
+  b = makeBundle(); lesson(b).dialogue.setting = 'They say `Salaam`.'; failsWith(b, /capital/);
+});
+
+test('hints and grammar examples are checked; unlocks must be a known feature', () => {
+  let b = makeBundle(); ex(b, 'e01').hint = 'Goes with `mein`.'; assert.deepEqual(run(b).errors, []);
+  b = makeBundle(); ex(b, 'e01').hint = 'Goes with `Main`.'; failsWith(b, /capital/);
+  b = makeBundle(); lesson(b).grammar[0].examples = [{ roman: 'maiN Thiik hoon.', ur: 'میں ٹھیک ہوں۔', en: 'I am fine.' }]; failsWith(b, /"oo"/);
+  b = makeBundle(); lesson(b).unlocks = ['perfectve']; failsWith(b, /unlocks/);
+  b = makeBundle(); lesson(b).unlocks = ['gender']; assert.deepEqual(run(b).errors, []);
 });

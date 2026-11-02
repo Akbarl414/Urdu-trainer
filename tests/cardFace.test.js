@@ -1,19 +1,19 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { describeCard, isReviewable } from '../src/srs/cardFace.js';
-import { SEED_WORDS, SEED_LESSON, seedSource, withSeed, seedCardIds, addSeedCards, makeSeedDue, removeSeedCards, isSeedCardId } from '../src/srs/seed.js';
+import { CARD_WORDS, CARD_LESSON, cardSource, cardIds } from './helpers/cardFixture.js';
+import { removeSeedCards, isSeedCardId } from '../src/srs/seedCleanup.js';
 import { defaultData } from '../src/db/storage.js';
 import { buildContentIndex } from '../src/db/contentIndex.js';
 import { checkRoman, checkUrdu, checkLoanwordRoman } from '../src/lang/romanization.js';
 import { check } from '../src/lang/normalise.js';
-import { CARD_STATE } from '../src/srs/fsrs.js';
 import { makeBundle } from './helpers/contentFixture.js';
 
 const NOW = Date.parse('2026-11-02T10:00:00Z');
-const src = seedSource;
+const src = cardSource;
 
-test('every seed card describes a reviewable face', () => {
-  for (const id of seedCardIds()) {
+test('every fixture card describes a reviewable face', () => {
+  for (const id of cardIds()) {
     const f = describeCard(id, src);
     assert.ok(f, id);
     assert.ok(f.modes.includes(f.defaultMode), id);
@@ -23,16 +23,16 @@ test('every seed card describes a reviewable face', () => {
   }
 });
 
-test('seed content obeys the romanization scheme and Urdu code points', () => {
+test('fixture content obeys the romanization scheme and Urdu code points', () => {
   const scan = (t, loan) => {
     assert.deepEqual(loan ? checkLoanwordRoman(t.roman) : checkRoman(t.roman, { allowBlank: true }), [], t.roman);
     assert.deepEqual(checkUrdu(t.ur, { allowBlank: true }), [], t.ur);
   };
-  for (const w of SEED_WORDS) {
+  for (const w of CARD_WORDS) {
     scan(w, w.loanword);
     if (w.example) assert.deepEqual(checkRoman(w.example.roman.replace(/\bphone\b/, 'phone'), { exempt: new Set(['phone']) }), [], w.example.roman);
   }
-  for (const e of SEED_LESSON.exercises) if (e.sentence) assert.deepEqual(checkRoman(e.sentence.roman, { allowBlank: true }), [], e.id);
+  for (const e of CARD_LESSON.exercises) if (e.sentence) assert.deepEqual(checkRoman(e.sentence.roman, { allowBlank: true }), [], e.id);
 });
 
 test('facet prompts: recognition reveals, production is Speak/Type, forms and grammar are typed or chosen', () => {
@@ -101,47 +101,32 @@ test('listen exercises, retired items and missing content are not reviewable', (
   assert.equal(isReviewable('w:larkaa:gender', content), false);
 });
 
-test('withSeed prefers real content and falls back to the seed', () => {
-  const b = makeBundle();
-  const content = buildContentIndex({ units: b.units.map((x) => x.data), vocabs: b.vocabs.map((x) => x.data), lessons: b.lessons.map((x) => x.data) });
-  const s = withSeed(content);
-  assert.equal(s.getWord('larkaa').roman, 'laRkaa');
-  assert.equal(s.getWord('seed-ghar').roman, 'ghar');
-  assert.equal(s.getExercise('seed-lesson', 'e01').type, 'fill-blank');
-  assert.equal(s.getExercise('lesson-001', 'e01').type, 'fill-blank');
-  assert.equal(s.getWord('nope'), undefined);
-});
-
-test('seed cards: added without overwriting, varied schedules, removable, and real cards are never touched', () => {
+test('D21 boot cleanup removes the Phase 2 test cards and nothing else', () => {
   const d = defaultData(NOW);
   const real = { due: NOW + 5 * 86400000, s: 9, d: 4, st: 2, r: 5, l: 0, lr: NOW - 86400000, sd: 6, ls: 0 };
-  d.srs.decks.main.cards['w:ghar-real:meaning_ur_en'] = real;
-  const existing = { ...real, r: 99 };
-  d.srs.decks.main.cards['w:seed-ghar:meaning_ur_en'] = existing;
+  const cards = d.srs.decks.main.cards;
+  cards['w:ghar:meaning_ur_en'] = real;
+  cards['x:lesson-001:e01'] = { ...real };
+  cards['w:seedling:meaning_ur_en'] = { ...real }; // a real word that merely starts with "seed"
+  for (const id of cardIds()) cards[id] = { ...real, r: 1 };
+  const scriptCard = { ...real };
+  d.srs.decks.script.cards['s:w:seed-ghar:read'] = scriptCard; // other decks are never touched
+  const before = JSON.stringify({ ...d, srs: null });
 
-  const n = addSeedCards(d, NOW);
-  assert.equal(n, seedCardIds().length - 1);
-  assert.equal(d.srs.decks.main.cards['w:seed-ghar:meaning_ur_en'], existing, 'an existing card is not overwritten');
-  assert.equal(addSeedCards(d, NOW), 0, 'idempotent');
-
-  const states = new Set(Object.entries(d.srs.decks.main.cards).filter(([id]) => isSeedCardId(id)).map(([, c]) => c.st));
-  assert.ok(states.has(CARD_STATE.new) && states.has(CARD_STATE.review), 'a mix of New and Review');
-  const dues = Object.entries(d.srs.decks.main.cards).filter(([id]) => isSeedCardId(id)).map(([, c]) => c.due);
-  assert.ok(dues.some((x) => x <= NOW) && dues.some((x) => x > NOW), 'some due now, some not');
-
-  assert.ok(makeSeedDue(d, NOW) > 0);
-  assert.ok(Object.entries(d.srs.decks.main.cards).filter(([id]) => isSeedCardId(id)).every(([, c]) => c.due <= NOW));
-  assert.equal(d.srs.decks.main.cards['w:ghar-real:meaning_ur_en'], real, 'real card untouched by makeSeedDue');
-
-  const removed = removeSeedCards(d);
-  assert.equal(removed, seedCardIds().length);
-  assert.deepEqual(Object.keys(d.srs.decks.main.cards), ['w:ghar-real:meaning_ur_en']);
-  assert.equal(d.srs.decks.main.cards['w:ghar-real:meaning_ur_en'], real);
+  assert.equal(removeSeedCards(d), cardIds().length);
+  assert.deepEqual(Object.keys(cards).sort(), ['w:ghar:meaning_ur_en', 'w:seedling:meaning_ur_en', 'x:lesson-001:e01']);
+  assert.equal(cards['w:ghar:meaning_ur_en'], real, 'real card object untouched');
+  assert.equal(d.srs.decks.script.cards['s:w:seed-ghar:read'], scriptCard);
+  assert.equal(JSON.stringify({ ...d, srs: null }), before, 'nothing outside the deck changes');
+  assert.equal(removeSeedCards(d), 0, 'idempotent: a second run is a no-op');
+  assert.equal(removeSeedCards({}), 0, 'tolerates a missing deck');
 });
 
-test('a lookalike real id such as w:seedling-… is not mistaken for a seed card', () => {
+test('seed card ids: exact prefixes only', () => {
   assert.equal(isSeedCardId('w:seedling:meaning_ur_en'), false);
   assert.equal(isSeedCardId('w:seed-ghar:meaning_ur_en'), true);
   assert.equal(isSeedCardId('x:seed-lesson:e01'), true);
+  assert.equal(isSeedCardId('x:seed-lessons:e01'), false);
   assert.equal(isSeedCardId('x:lesson-001:e01'), false);
+  assert.equal(isSeedCardId('s:w:seed-ghar:read'), false);
 });

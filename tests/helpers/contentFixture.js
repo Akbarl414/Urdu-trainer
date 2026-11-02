@@ -6,17 +6,17 @@ const f = (roman, ur) => ({ roman, ur });
 
 const words = [
   { id: 'larkaa', pos: 'noun', roman: 'laRkaa', ur: 'لڑکا', meaning_en: 'boy', gender: 'm', marked: true, plural: f('laRke', 'لڑکے'), oblique_pl: f('laRkoN', 'لڑکوں'), example: t('ye laRkaa Thiik hai.', 'یہ لڑکا ٹھیک ہے۔', 'This boy is fine.') },
-  { id: 'larkii', pos: 'noun', roman: 'laRkii', ur: 'لڑکی', meaning_en: 'girl', gender: 'f', marked: false, example: t('wo laRkii yahaaN hai.', 'وہ لڑکی یہاں ہے۔', 'That girl is here.') },
-  { id: 'kitaab', pos: 'noun', roman: 'kitaab', ur: 'کتاب', meaning_en: 'book', gender: 'f', marked: false, example: t('kitaab yahaaN hai.', 'کتاب یہاں ہے۔', 'The book is here.') },
+  { id: 'larkii', pos: 'noun', roman: 'laRkii', ur: 'لڑکی', meaning_en: 'girl', gender: 'f', marked: false, plural: f('laRkiyaaN', 'لڑکیاں'), oblique_pl: f('laRkiyoN', 'لڑکیوں'), example: t('wo laRkii yahaaN hai.', 'وہ لڑکی یہاں ہے۔', 'That girl is here.') },
+  { id: 'kitaab', pos: 'noun', roman: 'kitaab', ur: 'کتاب', meaning_en: 'book', gender: 'f', marked: false, plural: f('kitaabeN', 'کتابیں'), oblique_pl: f('kitaaboN', 'کتابوں'), example: t('kitaab yahaaN hai.', 'کتاب یہاں ہے۔', 'The book is here.') },
   {
     id: 'jaanaa', pos: 'verb', roman: 'jaanaa', ur: 'جانا', meaning_en: 'to go',
     infinitive: f('jaanaa', 'جانا'), stem: f('jaa', 'جا'), transitivity: 'intransitive', takes_ne: false,
     perfective: { m_sg: f('gayaa', 'گیا'), f_sg: f('gayii', 'گئی'), m_pl: f('gaye', 'گئے') },
     example: t('maiN ghar jaataa huuN.', 'میں گھر جاتا ہوں۔', 'I go home.'),
   },
-  { id: 'acchaa', pos: 'adjective', roman: 'acchaa', ur: 'اچھا', meaning_en: 'good', variable: true, example: t('ye kitaab acchii hai.', 'یہ کتاب اچھی ہے۔', 'This book is good.') },
-  { id: 'phone', pos: 'noun', roman: 'phone', ur: 'فون', meaning_en: 'phone', loanword: true, forms: ['phone'], gender: 'm', marked: false, example: t('mera phone yahaaN hai.', 'میرا فون یہاں ہے۔', 'My phone is here.') },
-  { id: 'shukriyaa', pos: 'phrase', roman: 'shukriyaa', ur: 'شکریہ', meaning_en: 'thank you', example: t('bahut shukriyaa.', 'بہت شکریہ۔', 'Thank you very much.') },
+  { id: 'acchaa', pos: 'adjective', roman: 'acchaa', ur: 'اچھا', meaning_en: 'good', variable: true, agreement: { m_sg: f('acchaa', 'اچھا'), f: f('acchii', 'اچھی'), m_pl: f('acche', 'اچھے') }, example: t('ye kitaab acchii hai.', 'یہ کتاب اچھی ہے۔', 'This book is good.') },
+  { id: 'phone', pos: 'noun', roman: 'phone', ur: 'فون', meaning_en: 'phone', loanword: true, forms: ['phone', 'phoneoN'], gender: 'm', marked: false, plural: f('phone', 'فون'), oblique_pl: f('phoneoN', 'فونوں'), example: t('meraa phone yahaaN hai.', 'میرا فون یہاں ہے۔', 'My phone is here.') },
+  { id: 'shukriyaa', pos: 'phrase', roman: 'shukriyaa', ur: 'شکریہ', meaning_en: 'thank you', situation: 'Someone hands you a cup of tea.', example: t('bahut shukriyaa.', 'بہت شکریہ۔', 'Thank you very much.') },
 ].map((w) => ({ register: 'neutral', introduced_in: 'lesson-001', ...w }));
 
 const exercises = [
@@ -42,7 +42,11 @@ const bundle = {
         grammar: [{ heading: 'The verb goes last', body: 'In Urdu the verb comes at the end: `maiN Thiik huuN` is "I fine am".', table: { headers: ['English', 'Urdu'], rows: [['I am fine', t('maiN Thiik huuN.', 'میں ٹھیک ہوں۔', 'I am fine.')]] } }],
         new_vocab: words.map((w) => w.id),
         exercises,
-        dialogue: [{ speaker: 'ahmad', ...t('assalaam-o-alaikum!', 'السلام علیکم!', 'Hello!') }, { speaker: 'saarah', ...t('wa-alaikum-assalaam!', 'وعلیکم السلام!', 'Hello to you!') }],
+        dialogue: {
+          setting: 'Ahmad meets Sara.',
+          speakers: [{ id: 'ahmad', en: 'Ahmad', gender: 'm' }, { id: 'you', en: 'You', learner: true }],
+          lines: [{ speaker: 'ahmad', ...t('assalaam-o-alaikum!', 'السلام علیکم!', 'Hello!') }, { speaker: 'you', ...t('wa-alaikum-assalaam!', 'وعلیکم السلام!', 'Hello to you!') }],
+        },
       },
     },
   ],

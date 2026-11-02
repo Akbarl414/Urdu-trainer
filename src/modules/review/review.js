@@ -4,7 +4,6 @@ import { h } from '../../ui/dom.js';
 import { urduText } from '../../ui/urduText.js';
 import { store } from '../../db/storage.js';
 import { getContent } from '../../db/contentLoader.js';
-import { withSeed } from '../../srs/seed.js';
 import { describeCard } from '../../srs/cardFace.js';
 import { buildQueue, dueInPriorityOrder, studyDayEnd } from '../../srs/queue.js';
 import { createSession, nextCard, releaseWaiting, afterGrade, remaining } from '../../srs/session.js';
@@ -22,7 +21,7 @@ const GRADE_BUTTONS = [
 export function render(container) {
   const data = store.data;
   const cards = data.srs.decks.main.cards;
-  const source = withSeed(getContent());
+  const source = getContent();
   const now0 = Date.now();
   const rolloverHour = data.settings.dayRolloverHour;
   const isReviewable = (id) => describeCard(id, source) !== null;
@@ -77,10 +76,10 @@ export function render(container) {
         { class: 'card center' },
         h('h1', {}, session.reviewed > 0 ? 'All done' : empty ? 'No cards yet' : 'Nothing due'),
         session.reviewed > 0 ? h('p', {}, `${session.reviewed} card${session.reviewed === 1 ? '' : 's'} reviewed.`) : null,
-        empty ? h('p', { class: 'muted' }, 'Cards are added automatically as you complete lessons. To try this screen now, add some test cards.') : null,
+        empty ? h('p', { class: 'muted' }, 'Cards are added automatically as you complete lessons.') : null,
         left > 0 ? h('p', { class: 'muted' }, `${left} more due today. They stay due; the daily cap (${data.settings.dailyReviewCap}) keeps sessions manageable.`) : null,
         !empty && left === 0 ? h('p', { class: 'muted' }, nextDueText(now)) : null,
-        h('div', { class: 'stack' }, empty ? h('a', { class: 'btn', href: '#/debug/seed' }, 'Add test cards') : null, h('a', { class: 'btn btn-secondary', href: '#/' }, 'Back to Today')),
+        h('div', { class: 'stack' }, h('a', { class: 'btn btn-secondary', href: '#/' }, 'Back to Today')),
       ),
     );
   }

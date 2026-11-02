@@ -53,15 +53,21 @@
       "type": "array",
       "items": {
         "type": "string",
-        "pattern": "^[a-z][a-z-]*$"
+        "enum": [
+          "gender",
+          "oblique",
+          "agreement",
+          "perfective",
+          "ne"
+        ]
       },
       "uniqueItems": true,
-      "description": "Grammar features switched on when this lesson is completed (gender, oblique, agreement, perfective, ne)."
+      "description": "Grammar features switched on when this lesson is completed (CURRICULUM.md, 'Grammar features'). Add a feature here before using it."
     },
     "grammar": {
       "type": "array",
       "minItems": 1,
-      "maxItems": 6,
+      "maxItems": 4,
       "items": {
         "type": "object",
         "required": [
@@ -112,9 +118,19 @@
                 }
               }
             }
+          },
+          "examples": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 6,
+            "items": {
+              "$ref": "common.schema.json#/definitions/triple"
+            },
+            "description": "Example sentences for this screen, shown with audio and the script toggle."
           }
         }
-      }
+      },
+      "description": "2–4 short screens (BRIEF §5.2), each fitting a phone screen."
     },
     "new_vocab": {
       "type": "array",
@@ -273,37 +289,85 @@
       }
     },
     "dialogue": {
-      "type": "array",
-      "minItems": 2,
-      "items": {
-        "type": "object",
-        "required": [
-          "speaker",
-          "roman",
-          "ur",
-          "en"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "speaker": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Lowercase roman name, e.g. ahmad."
-          },
-          "roman": {
-            "type": "string",
-            "minLength": 1
-          },
-          "ur": {
-            "type": "string",
-            "minLength": 1
-          },
-          "en": {
-            "type": "string",
-            "minLength": 1
-          },
-          "audio": {
-            "$ref": "common.schema.json#/definitions/audioPath"
+      "type": "object",
+      "required": [
+        "setting",
+        "speakers",
+        "lines"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "setting": {
+          "$ref": "common.schema.json#/definitions/prose",
+          "description": "One or two English sentences setting the scene, shown before the first line."
+        },
+        "speakers": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "en"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "common.schema.json#/definitions/kebabId"
+              },
+              "en": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Label shown in the app, e.g. \"Sara's mum\" or \"You\"."
+              },
+              "gender": {
+                "type": "string",
+                "enum": [
+                  "m",
+                  "f"
+                ],
+                "description": "Required for every speaker except the learner: Urdu verbs and adjectives agree with the speaker."
+              },
+              "learner": {
+                "type": "boolean",
+                "description": "The learner's own role (at most one). Their lines must read the same for a man or a woman, since the learner's gender is not known."
+              }
+            }
+          }
+        },
+        "lines": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "speaker",
+              "roman",
+              "ur",
+              "en"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "speaker": {
+                "$ref": "common.schema.json#/definitions/kebabId",
+                "description": "A speakers[].id."
+              },
+              "roman": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ur": {
+                "type": "string",
+                "minLength": 1
+              },
+              "en": {
+                "type": "string",
+                "minLength": 1
+              },
+              "audio": {
+                "$ref": "common.schema.json#/definitions/audioPath"
+              }
+            }
           }
         }
       }

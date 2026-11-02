@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "validate": "node scripts/validate-content.js",
+    "check-coverage": "node scripts/check-coverage.js",
     "lock-ids": "node scripts/lock-ids.js",
     "test": "node --test tests/*.test.js",
     "build": "npm run validate && vite build",
