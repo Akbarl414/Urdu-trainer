@@ -8,7 +8,7 @@ Start with [BRIEF.md](./BRIEF.md) (the product), [PLAN.md](./PLAN.md) (the desig
 
 ## Run it
 
-Needs Node 18 or newer (CI uses 20).
+Needs Node 22 or newer (see `.nvmrc`; CI uses 22).
 
 ```sh
 npm install

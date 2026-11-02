@@ -321,7 +321,7 @@ Generated phrases come only from fields the validator has checked. Games never c
 - Update flow: the new SW installs and **waits** (no automatic `skipWaiting`). The page sees `registration.waiting` and shows "Update available — Reload". On tap it posts `SKIP_WAITING`, then `controllerchange` triggers a reload. The SW never touches localStorage (it can't anyway) and never deletes non-prefixed caches.
 - Until the German app's cleanup is fixed (D1), each German update may delete this app's caches. The app still works online and re-caches on the next load, and progress is unaffected (localStorage is never touched by cache cleanup).
 - `navigator.storage.persist()` is requested on first run. If it's refused, Settings shows "Browser may clear data — export backups".
-- Deploy: the reference workflow (Node 20 → `npm ci` → `npm run build` → Pages), with `npm test` added before build.
+- Deploy: the reference workflow (Node 22 → `npm ci` → `npm run build` → Pages), with `npm test` added before build.
 
 ---
 
