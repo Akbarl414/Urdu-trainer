@@ -13,6 +13,7 @@ import { planLesson } from '../../lesson/planner.js';
 import { startRun, advance, skipStep, resumeOn, runProblem, progressLine, overallProgress, addActiveSeconds } from '../../lesson/machine.js';
 import { commitLesson } from '../../lesson/commit.js';
 import { nextLesson, todayQueue } from '../../lesson/path.js';
+import { startPractice, practiceProblem } from '../../lesson/practice.js';
 import { loanwordTokens } from '../../lesson/loanwords.js';
 import { whenAudioReady, canSpeak, stopSpeaking } from '../../audio/tts.js';
 import { mountWarmup } from './screens/warmup.js';
@@ -24,11 +25,17 @@ import { mountSummary, doneView } from './screens/summary.js';
 
 const SCREEN_SEC_CAP = 120; // a forgotten phone shouldn't count as study time
 
-export const render = (container) => mount(container, false);
+export const render = (container) => mount(container, { extra: false });
 /** "Do one more lesson" today. */
-export const renderExtra = (container) => mount(container, true);
+export const renderExtra = (container) => mount(container, { extra: true });
+/**
+ * Practice-only replay of a completed lesson (src/lesson/practice.js). Held in memory only: it never touches
+ * `progress.run`, the deck, stats or lesson progress, so it can't disturb a real lesson in progress either.
+ */
+export const renderPractice = (container, lessonId) => mount(container, { practiceId: lessonId });
 
-function mount(container, extra) {
+function mount(container, { extra = false, practiceId = null }) {
+  const practice = practiceId !== null;
   const content = getContent();
   const data = store.data;
   const loanwords = loanwordTokens(content);
@@ -50,6 +57,7 @@ function mount(container, extra) {
   const setActions = (...nodes) => actions.replaceChildren(...nodes.filter(Boolean));
 
   function persist() {
+    if (practice) return; // a replay is never saved
     data.progress.run = run;
     store.save(); // false = storage full; the banner is already showing and the run stays in memory
   }
@@ -78,6 +86,7 @@ function mount(container, extra) {
     body,
     loanwords,
     learnerGender: data.settings.learnerGender,
+    practice,
     setActions,
     /** Finish the current screen: apply `fn(run, secondsOnScreen)`, move on, save, draw. */
     complete(fn) {
@@ -92,6 +101,7 @@ function mount(container, extra) {
       renderScreen();
     },
     finish() {
+      if (practice) return; // a replay has nothing to commit; its summary has its own buttons
       try {
         const result = commitLesson(data, content, Date.now());
         run = null;
@@ -111,7 +121,8 @@ function mount(container, extra) {
 
   function updateTop() {
     const p = progressLine(run, lesson);
-    label.textContent = run.step === 'summary' ? 'Summary' : `${p.label} · ${p.current}/${p.of}`;
+    const text = run.step === 'summary' ? 'Summary' : `${p.label} · ${p.current}/${p.of}`;
+    label.textContent = practice ? `Practice · ${text}` : text;
     const pct = Math.round(overallProgress(run, lesson) * 100);
     bar.style.width = `${pct}%`;
     top.querySelector('.bar').setAttribute('aria-valuenow', String(pct));
@@ -211,7 +222,21 @@ function mount(container, extra) {
     renderScreen();
   }
 
-  begin(extra);
+  function beginPractice() {
+    const problem = practiceProblem(data, content, practiceId);
+    if (problem) return message('Can’t practise this lesson', problem, h('a', { class: 'btn', href: '#/' }, 'Back to Today'));
+    body.replaceChildren(h('p', { class: 'muted center' }, 'Getting your lesson ready…'));
+    return whenAudioReady().then(() => {
+      if (!alive) return;
+      lesson = content.getLesson(practiceId);
+      const now = Date.now();
+      run = startPractice({ lesson, canListen: canSpeak({ roman: 'x', ur: 'x' }), studyDay: studyDay(now, data.settings.dayRolloverHour), now });
+      renderScreen();
+    });
+  }
+
+  if (practice) beginPractice();
+  else begin(extra);
   return () => {
     alive = false;
     scope.run();

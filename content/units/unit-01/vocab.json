@@ -169,6 +169,620 @@
       "register": "neutral",
       "introduced_in": "lesson-001",
       "notes": "Comes straight after the word it adds to: `maiN bhii` is \"me too\", \"I also\"."
+    },
+    {
+      "id": "tum",
+      "pos": "pronoun",
+      "roman": "tum",
+      "ur": "تم",
+      "meaning_en": "you (familiar)",
+      "example": {
+        "roman": "tum kaise ho?",
+        "ur": "تم کیسے ہو؟",
+        "en": "How are you?"
+      },
+      "register": "informal",
+      "introduced_in": "lesson-002",
+      "notes": "The everyday \"you\" for friends, younger cousins and siblings, and children. It takes `ho`: `tum Thiik ho?` For elders and anyone you don't know well, use `aap`."
+    },
+    {
+      "id": "tuu",
+      "pos": "pronoun",
+      "roman": "tuu",
+      "ur": "تو",
+      "meaning_en": "you (very familiar)",
+      "example": {
+        "roman": "tuu Thiik hai, beTaa?",
+        "ur": "تو ٹھیک ہے، بیٹا؟",
+        "en": "Are you all right, sweetheart? (a grandmother to a small child)"
+      },
+      "register": "informal",
+      "introduced_in": "lesson-002",
+      "notes": "The closest, most intimate \"you\": parents and grandparents to small children, very close friends, and God in prayers. You'll hear it all the time in songs. Said to an adult who isn't close, it's rude, so you'll mostly need to understand it rather than say it. It takes `hai`: `tuu Thiik hai?`"
+    },
+    {
+      "id": "jii",
+      "pos": "other",
+      "roman": "jii",
+      "ur": "جی",
+      "meaning_en": "yes (politely); a word that adds respect",
+      "example": {
+        "roman": "jii, maiN Thiik huuN.",
+        "ur": "جی، میں ٹھیک ہوں۔",
+        "en": "Yes, I'm fine. (politely)"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-002",
+      "notes": "On its own, `jii?` is the polite way to answer when someone calls you: \"yes?\". At the start of an answer it makes the whole answer respectful. It also follows family titles, as in `ammii jii` (Mum)."
+    },
+    {
+      "id": "tum-kaise-ho",
+      "pos": "phrase",
+      "roman": "tum kaise ho?",
+      "ur": "تم کیسے ہو؟",
+      "meaning_en": "how are you? (to a friend)",
+      "literal": "you how are?",
+      "situation": "Your partner's cousin, a man about your age, says hi. Ask him how he is, the friendly way.",
+      "example": {
+        "roman": "assalaam-o-alaikum! tum kaise ho?",
+        "ur": "السلام علیکم! تم کیسے ہو؟",
+        "en": "Hi! How are you?"
+      },
+      "register": "informal",
+      "introduced_in": "lesson-002",
+      "notes": "For friends, younger relatives and children. Asking a woman or a girl, say `tum kaisii ho?`.",
+      "forms": ["tum kaisii ho?"]
+    },
+    {
+      "id": "betaa",
+      "pos": "noun",
+      "roman": "beTaa",
+      "ur": "بیٹا",
+      "meaning_en": "son; (to anyone younger) dear",
+      "example": {
+        "roman": "beTaa, tum kaise ho?",
+        "ur": "بیٹا، تم کیسے ہو؟",
+        "en": "How are you, dear?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-002",
+      "notes": "Older relatives call anyone younger `beTaa` as a term of affection, girls as well as boys, grown-ups as well as children. Expect to hear it from your partner's parents.",
+      "gender": "m",
+      "marked": true,
+      "plural": { "roman": "beTe", "ur": "بیٹے" },
+      "oblique_pl": { "roman": "beToN", "ur": "بیٹوں" }
+    },
+    {
+      "id": "betii",
+      "pos": "noun",
+      "roman": "beTii",
+      "ur": "بیٹی",
+      "meaning_en": "daughter; (to a girl or young woman) dear",
+      "example": {
+        "roman": "beTii, tum Thiik ho?",
+        "ur": "بیٹی، تم ٹھیک ہو؟",
+        "en": "Are you all right, dear? (to a girl)"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-002",
+      "notes": "Like `beTaa`, used affectionately by elders, here only for girls and women. Many elders just say `beTaa` to everyone.",
+      "gender": "f",
+      "marked": false,
+      "plural": { "roman": "beTiyaaN", "ur": "بیٹیاں" },
+      "oblique_pl": { "roman": "beTiyoN", "ur": "بیٹیوں" }
+    },
+    {
+      "id": "bacchaa",
+      "pos": "noun",
+      "roman": "bacchaa",
+      "ur": "بچہ",
+      "meaning_en": "child (a boy, or a child in general)",
+      "example": {
+        "roman": "bacche Thiik haiN?",
+        "ur": "بچے ٹھیک ہیں؟",
+        "en": "Are the children all right?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-002",
+      "notes": "The plural `bacche` means \"children\" or \"the kids\", and is a very common question to parents: `bacche Thiik haiN?` A girl is `bacchii`.",
+      "gender": "m",
+      "marked": true,
+      "plural": { "roman": "bacche", "ur": "بچے" },
+      "oblique_pl": { "roman": "bacchoN", "ur": "بچوں" }
+    },
+    {
+      "id": "dost",
+      "pos": "noun",
+      "roman": "dost",
+      "ur": "دوست",
+      "meaning_en": "friend",
+      "example": {
+        "roman": "sanaa aur aaishaa dost haiN.",
+        "ur": "ثنا اور عائشہ دوست ہیں۔",
+        "en": "Sana and Aisha are friends."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-002",
+      "notes": "Masculine for a male friend, feminine for a female friend. The plural doesn't change: one `dost`, two `dost`. Friends call each other `tum`.",
+      "gender": "mf",
+      "marked": false,
+      "plural": { "roman": "dost", "ur": "دوست" },
+      "oblique_pl": { "roman": "dostoN", "ur": "دوستوں" }
+    },
+    {
+      "id": "honaa",
+      "pos": "verb",
+      "roman": "honaa",
+      "ur": "ہونا",
+      "meaning_en": "to be",
+      "example": {
+        "roman": "ham Thiik haiN.",
+        "ur": "ہم ٹھیک ہیں۔",
+        "en": "We're fine."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-003",
+      "notes": "Present forms: `maiN huuN`, `tuu hai`, `tum ho`, `aap haiN`, `ham haiN`; one person or thing `hai`, several `haiN`. They go at the end of the sentence.",
+      "forms": ["huuN", "hai", "ho", "haiN"],
+      "infinitive": { "roman": "honaa", "ur": "ہونا" },
+      "stem": { "roman": "ho", "ur": "ہو" },
+      "transitivity": "intransitive",
+      "takes_ne": false,
+      "perfective": {
+        "m_sg": { "roman": "huaa", "ur": "ہوا" },
+        "f_sg": { "roman": "huii", "ur": "ہوئی" },
+        "m_pl": { "roman": "hue", "ur": "ہوئے" }
+      }
+    },
+    {
+      "id": "ham",
+      "pos": "pronoun",
+      "roman": "ham",
+      "ur": "ہم",
+      "meaning_en": "we",
+      "example": {
+        "roman": "ham paRosii haiN.",
+        "ur": "ہم پڑوسی ہیں۔",
+        "en": "We're neighbours."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-003",
+      "notes": "Takes `haiN`: `ham Thiik haiN`. In Hindi films you'll sometimes hear `ham` used to mean \"I\"; in everyday Pakistani Urdu it means \"we\"."
+    },
+    {
+      "id": "parosii",
+      "pos": "noun",
+      "roman": "paRosii",
+      "ur": "پڑوسی",
+      "meaning_en": "neighbour",
+      "example": {
+        "roman": "ham paRosii haiN.",
+        "ur": "ہم پڑوسی ہیں۔",
+        "en": "We're neighbours."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-003",
+      "notes": "A masculine noun that ends in `-ii`. The plural doesn't change: one `paRosii`, two `paRosii`. A woman next door is often called `paRosan`, but `paRosii` is fine for anyone, and for a mixed group.",
+      "gender": "m",
+      "marked": false,
+      "plural": { "roman": "paRosii", "ur": "پڑوسی" },
+      "oblique_pl": { "roman": "paRosiyoN", "ur": "پڑوسیوں" }
+    },
+    {
+      "id": "doctor",
+      "pos": "noun",
+      "roman": "doctor",
+      "ur": "ڈاکٹر",
+      "meaning_en": "doctor",
+      "loanword": true,
+      "forms": ["doctoroN"],
+      "example": {
+        "roman": "imraan doctor hai.",
+        "ur": "عمران ڈاکٹر ہے۔",
+        "en": "Imran is a doctor."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-003",
+      "notes": "The English word, used by everyone. Urdu has no word for \"a\": `maiN doctor huuN` is \"I'm a doctor\". A GP is often addressed as `doctor saahab`.",
+      "gender": "mf",
+      "marked": false,
+      "plural": { "roman": "doctor", "ur": "ڈاکٹر" },
+      "oblique_pl": { "roman": "doctoroN", "ur": "ڈاکٹروں" }
+    },
+    {
+      "id": "student",
+      "pos": "noun",
+      "roman": "student",
+      "ur": "اسٹوڈنٹ",
+      "ur_alt": ["سٹوڈنٹ"],
+      "meaning_en": "student",
+      "loanword": true,
+      "forms": ["studentoN"],
+      "example": {
+        "roman": "maiN student huuN.",
+        "ur": "میں اسٹوڈنٹ ہوں۔",
+        "en": "I'm a student."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-003",
+      "notes": "In the UK, people just use the English word. Like other English nouns, it doesn't take an English -s in the plural: `ham student haiN`.",
+      "gender": "mf",
+      "marked": false,
+      "plural": { "roman": "student", "ur": "اسٹوڈنٹ" },
+      "oblique_pl": { "roman": "studentoN", "ur": "اسٹوڈنٹوں" }
+    },
+    {
+      "id": "saahab",
+      "pos": "other",
+      "roman": "saahab",
+      "ur": "صاحب",
+      "meaning_en": "Mr; sir (after a name or a job, for respect)",
+      "example": {
+        "roman": "imraan saahab doctor haiN.",
+        "ur": "عمران صاحب ڈاکٹر ہیں۔",
+        "en": "Mr Imran is a doctor."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-003",
+      "notes": "Goes after a man's name or job to show respect: `imraan saahab`, `doctor saahab`. Talking about someone you call `saahab`, use `haiN`, even for one person. For women, people usually use a family title instead; you'll meet these in Unit 3."
+    },
+    {
+      "id": "aaj",
+      "pos": "adverb",
+      "roman": "aaj",
+      "ur": "آج",
+      "meaning_en": "today",
+      "example": {
+        "roman": "aaj maiN Thiik huuN.",
+        "ur": "آج میں ٹھیک ہوں۔",
+        "en": "I'm fine today."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-003",
+      "notes": "Usually near the start of the sentence: `aaj maiN Thiik huuN` or `maiN aaj Thiik huuN`."
+    },
+    {
+      "id": "ab",
+      "pos": "adverb",
+      "roman": "ab",
+      "ur": "اب",
+      "meaning_en": "now",
+      "example": {
+        "roman": "ab maiN Thiik huuN, alhamdulillaah.",
+        "ur": "اب میں ٹھیک ہوں، الحمد للہ۔",
+        "en": "I'm fine now, thank God."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-003",
+      "notes": "Handy after an illness or a bad day: `ab Thiik huuN` (\"I'm fine now\")."
+    },
+    {
+      "id": "ye",
+      "pos": "pronoun",
+      "roman": "ye",
+      "ur": "یہ",
+      "meaning_en": "this; he, she, it (someone or something near you)",
+      "example": {
+        "roman": "ye meraa bhaaii hai.",
+        "ur": "یہ میرا بھائی ہے۔",
+        "en": "This is my brother."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-004",
+      "notes": "Points to someone or something close by. It doesn't say whether it's a man or a woman: `ye Thiik hai` is \"he's fine\" or \"she's fine\". Spelt یہ but said `ye`."
+    },
+    {
+      "id": "wo",
+      "pos": "pronoun",
+      "roman": "wo",
+      "ur": "وہ",
+      "meaning_en": "that; he, she, it (someone or something further away)",
+      "example": {
+        "roman": "wo merii behen hai.",
+        "ur": "وہ میری بہن ہے۔",
+        "en": "That's my sister."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-004",
+      "notes": "For someone further away or not here at all. Like `ye`, it doesn't say whether it's a man or a woman. Spelt وہ but said `wo`."
+    },
+    {
+      "id": "meraa",
+      "pos": "pronoun",
+      "roman": "meraa",
+      "ur": "میرا",
+      "meaning_en": "my",
+      "example": {
+        "roman": "ye meraa bhaaii hai.",
+        "ur": "یہ میرا بھائی ہے۔",
+        "en": "This is my brother."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-004",
+      "notes": "Matches the person you're talking about, not you: `meraa bhaaii`, `merii behen`. With an elder you respect, `meraa` becomes `mere`: `mere abbuu`. Unit 3 explains the pattern.",
+      "variable": true,
+      "agreement": {
+        "m_sg": { "roman": "meraa", "ur": "میرا" },
+        "f": { "roman": "merii", "ur": "میری" },
+        "m_pl": { "roman": "mere", "ur": "میرے" }
+      }
+    },
+    {
+      "id": "ammii",
+      "pos": "noun",
+      "roman": "ammii",
+      "ur": "امی",
+      "meaning_en": "mum",
+      "example": {
+        "roman": "ye merii ammii haiN.",
+        "ur": "یہ میری امی ہیں۔",
+        "en": "This is my mum."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-004",
+      "notes": "The usual word for Mum in Pakistani families, often with `jii`: `ammii jii`. Always with the respectful `haiN`. Many British Pakistani families also say `mummy`.",
+      "hindi_variant": {
+        "roman": "maaN",
+        "devanagari": "माँ",
+        "note": "What you'll mostly hear in Hindi films and songs. Urdu speakers use `maaN` too, in poetry and emotional moments."
+      },
+      "gender": "f",
+      "marked": false,
+      "plural": { "roman": "ammiyaaN", "ur": "امیاں" },
+      "oblique_pl": { "roman": "ammiyoN", "ur": "امیوں" }
+    },
+    {
+      "id": "abbuu",
+      "pos": "noun",
+      "roman": "abbuu",
+      "ur": "ابو",
+      "meaning_en": "dad",
+      "example": {
+        "roman": "ye mere abbuu haiN.",
+        "ur": "یہ میرے ابو ہیں۔",
+        "en": "This is my dad."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-004",
+      "notes": "The usual word for Dad, often with `jii`: `abbuu jii`. Always with the respectful plural: `mere abbuu haiN`, not `meraa abbuu hai`. Some families say `abbaa` or `papa`.",
+      "hindi_variant": {
+        "roman": "pitaajii",
+        "devanagari": "पिताजी",
+        "note": "The respectful \"father\" in Hindi films; younger characters often just say `papa`."
+      },
+      "gender": "m",
+      "marked": false,
+      "plural": { "roman": "abbuu", "ur": "ابو" },
+      "oblique_pl": { "roman": "abbuuoN", "ur": "ابوؤں" }
+    },
+    {
+      "id": "bhaaii",
+      "pos": "noun",
+      "roman": "bhaaii",
+      "ur": "بھائی",
+      "meaning_en": "brother",
+      "example": {
+        "roman": "wo meraa bhaaii hai.",
+        "ur": "وہ میرا بھائی ہے۔",
+        "en": "That's my brother."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-004",
+      "notes": "A masculine noun ending in `-ii`; the plural doesn't change. Also a friendly way to address any man about your age or a bit older, even a shopkeeper: `bilaal bhaaii`.",
+      "gender": "m",
+      "marked": false,
+      "plural": { "roman": "bhaaii", "ur": "بھائی" },
+      "oblique_pl": { "roman": "bhaaiyoN", "ur": "بھائیوں" }
+    },
+    {
+      "id": "behen",
+      "pos": "noun",
+      "roman": "behen",
+      "ur": "بہن",
+      "meaning_en": "sister",
+      "example": {
+        "roman": "wo merii behen hai.",
+        "ur": "وہ میری بہن ہے۔",
+        "en": "That's my sister."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-004",
+      "notes": "Spelt بہن but said `behen`. The plural is `behneN` (sisters). A younger sister usually gets `hai`; an older one often gets the respectful `haiN`.",
+      "gender": "f",
+      "marked": false,
+      "plural": { "roman": "behneN", "ur": "بہنیں" },
+      "oblique_pl": { "roman": "behnoN", "ur": "بہنوں" }
+    },
+    {
+      "id": "shauhar",
+      "pos": "noun",
+      "roman": "shauhar",
+      "ur": "شوہر",
+      "meaning_en": "husband",
+      "example": {
+        "roman": "ye mere shauhar haiN.",
+        "ur": "یہ میرے شوہر ہیں۔",
+        "en": "This is my husband."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-004",
+      "notes": "Introduced with respect, as `mere shauhar haiN`. In relaxed speech many women say `miyaaN` instead.",
+      "hindi_variant": {
+        "roman": "pati",
+        "devanagari": "पति",
+        "note": "The usual word in Hindi films and TV."
+      },
+      "gender": "m",
+      "marked": false,
+      "plural": { "roman": "shauhar", "ur": "شوہر" },
+      "oblique_pl": { "roman": "shauharoN", "ur": "شوہروں" }
+    },
+    {
+      "id": "biiwii",
+      "pos": "noun",
+      "roman": "biiwii",
+      "ur": "بیوی",
+      "meaning_en": "wife",
+      "example": {
+        "roman": "ye merii biiwii haiN.",
+        "ur": "یہ میری بیوی ہیں۔",
+        "en": "This is my wife."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-004",
+      "notes": "Introducing your wife to elders, the respectful `haiN` is polite; among friends `merii biiwii hai` is normal too. `merii` stays the same either way.",
+      "hindi_variant": {
+        "roman": "patnii",
+        "devanagari": "पत्नी",
+        "note": "The usual word in Hindi films and TV."
+      },
+      "gender": "f",
+      "marked": false,
+      "plural": { "roman": "biiwiyaaN", "ur": "بیویاں" },
+      "oblique_pl": { "roman": "biiwiyoN", "ur": "بیویوں" }
+    },
+    {
+      "id": "haan",
+      "pos": "other",
+      "roman": "haaN",
+      "ur": "ہاں",
+      "meaning_en": "yes",
+      "example": {
+        "roman": "haaN, maiN Thiik huuN.",
+        "ur": "ہاں، میں ٹھیک ہوں۔",
+        "en": "Yes, I'm fine."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-005",
+      "notes": "On its own it's casual, for friends and family your age. With elders and strangers, say `jii haaN` or just `jii`."
+    },
+    {
+      "id": "nahiin",
+      "pos": "other",
+      "roman": "nahiiN",
+      "ur": "نہیں",
+      "meaning_en": "no; not",
+      "example": {
+        "roman": "maiN doctor nahiiN huuN.",
+        "ur": "میں ڈاکٹر نہیں ہوں۔",
+        "en": "I'm not a doctor."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-005",
+      "notes": "As \"not\", it goes straight before the verb at the end: `wo Thiik nahiiN hai`. The verb is often dropped after it: `maiN doctor nahiiN` is just as normal. People type it `nahi`, `nai` or `nhi`."
+    },
+    {
+      "id": "jii-haan",
+      "pos": "phrase",
+      "roman": "jii haaN",
+      "ur": "جی ہاں",
+      "meaning_en": "yes (politely)",
+      "literal": "respect yes",
+      "situation": "Your partner's father asks if you're well. Say yes, politely.",
+      "example": {
+        "roman": "jii haaN, maiN taiyaar huuN.",
+        "ur": "جی ہاں، میں تیار ہوں۔",
+        "en": "Yes, I'm ready."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-005",
+      "notes": "The safe \"yes\" with anyone older or anyone you don't know well. Plain `jii` means the same."
+    },
+    {
+      "id": "jii-nahiin",
+      "pos": "phrase",
+      "roman": "jii nahiiN",
+      "ur": "جی نہیں",
+      "meaning_en": "no (politely)",
+      "literal": "respect no",
+      "situation": "The receptionist at your GP surgery asks if you're a doctor. You aren't. Say no, politely.",
+      "example": {
+        "roman": "jii nahiiN, maiN student huuN.",
+        "ur": "جی نہیں، میں اسٹوڈنٹ ہوں۔",
+        "en": "No, I'm a student."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-005",
+      "notes": "A plain `nahiiN` to an elder can sound abrupt; `jii nahiiN` softens it."
+    },
+    {
+      "id": "kyaa",
+      "pos": "other",
+      "roman": "kyaa",
+      "ur": "کیا",
+      "meaning_en": "what?; (at the start) makes a yes/no question",
+      "example": {
+        "roman": "kyaa aap taiyaar haiN?",
+        "ur": "کیا آپ تیار ہیں؟",
+        "en": "Are you ready?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-005",
+      "notes": "At the start of a sentence, `kyaa` just marks a yes/no question, like \"do\" or \"is\" in English; nothing else moves. Elsewhere it means \"what\", as in `kyaa haal hai?`."
+    },
+    {
+      "id": "pataa-nahiin",
+      "pos": "phrase",
+      "roman": "pataa nahiiN",
+      "ur": "پتا نہیں",
+      "ur_alt": ["پتہ نہیں"],
+      "meaning_en": "no idea, I don't know",
+      "literal": "knowledge not",
+      "situation": "A neighbour asks you something and you have no idea. Say so.",
+      "example": {
+        "roman": "pataa nahiiN. shaayad nahiiN.",
+        "ur": "پتا نہیں۔ شاید نہیں۔",
+        "en": "No idea. Maybe not."
+      },
+      "register": "informal",
+      "introduced_in": "lesson-005",
+      "notes": "The everyday \"dunno\". To an elder, `jii, pataa nahiiN` sounds softer. Often typed `pata nahi` or `pta nhi`."
+    },
+    {
+      "id": "zaruur",
+      "pos": "adverb",
+      "roman": "zaruur",
+      "ur": "ضرور",
+      "meaning_en": "of course; definitely",
+      "example": {
+        "roman": "jii haaN, zaruur!",
+        "ur": "جی ہاں، ضرور!",
+        "en": "Yes, of course!"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-005",
+      "notes": "A warm, keen \"yes\": `jii, zaruur!` is the perfect answer to an invitation."
+    },
+    {
+      "id": "shaayad",
+      "pos": "adverb",
+      "roman": "shaayad",
+      "ur": "شاید",
+      "meaning_en": "maybe, perhaps",
+      "example": {
+        "roman": "shaayad wo taiyaar hai.",
+        "ur": "شاید وہ تیار ہے۔",
+        "en": "Maybe she's ready."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-005",
+      "notes": "Usually at the start of the sentence. On its own, `shaayad` is \"maybe\", and `shaayad nahiiN` is \"maybe not\"."
+    },
+    {
+      "id": "taiyaar",
+      "pos": "adjective",
+      "roman": "taiyaar",
+      "ur": "تیار",
+      "meaning_en": "ready",
+      "example": {
+        "roman": "kyaa aap taiyaar haiN?",
+        "ur": "کیا آپ تیار ہیں؟",
+        "en": "Are you ready?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-005",
+      "notes": "Never changes, like `Thiik`: a man, a woman and a group are all `taiyaar`.",
+      "variable": false
     }
   ]
 }

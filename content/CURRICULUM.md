@@ -56,6 +56,20 @@ This file is the plan of record. Keep it up to date when content is generated. T
 | 009 | Welcome, come in! | Recognising hospitality chunks unanalysed (`aaiye`, `baiThiye`, `chaae lenge?`) | You can respond when you're welcomed into someone's home | family |
 | 010 | Review: Unit 1 | Mixed review; dialogue: visiting your partner's family | You can hold a two-minute greeting conversation | family |
 
+**Recurring cast** (introduced in lessons 1–5; reuse these names, roles and genders in later dialogues):
+
+| Name | Who | Gender | Notes |
+|---|---|---|---|
+| — | your partner's mum and dad | f / m | always addressed with `aap` |
+| — | your partner's grandmother | f | calls you `beTaa`, says `tum` to you, `tuu` to Zain |
+| `sanaa` | your partner's younger sister | f | `tum`; friends with Aisha |
+| `bilaal` | your partner's cousin, about your age | m | `tum` |
+| `zain` | your partner's nephew, six | m | |
+| `aaishaa` | your neighbour, a doctor | f | |
+| `imraan` | Aisha's husband, a doctor | m | Aisha speaks of him with `haiN` |
+
+The partner never speaks in a dialogue: their gender isn't known, and their lines would depend on it.
+
 ## Unit 2 — Things and people: nouns, gender and plurals · A1
 
 **Can-do:** know that every noun is masculine or feminine, make plurals, count to ten, talk about food at home.

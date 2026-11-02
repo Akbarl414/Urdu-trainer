@@ -122,3 +122,8 @@ html.show-script .urdu-script { display: block; }
 .page.lesson .urdu-script { text-align: right; }
 .page.lesson .prompt .urdu-script, .page.lesson .center .urdu-script { text-align: center; }
 .choice .urdu-script { padding-top: 0.3em; }
+
+/* ---- Today: practise a finished lesson ---- */
+details.practice > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+.practice-list { list-style: none; padding: 0; margin: 0; }
+.practice-list li a { display: flex; align-items: center; min-height: 44px; overflow-wrap: anywhere; }

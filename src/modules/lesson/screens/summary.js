@@ -18,6 +18,22 @@ export function mountSummary(ctx) {
   const newWords = lesson.new_vocab.filter((w) => !run.knownWordIds.includes(w)).length;
   const mins = Math.max(1, Math.round((run.activeSec ?? 0) / 60));
 
+  if (ctx.practice) {
+    // Practice replay: nothing is saved, so there is nothing to finish. Just the score and the way out.
+    ctx.body.append(
+      h(
+        'section',
+        { class: 'card summary' },
+        h('h2', {}, 'Practice complete'),
+        h('p', {}, `Lesson ${lesson.order}: ${lesson.title}`),
+        h('div', { class: 'stats' }, stat(`${right}/${results.length}`, 'exercises right'), stat(`~${mins}`, 'minutes')),
+        h('p', { class: 'muted small' }, 'This was practice only: your reviews, schedule and progress have not changed.'),
+      ),
+    );
+    ctx.setActions(h('button', { class: 'btn btn-secondary', type: 'button', onclick: () => window.dispatchEvent(new HashChangeEvent('hashchange')) }, 'Practise again'), h('a', { class: 'btn', href: '#/' }, 'Back to Today'));
+    return;
+  }
+
   const finishBtn = h('button', { class: 'btn', type: 'button' }, 'Finish lesson');
   finishBtn.addEventListener('click', () => {
     finishBtn.disabled = true;

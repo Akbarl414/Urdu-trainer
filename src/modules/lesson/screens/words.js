@@ -39,8 +39,8 @@ export function mountWords(ctx) {
       ),
     );
     ctx.setActions(
-      h('button', { class: 'btn btn-secondary', type: 'button', onclick: () => ctx.complete((run, sec) => markKnown(addSec(run, wordId, sec), wordId)) }, 'I already know this'),
-      h('button', { class: 'btn', type: 'button', onclick: () => ctx.complete((run, sec) => addSec(run, wordId, sec)) }, 'New to me'),
+      h('button', { class: 'btn btn-secondary', type: 'button', onclick: () => ctx.complete((run, sec) => markKnown(addSec(run, wordId, sec), wordId)) }, ctx.practice ? 'Skip the check' : 'I already know this'),
+      h('button', { class: 'btn', type: 'button', onclick: () => ctx.complete((run, sec) => addSec(run, wordId, sec)) }, ctx.practice ? 'Check me' : 'New to me'),
     );
     return;
   }

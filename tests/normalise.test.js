@@ -158,3 +158,17 @@ test('greeting spellings also work inside a longer answer, and other words are s
   assert.equal(check('assalamualaikum! aap kaisii hain?', ['assalaam-o-alaikum! aap kaise haiN?']).result, 'wrong', 'an ending that carries grammar still counts');
   assert.equal(check('salam', ['salaam']).result, 'close', 'a different phrase is untouched (ordinary vowel folding only)');
 });
+
+test('lesson 5 phone spellings: nahiiN, pataa nahiiN, jii (g), taiyaar', () => {
+  for (const typed of ['nhi', 'nai', 'nahi', 'nahin', 'nahee']) assert.equal(check(typed, ['nahiiN']).result, 'close', typed);
+  for (const typed of ['pta nhi', 'pata nahi', 'pata nai', 'pta nahi']) assert.equal(check(typed, ['pataa nahiiN']).result, 'close', typed);
+  for (const typed of ['ji haan', 'jee haan', 'g haan', 'g han']) assert.equal(check(typed, ['jii haaN']).result, 'close', typed);
+  assert.equal(check('g nhi', ['jii nahiiN']).result, 'close');
+  assert.equal(check('kya ap tayyar hain?', ['kyaa aap taiyaar haiN?']).result, 'close');
+  assert.equal(check('main doctor nhi hoon', ['maiN doctor nahiiN huuN.']).result, 'close');
+  // a variant never stands in for a different word
+  assert.equal(check('nhi', ['jii haaN']).result, 'wrong');
+  assert.equal(check('g', ['haaN']).result, 'wrong');
+  assert.equal(check('nai', ['haaN']).result, 'wrong');
+  assert.equal(check('nahiiN', ['nahiiN']).result, 'exact');
+});

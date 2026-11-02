@@ -336,13 +336,15 @@ test('today: after the lesson the next one waits for tomorrow, with the option t
 });
 
 test('today: when every lesson is done there is no lesson to start', () => {
+  // A course of one lesson, so finishing it finishes everything (the real course keeps growing).
+  const c = buildContentIndex({ units: content.units, vocabs: [{ unit: 'unit-01', words: content.words }], lessons: [lesson] });
   const data = defaultData(NOW);
   data.progress.run = playThrough();
-  commitLesson(data, content, NOW);
-  const t = todayState({ data, content, now: NOW + 86400000, queue: noQueue });
+  commitLesson(data, c, NOW);
+  const t = todayState({ data, content: c, now: NOW + 86400000, queue: noQueue });
   assert.equal(t.primary, 'all-done');
   assert.equal(t.lesson, null);
-  assert.equal(nextLesson(data, content), undefined);
+  assert.equal(nextLesson(data, c), undefined);
 });
 
 test('today: on a catch-up day a review session leads', () => {

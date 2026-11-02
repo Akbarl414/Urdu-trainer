@@ -33,6 +33,11 @@ const PHONE_PHRASES = [
     variants: ['walaikum assalam', 'walaikumassalam', 'walaikum salam', 'wa alaikum salam', 'waalaikum assalam', 'walekum assalam'],
   },
   { canonical: 'alhamdulillaah', variants: ['alhamdu lillah', 'alhamdolillah', 'alhumdulillah', 'alhamdulilah'] },
+  // Lesson 5: yes / no / no idea, as they're texted (`g` is the usual texting spelling of jii).
+  { canonical: 'pataa nahiiN', variants: ['pta nhi', 'pata nhi', 'pta nahi', 'pta nai', 'pata nai'] },
+  { canonical: 'nahiiN', variants: ['nhi', 'nai', 'nahee'] },
+  { canonical: 'jii', variants: ['g'] },
+  { canonical: 'taiyaar', variants: ['tayyar', 'tayar', 'tyar', 'tayaar'] },
 ];
 
 /** Lowercase-free tokenisation shared by every comparison: hyphen = space, punctuation removed. */

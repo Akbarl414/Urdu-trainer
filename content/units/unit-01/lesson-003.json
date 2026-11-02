@@ -1,0 +1,199 @@
+{
+  "id": "lesson-003",
+  "unit": "unit-01",
+  "order": 3,
+  "title": "I am, you are",
+  "can_do": "You can say who and how people are.",
+  "context": "uk-life",
+  "grammar": [
+    {
+      "heading": "`honaa`: \"to be\", the whole set",
+      "body": "Urdu's \"to be\" is `honaa`. You've met most of its present forms already; here is the full set. There are only four words, `huuN`, `hai`, `ho` and `haiN`, and each one always goes at the end of the sentence.",
+      "table": {
+        "headers": ["Who", "Form", "Example"],
+        "rows": [
+          ["I: `maiN`", "`huuN`", { "roman": "maiN Thiik huuN.", "ur": "میں ٹھیک ہوں۔", "en": "I'm fine." }],
+          ["you: `tuu`", "`hai`", { "roman": "tuu Thiik hai?", "ur": "تو ٹھیک ہے؟", "en": "Are you all right?" }],
+          ["one person or thing", "`hai`", { "roman": "sanaa Thiik hai.", "ur": "ثنا ٹھیک ہے۔", "en": "Sana is fine." }],
+          ["we: `ham`", "`haiN`", { "roman": "ham Thiik haiN.", "ur": "ہم ٹھیک ہیں۔", "en": "We're fine." }],
+          ["you: `tum`", "`ho`", { "roman": "tum Thiik ho?", "ur": "تم ٹھیک ہو؟", "en": "Are you all right?" }],
+          ["you: `aap`", "`haiN`", { "roman": "aap Thiik haiN?", "ur": "آپ ٹھیک ہیں؟", "en": "Are you all right?" }],
+          ["several people", "`haiN`", { "roman": "bacche Thiik haiN.", "ur": "بچے ٹھیک ہیں۔", "en": "The children are fine." }]
+        ]
+      }
+    },
+    {
+      "heading": "Saying who someone is",
+      "body": "Put the person first, then who or what they are, then the verb: `maiN student huuN` is \"I student am\". Urdu has no word for \"a\", so that's simply \"I'm a student\". English job words like `doctor` and `student` are used as they are.",
+      "examples": [
+        { "roman": "maiN student huuN.", "ur": "میں اسٹوڈنٹ ہوں۔", "en": "I'm a student." },
+        { "roman": "imraan doctor hai.", "ur": "عمران ڈاکٹر ہے۔", "en": "Imran is a doctor." },
+        { "roman": "ham paRosii haiN.", "ur": "ہم پڑوسی ہیں۔", "en": "We're neighbours." }
+      ]
+    },
+    {
+      "heading": "Respect makes it plural",
+      "body": "When you talk about one person you respect, use `haiN`, just as `aap` takes `haiN`. So `imraan saahab doctor haiN` (\"Mr Imran is a doctor\") is respectful, while `imraan doctor hai` is how you'd talk about a friend. Lesson 4 uses this with your family.",
+      "examples": [
+        { "roman": "imraan saahab doctor haiN.", "ur": "عمران صاحب ڈاکٹر ہیں۔", "en": "Mr Imran is a doctor. (respectful)" },
+        { "roman": "imraan doctor hai.", "ur": "عمران ڈاکٹر ہے۔", "en": "Imran is a doctor. (as you'd say it about a friend)" }
+      ]
+    }
+  ],
+  "new_vocab": ["honaa", "ham", "parosii", "doctor", "student", "saahab", "aaj", "ab"],
+  "exercises": [
+    {
+      "id": "e01",
+      "type": "choose-form",
+      "sentence": { "roman": "ham dost ___.", "ur": "ہم دوست ___۔", "en": "We're friends." },
+      "options": [
+        { "roman": "huuN", "ur": "ہوں" },
+        { "roman": "hai", "ur": "ہے" },
+        { "roman": "haiN", "ur": "ہیں" }
+      ],
+      "answerIndex": 2,
+      "explanation": "`ham` (we) takes `haiN`.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e02",
+      "type": "fill-blank",
+      "sentence": { "roman": "maiN student ___.", "ur": "میں اسٹوڈنٹ ___۔", "en": "I'm a student." },
+      "answer": "huuN",
+      "answer_ur": "ہوں",
+      "hint": "Who is speaking?",
+      "explanation": "`maiN` always takes `huuN`. There's no word for \"a\".",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e03",
+      "type": "choose-form",
+      "sentence": { "roman": "sanaa Thiik ___?", "ur": "ثنا ٹھیک ___؟", "en": "Is Sana all right?" },
+      "options": [
+        { "roman": "hai", "ur": "ہے" },
+        { "roman": "ho", "ur": "ہو" },
+        { "roman": "huuN", "ur": "ہوں" }
+      ],
+      "answerIndex": 0,
+      "explanation": "One person you're talking about takes `hai`. Sana is your partner's younger sister, so no respect plural is needed.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e04",
+      "type": "choose-form",
+      "sentence": { "roman": "imraan saahab doctor ___.", "ur": "عمران صاحب ڈاکٹر ___۔", "en": "Mr Imran is a doctor." },
+      "options": [
+        { "roman": "hai", "ur": "ہے" },
+        { "roman": "haiN", "ur": "ہیں" },
+        { "roman": "ho", "ur": "ہو" }
+      ],
+      "answerIndex": 1,
+      "explanation": "`saahab` shows respect, so the verb is the respectful plural `haiN`, even for one man.",
+      "tags": ["honaa", "respect"]
+    },
+    {
+      "id": "e05",
+      "type": "error-spot",
+      "sentence": { "roman": "ham paRosii hai.", "ur": "ہم پڑوسی ہے۔", "en": "We're neighbours." },
+      "answer": "ham paRosii haiN.",
+      "answer_ur": "ہم پڑوسی ہیں۔",
+      "explanation": "`ham` needs `haiN`. `hai` is for one person or thing.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e06",
+      "type": "reorder",
+      "sentence": { "roman": "aaj maiN Thiik huuN.", "ur": "آج میں ٹھیک ہوں۔", "en": "I'm fine today." },
+      "tokens": ["aaj", "maiN", "Thiik", "huuN"],
+      "answerOrders": [
+        ["aaj", "maiN", "Thiik", "huuN"],
+        ["maiN", "aaj", "Thiik", "huuN"]
+      ],
+      "explanation": "`aaj` (today) goes at the start or just after `maiN`; the verb `huuN` stays last.",
+      "tags": ["word-order"]
+    },
+    {
+      "id": "e07",
+      "type": "transform",
+      "from": { "roman": "maiN student huuN.", "ur": "میں اسٹوڈنٹ ہوں۔", "en": "I'm a student." },
+      "instruction": "Say it about `ham` (we) instead.",
+      "answers": [{ "roman": "ham student haiN.", "ur": "ہم اسٹوڈنٹ ہیں۔" }],
+      "explanation": "`ham` takes `haiN`. `student` doesn't change: English words don't take an -s in Urdu.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e08",
+      "type": "transform",
+      "from": { "roman": "bacchaa Thiik hai.", "ur": "بچہ ٹھیک ہے۔", "en": "The child is fine." },
+      "instruction": "Talk about all the children: make it plural.",
+      "answers": [{ "roman": "bacche Thiik haiN.", "ur": "بچے ٹھیک ہیں۔" }],
+      "explanation": "`bacchaa` becomes `bacche` in the plural, and several people take `haiN`.",
+      "tags": ["honaa", "plural"]
+    },
+    {
+      "id": "e09",
+      "type": "listen",
+      "audio_text": { "roman": "ham paRosii haiN.", "ur": "ہم پڑوسی ہیں۔", "en": "We're neighbours." },
+      "options": ["We're neighbours.", "We're friends.", "I'm a student.", "Are you a doctor?"],
+      "answerIndex": 0,
+      "explanation": "`ham` is \"we\" and `paRosii` is \"neighbour\".",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e10",
+      "type": "fill-blank",
+      "sentence": { "roman": "tum bhii student ___?", "ur": "تم بھی اسٹوڈنٹ ___؟", "en": "Are you a student too?" },
+      "answer": "ho",
+      "answer_ur": "ہو",
+      "hint": "Which verb goes with the familiar \"you\"?",
+      "explanation": "`tum` takes `ho`.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e11",
+      "type": "multiple-choice",
+      "prompt": "Your new neighbour says this as she introduces herself. What is she telling you?",
+      "sentence": { "roman": "maiN aaishaa huuN. imraan bhii doctor haiN.", "ur": "میں عائشہ ہوں۔ عمران بھی ڈاکٹر ہیں۔", "en": "I'm Aisha. Imran is a doctor too." },
+      "options": [
+        "She's Aisha, and Imran is a doctor as well",
+        "She's Aisha, and Imran is a student",
+        "She's a friend of Imran's, and she's fine"
+      ],
+      "answerIndex": 0,
+      "explanation": "`bhii` is \"too\", so she's a doctor and so is Imran. She says `haiN` about him for respect: he's her husband.",
+      "tags": ["honaa", "respect"]
+    },
+    {
+      "id": "e12",
+      "type": "translate",
+      "en": "I'm fine now, thank God.",
+      "answers": [
+        { "roman": "ab maiN Thiik huuN, alhamdulillaah.", "ur": "اب میں ٹھیک ہوں، الحمد للہ۔" },
+        { "roman": "maiN ab Thiik huuN, alhamdulillaah.", "ur": "میں اب ٹھیک ہوں، الحمد للہ۔" },
+        { "roman": "alhamdulillaah, ab maiN Thiik huuN.", "ur": "الحمد للہ، اب میں ٹھیک ہوں۔" },
+        { "roman": "alhamdulillaah, maiN ab Thiik huuN.", "ur": "الحمد للہ، میں اب ٹھیک ہوں۔" },
+        { "roman": "ab Thiik huuN, alhamdulillaah.", "ur": "اب ٹھیک ہوں، الحمد للہ۔" },
+        { "roman": "alhamdulillaah, ab Thiik huuN.", "ur": "الحمد للہ، اب ٹھیک ہوں۔" }
+      ],
+      "self_grade": true,
+      "explanation": "`ab` (now) goes at the start or after `maiN`, and `alhamdulillaah` before or after the rest. You can drop `maiN`, since `huuN` already says \"I am\".",
+      "tags": ["honaa"]
+    }
+  ],
+  "dialogue": {
+    "setting": "You've just moved into a new house in the UK. Your neighbour Aisha knocks with a plate of food to say hello. Imran is her husband, so she uses the respectful `haiN` about him.",
+    "speakers": [
+      { "id": "you", "en": "You", "learner": true },
+      { "id": "aaishaa", "en": "Aisha (neighbour)", "gender": "f" }
+    ],
+    "lines": [
+      { "speaker": "aaishaa", "roman": "assalaam-o-alaikum! maiN aaishaa huuN. ham paRosii haiN!", "ur": "السلام علیکم! میں عائشہ ہوں۔ ہم پڑوسی ہیں!", "en": "Hello! I'm Aisha. We're neighbours!" },
+      { "speaker": "you", "roman": "wa-alaikum-assalaam! aap kaisii haiN?", "ur": "وعلیکم السلام! آپ کیسی ہیں؟", "en": "Hello! How are you?" },
+      { "speaker": "aaishaa", "roman": "Thiik huuN, alhamdulillaah. aap student haiN?", "ur": "ٹھیک ہوں، الحمد للہ۔ آپ اسٹوڈنٹ ہیں؟", "en": "Fine, thank God. Are you a student?" },
+      { "speaker": "you", "roman": "jii, maiN student huuN. aur aap?", "ur": "جی، میں اسٹوڈنٹ ہوں۔ اور آپ؟", "en": "Yes, I'm a student. And you?" },
+      { "speaker": "aaishaa", "roman": "maiN doctor huuN. imraan bhii doctor haiN.", "ur": "میں ڈاکٹر ہوں۔ عمران بھی ڈاکٹر ہیں۔", "en": "I'm a doctor. Imran is a doctor too." },
+      { "speaker": "you", "roman": "aur bacche Thiik haiN?", "ur": "اور بچے ٹھیک ہیں؟", "en": "And are the children well?" },
+      { "speaker": "aaishaa", "roman": "jii, alhamdulillaah, bacche Thiik haiN.", "ur": "جی، الحمد للہ، بچے ٹھیک ہیں۔", "en": "Yes, thank God, the children are fine." }
+    ]
+  }
+}

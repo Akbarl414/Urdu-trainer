@@ -15,7 +15,9 @@ export function startRouter(container) {
 
   async function show() {
     const path = window.location.hash.replace(/^#/, '') || '';
-    const load = routes[path] ?? routes[''];
+    // One route takes a parameter: #/practice/<lessonId> (practice-only replay of a completed lesson).
+    const practice = /^\/practice\/([a-z0-9-]+)$/.exec(path);
+    const load = practice ? () => import('./modules/lesson/player.js').then((m) => ({ render: (c) => m.renderPractice(c, practice[1]) })) : (routes[path] ?? routes['']);
     const mine = ++token;
     const mod = await load();
     if (mine !== token) return; // a newer navigation won

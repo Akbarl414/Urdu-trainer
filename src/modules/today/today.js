@@ -6,6 +6,7 @@ import { scriptToggle } from '../../ui/scriptToggle.js';
 import { store } from '../../db/storage.js';
 import { getContent } from '../../db/contentLoader.js';
 import { todayState, todayQueue } from '../../lesson/path.js';
+import { practisableLessons } from '../../lesson/practice.js';
 import { planLesson } from '../../lesson/planner.js';
 import { voiceRoute, onAudioChange, isAudioReady } from '../../audio/tts.js';
 
@@ -62,6 +63,7 @@ export function render(container) {
       gender,
       primaryCard(t, queue, now, cap),
       reviewCard(t, queue, cap),
+      practiceCard(),
       h(
         'section',
         { class: 'card tools' },
@@ -128,6 +130,19 @@ export function render(container) {
         );
       }
     }
+  }
+
+  /** Replay a finished lesson as practice only (no cards, no scheduling, no progress). Until the Library exists (Phase 5). */
+  function practiceCard() {
+    const done = practisableLessons(data, content);
+    if (done.length === 0) return null;
+    return h(
+      'details',
+      { class: 'card practice' },
+      h('summary', {}, h('strong', {}, 'Practise a finished lesson')),
+      h('p', { class: 'muted small' }, 'Go through a lesson again for practice. Nothing is saved: your reviews, schedule and progress stay exactly as they are.'),
+      h('ul', { class: 'practice-list' }, done.map((l) => h('li', {}, h('a', { href: `#/practice/${l.id}` }, `Lesson ${l.order}: ${l.title}`)))),
+    );
   }
 
   function reviewCard(t, queue, cap) {

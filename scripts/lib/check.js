@@ -228,7 +228,8 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
       } else if (word.plural && !word.marked && (word.gender === 'm' || word.plural_only) && word.plural.roman !== word.roman && !word.loanword) {
         warnings.push(`${label(v)}: ${path}.plural "${word.plural.roman}" differs from the singular; unmarked masculine nouns normally don't change. Fine if it is a real exception.`);
       }
-      if (word.oblique_pl && !ends(word.oblique_pl, 'oN', 'وں')) err(v, `${path}.oblique_pl should end in "oN" / وں`);
+      // After a long -uu the waw carries a hamza: ابو → ابوؤں, آلو → آلوؤں.
+      if (word.oblique_pl && !(ends(word.oblique_pl, 'oN', 'وں') || ends(word.oblique_pl, 'uuoN', 'وؤں'))) err(v, `${path}.oblique_pl should end in "oN" / وں (ؤں after a long -uu)`);
     }
     if (word.variable !== undefined && ['noun', 'verb', 'phrase', 'adverb'].includes(word.pos)) err(v, `${path}: "variable" is only for adjectives, pronouns, postpositions and other (a ${word.pos} doesn't agree like acchaa)`);
     if (word.agreement) {

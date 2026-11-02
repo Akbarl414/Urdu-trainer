@@ -8,7 +8,6 @@ import { showBanner, hideBanner } from './ui/banner.js';
 import { registerServiceWorker } from './pwa.js';
 import { getContent } from './db/contentLoader.js';
 import { syncDeck } from './srs/deck.js';
-import { removeSeedCards } from './srs/seedCleanup.js';
 import { configureAudio, initAudio } from './audio/tts.js';
 import { loanwordTokens } from './lesson/loanwords.js';
 import { applyScriptSetting } from './ui/scriptToggle.js';
@@ -38,11 +37,9 @@ function boot() {
   initAudio(); // voices load in the background; screens re-check when they arrive
   if (status.firstRun && navigator.storage?.persist) navigator.storage.persist().catch(() => {});
   store.touchOpened(__BUILD_ID__);
-  // PLAN D21 (temporary): delete the Phase 2 test cards (`w:seed-…`, `x:seed-lesson:…`) and nothing else.
-  const removedSeed = removeSeedCards(store.data);
   // Catches content added in a new build: creates any cards completed lessons call for. Additive and idempotent.
   const added = syncDeck(store.data, getContent(), Date.now()).length;
-  if (removedSeed > 0 || added > 0) store.save();
+  if (added > 0) store.save();
 
   store.onStatusChange((s) => {
     if (s.quotaFull) showBanner({ id: 'quota', tone: 'warn', text: 'Storage is full: new progress is only kept until you close the app. Export a backup.' });

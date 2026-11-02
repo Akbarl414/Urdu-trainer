@@ -1,0 +1,210 @@
+{
+  "id": "lesson-002",
+  "unit": "unit-01",
+  "order": 2,
+  "title": "Three ways to say \"you\"",
+  "can_do": "You can choose the right \"you\" for an elder, a friend or a child.",
+  "context": "family",
+  "grammar": [
+    {
+      "heading": "Three words for \"you\"",
+      "body": "English has one \"you\". Urdu has three, and choosing between them is about respect. `aap` is the respectful one. `tum` is the everyday familiar one. `tuu` is the most intimate: parents use it with small children, and you'll hear it in prayers and songs. Said to an adult who isn't close, `tuu` is rude. When in doubt, say `aap`: too much respect never offends.",
+      "table": {
+        "headers": ["Word", "Who you say it to"],
+        "rows": [
+          ["`aap`", "elders, your partner's parents, anyone you don't know well"],
+          ["`tum`", "friends, younger cousins and siblings, children"],
+          ["`tuu`", "small children (from their family), very close friends, God"]
+        ]
+      }
+    },
+    {
+      "heading": "Each \"you\" has its own verb",
+      "body": "In lesson 1, `aap` always took `haiN`. `tum` takes `ho`, and `tuu` takes `hai`, the same word as \"is\". Only the \"you\" word and the verb change; the rest of the sentence stays the same.",
+      "table": {
+        "headers": ["You", "Are you all right?"],
+        "rows": [
+          ["`aap`", { "roman": "aap Thiik haiN?", "ur": "آپ ٹھیک ہیں؟", "en": "Are you all right?" }],
+          ["`tum`", { "roman": "tum Thiik ho?", "ur": "تم ٹھیک ہو؟", "en": "Are you all right?" }],
+          ["`tuu`", { "roman": "tuu Thiik hai?", "ur": "تو ٹھیک ہے؟", "en": "Are you all right?" }]
+        ]
+      }
+    },
+    {
+      "heading": "`jii`: a small word of respect",
+      "body": "`jii` adds respect to almost anything. When an elder calls you, answer `jii?` (\"yes?\"). At the start of an answer, it makes the whole answer polite. Use it freely with elders; with friends you can leave it out. It also follows family titles, as in `ammii jii` (Mum), which you'll meet in lesson 4.",
+      "examples": [
+        { "roman": "jii?", "ur": "جی؟", "en": "Yes? (answering when someone calls you)" },
+        { "roman": "jii, maiN Thiik huuN.", "ur": "جی، میں ٹھیک ہوں۔", "en": "Yes, I'm fine. (politely)" },
+        { "roman": "jii, alhamdulillaah.", "ur": "جی، الحمد للہ۔", "en": "I'm well, thank God. (politely)" }
+      ]
+    },
+    {
+      "heading": "Why elders call you `beTaa`",
+      "body": "Older relatives often call anyone younger `beTaa` (\"son\", here \"dear\"), girls as well as boys, and they'll say `tum` to you. That's affection, not rudeness. You still answer them with `aap`.",
+      "examples": [
+        { "roman": "beTaa, tum kaise ho?", "ur": "بیٹا، تم کیسے ہو؟", "en": "How are you, dear?" },
+        { "roman": "jii, maiN Thiik huuN. aap kaise haiN?", "ur": "جی، میں ٹھیک ہوں۔ آپ کیسے ہیں؟", "en": "I'm fine, thank you. How are you?" }
+      ]
+    }
+  ],
+  "new_vocab": ["tum", "tuu", "jii", "tum-kaise-ho", "betaa", "betii", "bacchaa", "dost"],
+  "exercises": [
+    {
+      "id": "e01",
+      "type": "multiple-choice",
+      "prompt": "You're greeting your partner's grandmother. Which word for \"you\" do you use?",
+      "options": [
+        { "roman": "aap", "ur": "آپ", "en": "you, respectful" },
+        { "roman": "tum", "ur": "تم", "en": "you, familiar" },
+        { "roman": "tuu", "ur": "تو", "en": "you, intimate" }
+      ],
+      "answerIndex": 0,
+      "explanation": "An elder always gets `aap`. `tum` would sound over-familiar, and `tuu` would be rude.",
+      "tags": ["respect"]
+    },
+    {
+      "id": "e02",
+      "type": "choose-form",
+      "sentence": { "roman": "tum Thiik ___?", "ur": "تم ٹھیک ___؟", "en": "Are you all right?" },
+      "options": [
+        { "roman": "huuN", "ur": "ہوں" },
+        { "roman": "ho", "ur": "ہو" },
+        { "roman": "haiN", "ur": "ہیں" }
+      ],
+      "answerIndex": 1,
+      "explanation": "`tum` takes `ho`. `haiN` goes with `aap`, and `huuN` with `maiN`.",
+      "tags": ["honaa", "respect"]
+    },
+    {
+      "id": "e03",
+      "type": "fill-blank",
+      "sentence": { "roman": "tuu Thiik ___, beTaa?", "ur": "تو ٹھیک ___، بیٹا؟", "en": "Are you all right, sweetheart? (a grandmother to a small child)" },
+      "answer": "hai",
+      "answer_ur": "ہے",
+      "hint": "`tuu` takes the same word as \"is\".",
+      "explanation": "`tuu` takes `hai`: `tuu Thiik hai?`",
+      "tags": ["honaa", "respect"]
+    },
+    {
+      "id": "e04",
+      "type": "multiple-choice",
+      "prompt": "Your partner's cousin Bilaal, a man about your age, says hi. Ask him how he is, the friendly way.",
+      "options": [
+        { "roman": "tum kaise ho?", "ur": "تم کیسے ہو؟", "en": "How are you? said to a man or boy" },
+        { "roman": "tum kaisii ho?", "ur": "تم کیسی ہو؟", "en": "How are you? said to a woman or girl" },
+        { "roman": "aap kaise haiN?", "ur": "آپ کیسے ہیں؟", "en": "How are you? said respectfully" }
+      ],
+      "answerIndex": 0,
+      "explanation": "Between friends and cousins of your age, `tum kaise ho?` is natural. `aap kaise haiN?` wouldn't be wrong, just more formal.",
+      "tags": ["greetings", "respect"]
+    },
+    {
+      "id": "e05",
+      "type": "error-spot",
+      "sentence": { "roman": "tum Thiik haiN?", "ur": "تم ٹھیک ہیں؟", "en": "Are you all right?" },
+      "answer": "tum Thiik ho?",
+      "answer_ur": "تم ٹھیک ہو؟",
+      "explanation": "`tum` needs `ho`. `haiN` belongs to `aap`.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e06",
+      "type": "reorder",
+      "sentence": { "roman": "jii, maiN Thiik huuN.", "ur": "جی، میں ٹھیک ہوں۔", "en": "Yes, I'm fine. (politely)" },
+      "tokens": ["jii", "maiN", "Thiik", "huuN"],
+      "answerOrders": [["jii", "maiN", "Thiik", "huuN"]],
+      "explanation": "`jii` opens the answer politely, and the verb `huuN` goes last.",
+      "tags": ["word-order", "respect"]
+    },
+    {
+      "id": "e07",
+      "type": "transform",
+      "from": { "roman": "aap Thiik haiN?", "ur": "آپ ٹھیک ہیں؟", "en": "Are you all right?" },
+      "instruction": "Ask a friend instead: use `tum`.",
+      "answers": [{ "roman": "tum Thiik ho?", "ur": "تم ٹھیک ہو؟" }],
+      "explanation": "Swap `aap` for `tum`, and `haiN` for `ho`.",
+      "tags": ["honaa", "respect"]
+    },
+    {
+      "id": "e08",
+      "type": "listen",
+      "audio_text": { "roman": "tum kaise ho?", "ur": "تم کیسے ہو؟", "en": "How are you?" },
+      "options": ["How are you?", "Are you all right?", "I'm fine too.", "And you?"],
+      "answerIndex": 0,
+      "explanation": "`tum kaise ho?` is the friendly \"how are you?\" for a man or a boy.",
+      "tags": ["greetings"]
+    },
+    {
+      "id": "e09",
+      "type": "choose-form",
+      "sentence": { "roman": "tum ___ ho?", "ur": "تم ___ ہو؟", "en": "How are you? (asking your partner's younger sister)" },
+      "options": [
+        { "roman": "kaise", "ur": "کیسے" },
+        { "roman": "kaisii", "ur": "کیسی" }
+      ],
+      "answerIndex": 1,
+      "explanation": "You're asking a woman, so `tum kaisii ho?`. To a man it's `tum kaise ho?`, just as with `aap`.",
+      "tags": ["greetings"]
+    },
+    {
+      "id": "e10",
+      "type": "multiple-choice",
+      "prompt": "Your partner's mum calls your name from the kitchen. What's the polite way to answer?",
+      "options": [
+        { "roman": "jii?", "ur": "جی؟", "en": "Yes?" },
+        { "roman": "kyaa?", "ur": "کیا؟", "en": "What?" },
+        { "roman": "Thiik hai.", "ur": "ٹھیک ہے۔", "en": "OK." }
+      ],
+      "answerIndex": 0,
+      "explanation": "`jii?` is the respectful \"yes?\". A bare `kyaa?` (\"what?\") sounds blunt to an elder.",
+      "tags": ["respect"]
+    },
+    {
+      "id": "e11",
+      "type": "multiple-choice",
+      "prompt": "Your partner's grandmother greets you like this. What is she doing?",
+      "sentence": { "roman": "beTaa, tum kaise ho?", "ur": "بیٹا، تم کیسے ہو؟", "en": "How are you, dear?" },
+      "options": [
+        "Being affectionate, the way elders talk to anyone younger",
+        "Telling you off for something",
+        "Mixing you up with her son"
+      ],
+      "answerIndex": 0,
+      "explanation": "Elders call younger people `beTaa` and say `tum` to them as a sign of affection. You answer with `aap`.",
+      "tags": ["respect"]
+    },
+    {
+      "id": "e12",
+      "type": "translate",
+      "en": "Fine, thank God. How are you? (to your partner's younger brother)",
+      "answers": [
+        { "roman": "alhamdulillaah, Thiik huuN. tum kaise ho?", "ur": "الحمد للہ، ٹھیک ہوں۔ تم کیسے ہو؟" },
+        { "roman": "Thiik huuN, alhamdulillaah. tum kaise ho?", "ur": "ٹھیک ہوں، الحمد للہ۔ تم کیسے ہو؟" },
+        { "roman": "alhamdulillaah, maiN Thiik huuN. tum kaise ho?", "ur": "الحمد للہ، میں ٹھیک ہوں۔ تم کیسے ہو؟" },
+        { "roman": "maiN Thiik huuN, alhamdulillaah. tum kaise ho?", "ur": "میں ٹھیک ہوں، الحمد للہ۔ تم کیسے ہو؟" }
+      ],
+      "self_grade": true,
+      "hint": "A younger brother gets the familiar \"you\".",
+      "explanation": "A younger brother-in-law gets `tum`, so `tum kaise ho?`. `alhamdulillaah` can go before or after `Thiik huuN`.",
+      "tags": ["greetings", "respect"]
+    }
+  ],
+  "dialogue": {
+    "setting": "Sunday afternoon at your partner's family home. Their cousin Bilaal, about your age, is there already. Then their grandmother comes in with Zain, her six-year-old grandson. Notice who gets `aap`, `tum` and `tuu`.",
+    "speakers": [
+      { "id": "you", "en": "You", "learner": true },
+      { "id": "bilaal", "en": "Bilaal (partner's cousin)", "gender": "m" },
+      { "id": "grandma", "en": "Partner's grandmother", "gender": "f" }
+    ],
+    "lines": [
+      { "speaker": "bilaal", "roman": "assalaam-o-alaikum! kyaa haal hai?", "ur": "السلام علیکم! کیا حال ہے؟", "en": "Hi! How's it going?" },
+      { "speaker": "you", "roman": "wa-alaikum-assalaam! Thiik huuN. tum kaise ho?", "ur": "وعلیکم السلام! ٹھیک ہوں۔ تم کیسے ہو؟", "en": "Hi! I'm fine. How are you?" },
+      { "speaker": "bilaal", "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too." },
+      { "speaker": "you", "roman": "assalaam-o-alaikum! aap kaisii haiN?", "ur": "السلام علیکم! آپ کیسی ہیں؟", "en": "Hello! How are you?" },
+      { "speaker": "grandma", "roman": "wa-alaikum-assalaam, beTaa! alhamdulillaah, Thiik huuN. tum Thiik ho?", "ur": "وعلیکم السلام، بیٹا! الحمد للہ، ٹھیک ہوں۔ تم ٹھیک ہو؟", "en": "And peace be upon you, dear! Fine, thank God. Are you well?" },
+      { "speaker": "you", "roman": "jii, alhamdulillaah.", "ur": "جی، الحمد للہ۔", "en": "Yes, thank God." },
+      { "speaker": "grandma", "roman": "zain, tuu Thiik hai, beTaa?", "ur": "زین، تو ٹھیک ہے، بیٹا؟", "en": "Zain, are you all right, sweetheart?" }
+    ]
+  }
+}

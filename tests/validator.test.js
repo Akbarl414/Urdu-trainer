@@ -190,6 +190,9 @@ test('nouns: marked means masculine -aa with regular -e / -oN forms', () => {
   b = makeBundle(); word(b, 'larkaa').plural = { roman: 'laRkii', ur: 'لڑکی' }; failsWith(b, /plural should be "laRke"/);
   b = makeBundle(); word(b, 'larkaa').oblique_pl = { roman: 'laRkoN', ur: 'لڑکون' }; failsWith(b, /oblique_pl should be "laRkoN"/);
   b = makeBundle(); word(b, 'kitaab').oblique_pl = { roman: 'kitaabeN', ur: 'کتابیں' }; failsWith(b, /should end in "oN"/);
+  // after a long -uu the oblique plural is spelt ؤں (ابو → ابوؤں); a plain ؤں elsewhere is still wrong
+  b = makeBundle(); word(b, 'kitaab').oblique_pl = { roman: 'kitaabuuoN', ur: 'کتابوؤں' }; assert.deepEqual(run(b).errors, []);
+  b = makeBundle(); word(b, 'kitaab').oblique_pl = { roman: 'kitaaboN', ur: 'کتابؤں' }; failsWith(b, /should end in "oN"/);
 });
 
 test('nouns: irregular feminine plurals are warnings, not errors; mf gender is allowed', () => {

@@ -1,0 +1,201 @@
+{
+  "id": "lesson-005",
+  "unit": "unit-01",
+  "order": 5,
+  "title": "Yes, no and questions",
+  "can_do": "You can ask and answer yes/no questions.",
+  "context": "uk-life",
+  "grammar": [
+    {
+      "heading": "Yes and no",
+      "body": "`haaN` is \"yes\" and `nahiiN` is \"no\". With elders and anyone you don't know well, put `jii` in front: `jii haaN`, `jii nahiiN`. A plain `jii` is also a polite \"yes\". Plain `haaN` is fine with friends.",
+      "examples": [
+        { "roman": "jii haaN.", "ur": "جی ہاں۔", "en": "Yes. (politely)" },
+        { "roman": "jii nahiiN.", "ur": "جی نہیں۔", "en": "No. (politely)" },
+        { "roman": "haaN, maiN Thiik huuN.", "ur": "ہاں، میں ٹھیک ہوں۔", "en": "Yes, I'm fine." }
+      ]
+    },
+    {
+      "heading": "\"Not\": `nahiiN` before the verb",
+      "body": "To say \"not\", put `nahiiN` straight before the verb at the end. Nothing else changes. In everyday speech the verb is often dropped after `nahiiN`: `maiN doctor nahiiN` means the same as `maiN doctor nahiiN huuN`.",
+      "table": {
+        "headers": ["Yes", "No"],
+        "rows": [
+          [{ "roman": "maiN student huuN.", "ur": "میں اسٹوڈنٹ ہوں۔", "en": "I'm a student." }, { "roman": "maiN student nahiiN huuN.", "ur": "میں اسٹوڈنٹ نہیں ہوں۔", "en": "I'm not a student." }],
+          [{ "roman": "wo Thiik hai.", "ur": "وہ ٹھیک ہے۔", "en": "She's fine." }, { "roman": "wo Thiik nahiiN hai.", "ur": "وہ ٹھیک نہیں ہے۔", "en": "She isn't well." }],
+          [{ "roman": "ham taiyaar haiN.", "ur": "ہم تیار ہیں۔", "en": "We're ready." }, { "roman": "ham taiyaar nahiiN haiN.", "ur": "ہم تیار نہیں ہیں۔", "en": "We aren't ready." }]
+        ]
+      }
+    },
+    {
+      "heading": "Questions: `kyaa` at the start",
+      "body": "Any sentence becomes a yes/no question if your voice goes up at the end: `aap taiyaar haiN?` To make it clearly a question, put `kyaa` at the start. Here `kyaa` doesn't mean \"what\"; it just marks the question, a bit like \"do\" or \"is\" in English. The word order stays the same.",
+      "examples": [
+        { "roman": "kyaa aap taiyaar haiN?", "ur": "کیا آپ تیار ہیں؟", "en": "Are you ready?" },
+        { "roman": "kyaa wo student hai?", "ur": "کیا وہ اسٹوڈنٹ ہے؟", "en": "Is he a student? / Is she a student?" },
+        { "roman": "kyaa tum Thiik ho?", "ur": "کیا تم ٹھیک ہو؟", "en": "Are you all right?" }
+      ]
+    },
+    {
+      "heading": "Short answers",
+      "body": "You don't have to answer in a full sentence. `zaruur` (\"of course\") makes a keen yes, `shaayad` is \"maybe\", and `pataa nahiiN` is \"no idea\".",
+      "examples": [
+        { "roman": "jii haaN, zaruur!", "ur": "جی ہاں، ضرور!", "en": "Yes, of course!" },
+        { "roman": "shaayad nahiiN.", "ur": "شاید نہیں۔", "en": "Maybe not." },
+        { "roman": "jii, pataa nahiiN.", "ur": "جی، پتا نہیں۔", "en": "I'm afraid I've no idea." }
+      ]
+    }
+  ],
+  "new_vocab": ["haan", "nahiin", "jii-haan", "jii-nahiin", "kyaa", "pataa-nahiin", "zaruur", "shaayad", "taiyaar"],
+  "exercises": [
+    {
+      "id": "e01",
+      "type": "multiple-choice",
+      "prompt": "Imran, your neighbour, asks you this. You are ready. What do you say?",
+      "sentence": { "roman": "kyaa aap taiyaar haiN?", "ur": "کیا آپ تیار ہیں؟", "en": "Are you ready?" },
+      "options": [
+        { "roman": "jii haaN.", "ur": "جی ہاں۔", "en": "Yes." },
+        { "roman": "jii nahiiN.", "ur": "جی نہیں۔", "en": "No." },
+        { "roman": "pataa nahiiN.", "ur": "پتا نہیں۔", "en": "No idea." }
+      ],
+      "answerIndex": 0,
+      "explanation": "`jii haaN` is the polite \"yes\". Imran is older than you, so the `jii` matters.",
+      "tags": ["yes-no"]
+    },
+    {
+      "id": "e02",
+      "type": "fill-blank",
+      "sentence": { "roman": "maiN doctor ___ huuN.", "ur": "میں ڈاکٹر ___ ہوں۔", "en": "I'm not a doctor." },
+      "answer": "nahiiN",
+      "answer_ur": "نہیں",
+      "hint": "\"Not\" goes right before the verb.",
+      "explanation": "`nahiiN` goes straight before the verb `huuN`.",
+      "tags": ["negation"]
+    },
+    {
+      "id": "e03",
+      "type": "reorder",
+      "sentence": { "roman": "wo Thiik nahiiN hai.", "ur": "وہ ٹھیک نہیں ہے۔", "en": "He isn't well." },
+      "tokens": ["wo", "Thiik", "nahiiN", "hai"],
+      "answerOrders": [["wo", "Thiik", "nahiiN", "hai"]],
+      "explanation": "Build the sentence as usual, then slot `nahiiN` in just before the verb.",
+      "tags": ["negation", "word-order"]
+    },
+    {
+      "id": "e04",
+      "type": "transform",
+      "from": { "roman": "aap taiyaar haiN.", "ur": "آپ تیار ہیں۔", "en": "You're ready." },
+      "instruction": "Make it a clear yes/no question with `kyaa`.",
+      "answers": [{ "roman": "kyaa aap taiyaar haiN?", "ur": "کیا آپ تیار ہیں؟" }],
+      "explanation": "Put `kyaa` at the start. Nothing else moves.",
+      "tags": ["questions"]
+    },
+    {
+      "id": "e05",
+      "type": "transform",
+      "from": { "roman": "ham taiyaar haiN.", "ur": "ہم تیار ہیں۔", "en": "We're ready." },
+      "instruction": "Make it negative: we're not ready.",
+      "answers": [
+        { "roman": "ham taiyaar nahiiN haiN.", "ur": "ہم تیار نہیں ہیں۔" },
+        { "roman": "ham taiyaar nahiiN.", "ur": "ہم تیار نہیں۔" }
+      ],
+      "explanation": "`nahiiN` goes before `haiN`. Dropping `haiN` after `nahiiN` is just as natural.",
+      "tags": ["negation"]
+    },
+    {
+      "id": "e06",
+      "type": "error-spot",
+      "sentence": { "roman": "maiN nahiiN student huuN.", "ur": "میں نہیں اسٹوڈنٹ ہوں۔", "en": "I'm not a student." },
+      "answer": "maiN student nahiiN huuN.",
+      "answer_ur": "میں اسٹوڈنٹ نہیں ہوں۔",
+      "altAnswers": ["maiN student nahiiN."],
+      "explanation": "`nahiiN` goes right before the verb, not after `maiN`.",
+      "tags": ["negation", "word-order"]
+    },
+    {
+      "id": "e07",
+      "type": "choose-form",
+      "sentence": { "roman": "kyaa ___ student ho?", "ur": "کیا ___ اسٹوڈنٹ ہو؟", "en": "Are you a student?" },
+      "options": [
+        { "roman": "aap", "ur": "آپ" },
+        { "roman": "tum", "ur": "تم" },
+        { "roman": "maiN", "ur": "میں" }
+      ],
+      "answerIndex": 1,
+      "hint": "Look at the verb.",
+      "explanation": "The verb is `ho`, which only goes with `tum`.",
+      "tags": ["honaa", "questions"]
+    },
+    {
+      "id": "e08",
+      "type": "listen",
+      "audio_text": { "roman": "kyaa wo doctor hai?", "ur": "کیا وہ ڈاکٹر ہے؟", "en": "Is she a doctor?" },
+      "options": ["Is she a doctor?", "She's not a doctor.", "Are you a doctor?", "I'm a doctor."],
+      "answerIndex": 0,
+      "explanation": "`kyaa` at the start makes it a question. `wo` could just as well be \"he\".",
+      "tags": ["questions"]
+    },
+    {
+      "id": "e09",
+      "type": "multiple-choice",
+      "prompt": "In this question, what does `kyaa` do?",
+      "sentence": { "roman": "kyaa aap Thiik haiN?", "ur": "کیا آپ ٹھیک ہیں؟", "en": "Are you all right?" },
+      "options": ["It just marks a yes/no question", "It means \"what\"", "It means \"not\""],
+      "answerIndex": 0,
+      "explanation": "At the start of a sentence, `kyaa` simply signals a yes/no question. In `kyaa haal hai?` it does mean \"what\".",
+      "tags": ["questions"]
+    },
+    {
+      "id": "e10",
+      "type": "multiple-choice",
+      "prompt": "A neighbour asks if the community centre is open today. You've no idea. What do you say?",
+      "options": [
+        { "roman": "jii, pataa nahiiN.", "ur": "جی، پتا نہیں۔", "en": "I'm afraid I've no idea." },
+        { "roman": "jii haaN, zaruur.", "ur": "جی ہاں، ضرور۔", "en": "Yes, of course." },
+        { "roman": "jii nahiiN.", "ur": "جی نہیں۔", "en": "No." }
+      ],
+      "answerIndex": 0,
+      "explanation": "`pataa nahiiN` is \"no idea\"; the `jii` in front keeps it polite.",
+      "tags": ["yes-no"]
+    },
+    {
+      "id": "e11",
+      "type": "fill-blank",
+      "sentence": { "roman": "jii ___, maiN taiyaar huuN.", "ur": "جی ___، میں تیار ہوں۔", "en": "Yes, I'm ready." },
+      "answer": "haaN",
+      "answer_ur": "ہاں",
+      "explanation": "`jii haaN` is the polite \"yes\".",
+      "tags": ["yes-no"]
+    },
+    {
+      "id": "e12",
+      "type": "translate",
+      "en": "No, I'm not a doctor. I'm a student.",
+      "answers": [
+        { "roman": "jii nahiiN, maiN doctor nahiiN huuN. maiN student huuN.", "ur": "جی نہیں، میں ڈاکٹر نہیں ہوں۔ میں اسٹوڈنٹ ہوں۔" },
+        { "roman": "nahiiN, maiN doctor nahiiN huuN. maiN student huuN.", "ur": "نہیں، میں ڈاکٹر نہیں ہوں۔ میں اسٹوڈنٹ ہوں۔" },
+        { "roman": "jii nahiiN, maiN doctor nahiiN. maiN student huuN.", "ur": "جی نہیں، میں ڈاکٹر نہیں۔ میں اسٹوڈنٹ ہوں۔" },
+        { "roman": "nahiiN, maiN doctor nahiiN. maiN student huuN.", "ur": "نہیں، میں ڈاکٹر نہیں۔ میں اسٹوڈنٹ ہوں۔" }
+      ],
+      "self_grade": true,
+      "explanation": "`nahiiN` twice: once as \"no\", once as \"not\" before the verb. `jii nahiiN` is the polite version, and the `huuN` after `nahiiN` can be dropped.",
+      "tags": ["negation"]
+    }
+  ],
+  "dialogue": {
+    "setting": "Saturday morning. Imran, your neighbour Aisha's husband, is driving you and your partner's sister Sana to the Eid fair at the community centre. He knocks at your door. Sana is staying with you and is still upstairs.",
+    "speakers": [
+      { "id": "you", "en": "You", "learner": true },
+      { "id": "imraan", "en": "Imran (neighbour)", "gender": "m" },
+      { "id": "aaishaa", "en": "Aisha (neighbour)", "gender": "f" }
+    ],
+    "lines": [
+      { "speaker": "imraan", "roman": "assalaam-o-alaikum! kyaa aap taiyaar haiN?", "ur": "السلام علیکم! کیا آپ تیار ہیں؟", "en": "Hello! Are you ready?" },
+      { "speaker": "you", "roman": "wa-alaikum-assalaam! jii haaN, maiN taiyaar huuN.", "ur": "وعلیکم السلام! جی ہاں، میں تیار ہوں۔", "en": "Hello! Yes, I'm ready." },
+      { "speaker": "imraan", "roman": "kyaa sanaa bhii taiyaar hai?", "ur": "کیا ثنا بھی تیار ہے؟", "en": "Is Sana ready too?" },
+      { "speaker": "you", "roman": "pataa nahiiN. shaayad nahiiN!", "ur": "پتا نہیں۔ شاید نہیں!", "en": "No idea. Maybe not!" },
+      { "speaker": "imraan", "roman": "aaishaa bhii taiyaar nahiiN hai.", "ur": "عائشہ بھی تیار نہیں ہے۔", "en": "Aisha isn't ready either." },
+      { "speaker": "aaishaa", "roman": "maiN taiyaar huuN!", "ur": "میں تیار ہوں!", "en": "I'm ready!" }
+    ]
+  }
+}

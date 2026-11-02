@@ -1,0 +1,199 @@
+{
+  "id": "lesson-004",
+  "unit": "unit-01",
+  "order": 4,
+  "title": "This is my mum",
+  "can_do": "You can introduce your family respectfully.",
+  "context": "family",
+  "grammar": [
+    {
+      "heading": "`ye` and `wo`: this and that, he and she",
+      "body": "`ye` means \"this\", and also \"he\" or \"she\" for someone near you. `wo` means \"that\", or \"he\" or \"she\" for someone further away or not here. Neither one says whether it's a man or a woman. For one person, both take `hai`, like any person or thing.",
+      "examples": [
+        { "roman": "ye bilaal hai.", "ur": "یہ بلال ہے۔", "en": "This is Bilaal." },
+        { "roman": "wo sanaa hai.", "ur": "وہ ثنا ہے۔", "en": "That's Sana (over there)." },
+        { "roman": "wo Thiik hai?", "ur": "وہ ٹھیک ہے؟", "en": "Is he all right? / Is she all right?" }
+      ]
+    },
+    {
+      "heading": "\"My\": `meraa` and `merii`",
+      "body": "\"My\" changes to match the person you're introducing, not you. For a man or boy it's `meraa`; for a woman or girl it's `merii`. So a woman says `meraa bhaaii` (\"my brother\") just as a man does. Learn these as chunks for now; Unit 3 shows the whole pattern.",
+      "table": {
+        "headers": ["Who", "Introducing them"],
+        "rows": [
+          ["my brother", { "roman": "ye meraa bhaaii hai.", "ur": "یہ میرا بھائی ہے۔", "en": "This is my brother." }],
+          ["my sister", { "roman": "ye merii behen hai.", "ur": "یہ میری بہن ہے۔", "en": "This is my sister." }]
+        ]
+      }
+    },
+    {
+      "heading": "Parents get `haiN`",
+      "body": "Parents and other elders get the respectful plural, as you saw with `saahab` in lesson 3: `haiN` instead of `hai`, even for one person. With a man, `meraa` becomes `mere` too. `merii` never changes. `ye meraa abbuu hai` would sound disrespectful.",
+      "table": {
+        "headers": ["Who", "Introducing them"],
+        "rows": [
+          ["my mum", { "roman": "ye merii ammii haiN.", "ur": "یہ میری امی ہیں۔", "en": "This is my mum." }],
+          ["my dad", { "roman": "ye mere abbuu haiN.", "ur": "یہ میرے ابو ہیں۔", "en": "This is my dad." }]
+        ]
+      }
+    },
+    {
+      "heading": "Introducing your partner",
+      "body": "A husband is introduced with respect: `ye mere shauhar haiN`. For a wife, `ye merii biiwii haiN` is the polite way to introduce her to elders; with friends, `merii biiwii hai` is fine too.",
+      "examples": [
+        { "roman": "ye mere shauhar haiN.", "ur": "یہ میرے شوہر ہیں۔", "en": "This is my husband." },
+        { "roman": "ye merii biiwii haiN.", "ur": "یہ میری بیوی ہیں۔", "en": "This is my wife." }
+      ]
+    }
+  ],
+  "new_vocab": ["ye", "wo", "meraa", "ammii", "abbuu", "bhaaii", "behen", "shauhar", "biiwii"],
+  "exercises": [
+    {
+      "id": "e01",
+      "type": "choose-form",
+      "sentence": { "roman": "ye ___ behen hai.", "ur": "یہ ___ بہن ہے۔", "en": "This is my sister." },
+      "options": [
+        { "roman": "meraa", "ur": "میرا" },
+        { "roman": "merii", "ur": "میری" },
+        { "roman": "mere", "ur": "میرے" }
+      ],
+      "answerIndex": 1,
+      "explanation": "A sister is a woman, so `merii behen`. \"My\" matches the person you're talking about, not you.",
+      "tags": ["agreement", "possessive"]
+    },
+    {
+      "id": "e02",
+      "type": "choose-form",
+      "sentence": { "roman": "wo ___ bhaaii hai.", "ur": "وہ ___ بھائی ہے۔", "en": "That's my brother." },
+      "options": [
+        { "roman": "meraa", "ur": "میرا" },
+        { "roman": "merii", "ur": "میری" },
+        { "roman": "mere", "ur": "میرے" }
+      ],
+      "answerIndex": 0,
+      "explanation": "A brother is a man, so `meraa bhaaii`, whether you're a man or a woman.",
+      "tags": ["agreement", "possessive"]
+    },
+    {
+      "id": "e03",
+      "type": "fill-blank",
+      "sentence": { "roman": "ye merii ammii ___.", "ur": "یہ میری امی ___۔", "en": "This is my mum." },
+      "answer": "haiN",
+      "answer_ur": "ہیں",
+      "hint": "Mum gets the respectful form.",
+      "explanation": "Parents get the respectful plural `haiN`, even though it's one person.",
+      "tags": ["honaa", "respect"]
+    },
+    {
+      "id": "e04",
+      "type": "error-spot",
+      "sentence": { "roman": "ye meraa abbuu hai.", "ur": "یہ میرا ابو ہے۔", "en": "This is my dad." },
+      "answer": "ye mere abbuu haiN.",
+      "answer_ur": "یہ میرے ابو ہیں۔",
+      "explanation": "Dad gets respect: `haiN` instead of `hai`, and `meraa` becomes `mere`. Two words change.",
+      "tags": ["respect", "possessive"]
+    },
+    {
+      "id": "e05",
+      "type": "multiple-choice",
+      "prompt": "Your brother is on the other side of the room. Point him out to your partner's grandmother.",
+      "options": [
+        { "roman": "wo meraa bhaaii hai.", "ur": "وہ میرا بھائی ہے۔", "en": "That's my brother." },
+        { "roman": "ye meraa bhaaii hai.", "ur": "یہ میرا بھائی ہے۔", "en": "This is my brother." },
+        { "roman": "wo merii behen hai.", "ur": "وہ میری بہن ہے۔", "en": "That's my sister." }
+      ],
+      "answerIndex": 0,
+      "explanation": "He's further away, so `wo`. `ye` is for someone right next to you.",
+      "tags": ["pronouns"]
+    },
+    {
+      "id": "e06",
+      "type": "reorder",
+      "sentence": { "roman": "ye mere abbuu haiN.", "ur": "یہ میرے ابو ہیں۔", "en": "This is my dad." },
+      "tokens": ["ye", "mere", "abbuu", "haiN"],
+      "answerOrders": [["ye", "mere", "abbuu", "haiN"]],
+      "explanation": "\"This · my · dad · is\": `mere` comes straight before `abbuu`, and `haiN` goes last.",
+      "tags": ["word-order", "respect"]
+    },
+    {
+      "id": "e07",
+      "type": "transform",
+      "from": { "roman": "ye meraa bhaaii hai.", "ur": "یہ میرا بھائی ہے۔", "en": "This is my brother." },
+      "instruction": "Introduce your dad (`abbuu`) instead, with respect.",
+      "answers": [{ "roman": "ye mere abbuu haiN.", "ur": "یہ میرے ابو ہیں۔" }],
+      "explanation": "Three things change: `bhaaii` → `abbuu`, `meraa` → `mere`, `hai` → `haiN`.",
+      "tags": ["respect", "possessive"]
+    },
+    {
+      "id": "e08",
+      "type": "listen",
+      "audio_text": { "roman": "wo merii behen hai.", "ur": "وہ میری بہن ہے۔", "en": "That's my sister." },
+      "options": ["That's my sister.", "This is my mum.", "That's my brother.", "This is my wife."],
+      "answerIndex": 0,
+      "explanation": "`wo` is \"that\", `merii behen` is \"my sister\".",
+      "tags": ["possessive"]
+    },
+    {
+      "id": "e09",
+      "type": "multiple-choice",
+      "prompt": "Your partner asks `wo Thiik hai?` about someone who isn't there. Who could they mean?",
+      "options": ["A man or a woman: wo doesn't say which", "Only a man", "Only a woman"],
+      "answerIndex": 0,
+      "explanation": "`wo` and `ye` mean \"he\" and \"she\" alike. You know who's meant from the conversation.",
+      "tags": ["pronouns"]
+    },
+    {
+      "id": "e10",
+      "type": "choose-form",
+      "sentence": { "roman": "ye mere shauhar ___.", "ur": "یہ میرے شوہر ___۔", "en": "This is my husband." },
+      "options": [
+        { "roman": "hai", "ur": "ہے" },
+        { "roman": "haiN", "ur": "ہیں" },
+        { "roman": "ho", "ur": "ہو" }
+      ],
+      "answerIndex": 1,
+      "explanation": "A husband is introduced with respect, so `haiN`, and that's why it's `mere`, not `meraa`.",
+      "tags": ["respect"]
+    },
+    {
+      "id": "e11",
+      "type": "translate",
+      "en": "This is my mum, and this is my dad.",
+      "answers": [
+        { "roman": "ye merii ammii haiN, aur ye mere abbuu haiN.", "ur": "یہ میری امی ہیں، اور یہ میرے ابو ہیں۔" }
+      ],
+      "self_grade": true,
+      "hint": "Both parents get the respectful verb.",
+      "explanation": "Both get `haiN`. `merii ammii` stays as it is; `meraa` becomes `mere` before `abbuu`.",
+      "tags": ["respect", "possessive"]
+    },
+    {
+      "id": "e12",
+      "type": "translate",
+      "en": "This is my wife, and that's my sister.",
+      "answers": [
+        { "roman": "ye merii biiwii haiN, aur wo merii behen hai.", "ur": "یہ میری بیوی ہیں، اور وہ میری بہن ہے۔" },
+        { "roman": "ye merii biiwii hai, aur wo merii behen hai.", "ur": "یہ میری بیوی ہے، اور وہ میری بہن ہے۔" }
+      ],
+      "self_grade": true,
+      "explanation": "`ye` for your wife next to you, `wo` for your sister further away. Both take `merii`. `biiwii haiN` is the more polite introduction; `hai` is fine among friends.",
+      "tags": ["possessive", "pronouns"]
+    }
+  ],
+  "dialogue": {
+    "setting": "A family wedding. Your partner's grandmother comes over to meet your family. Your mum and dad are standing with you; your brother is over by the stage. You're younger, so you greet her first.",
+    "speakers": [
+      { "id": "you", "en": "You", "learner": true },
+      { "id": "grandma", "en": "Partner's grandmother", "gender": "f" }
+    ],
+    "lines": [
+      { "speaker": "you", "roman": "assalaam-o-alaikum! aap kaisii haiN?", "ur": "السلام علیکم! آپ کیسی ہیں؟", "en": "Hello! How are you?" },
+      { "speaker": "grandma", "roman": "wa-alaikum-assalaam, beTaa. alhamdulillaah, Thiik huuN.", "ur": "وعلیکم السلام، بیٹا۔ الحمد للہ، ٹھیک ہوں۔", "en": "And peace be upon you, dear. Fine, thank God." },
+      { "speaker": "you", "roman": "ye merii ammii haiN, aur ye mere abbuu haiN.", "ur": "یہ میری امی ہیں، اور یہ میرے ابو ہیں۔", "en": "This is my mum, and this is my dad." },
+      { "speaker": "grandma", "roman": "assalaam-o-alaikum! aap kaise haiN?", "ur": "السلام علیکم! آپ کیسے ہیں؟", "en": "Hello! How are you both?" },
+      { "speaker": "you", "roman": "aur wo meraa bhaaii hai.", "ur": "اور وہ میرا بھائی ہے۔", "en": "And that's my brother, over there." },
+      { "speaker": "grandma", "roman": "wo bhii student hai?", "ur": "وہ بھی اسٹوڈنٹ ہے؟", "en": "Is he a student too?" },
+      { "speaker": "you", "roman": "jii, wo bhii student hai.", "ur": "جی، وہ بھی اسٹوڈنٹ ہے۔", "en": "Yes, he's a student too." }
+    ]
+  }
+}
