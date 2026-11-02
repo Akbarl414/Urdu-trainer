@@ -13,7 +13,7 @@ Work in phases (section 11). **Stop at the end of every phase**, summarise what 
 ## 2. The learner
 
 - Currently **A1**: knows some vocabulary (greetings, family words, food, numbers — patchy), **knows no grammar**. Explain grammar from zero, in plain English, with no linguistics jargon unless it is immediately explained.
-- Goal is **conversation**: understanding and speaking. Reading/writing Urdu script is not a goal.
+- Speaking and listening are the goal. Urdu script is an optional side track (Phase 7) that the main lesson path never requires.
 - Uses Urdu for: **family / partner's family**, **films, music and media** (lots of Hindi–Urdu overlap), and **community / everyday life in the UK**.
 - Lives in the UK, studies mostly on a phone (iPhone or Android), sometimes on a laptop.
 - Will use the app daily, but will sometimes miss days. The app must never punish a missed day with an unmanageable pile of reviews.
