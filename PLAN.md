@@ -69,7 +69,7 @@ src/
   script/                      # Phase 7: letters.js, readable.js, deck.js, machine.js (§13)
   modules/                     # ── FREE TO REDESIGN ──
     today/  lesson/  review/  games/  library/  settings/
-    debug/voices.js            # #/debug/voices: lists speechSynthesis voices on this device (Phase 1, D2)
+    debug/voices.js            # #/debug/voices: lists speechSynthesis voices + Roman→Devanagari test box (Phase 1, D2, D13)
     script/                    # Phase 7: hub, lesson, chart, practise, trace, tiles, match
     exercises/                 # one renderer per exercise type
   ui/                          # ── FREE TO REDESIGN ──
@@ -327,7 +327,12 @@ Generated phrases come only from fields the validator has checked. Games never c
 
 ## 10. Audio
 - **The main device is an iPhone**, which may have no Urdu voice. Phase 1 ships `#/debug/voices`, a small page that lists every `speechSynthesis` voice on the device (name, lang, local/remote, default), highlights `ur*` voices, and has a "speak sample" button per Urdu voice. We confirm what's really there before deciding on pre-generated audio.
-- `tts.js` loads voices (handling `voiceschanged` and iOS lazy loading) and filters `voice.lang` to `ur`, `ur-PK`, `ur-IN`. It speaks the **`ur` field** at `speechRate`, and only with an Urdu voice. Without one, `canSpeak()` is false: audio buttons are hidden, listen exercises and the Listen game are skipped, and a one-time note appears in Settings.
+- `tts.js` loads voices (handling `voiceschanged` and iOS lazy loading). The decision of *how* to speak an item is `src/audio/speakPlan.js` (pure, tested), in this order (D13):
+  1. **Pre-recorded `audio` file**, when the item has one. Always wins.
+  2. **Urdu voice** (`voice.lang` is `ur`, `ur-PK` or `ur-IN`) speaking the **`ur` field**.
+  3. **Hindi fallback**: with no Urdu voice but a `hi*` voice, speak the item's `roman` converted to Devanagari by `src/lang/devanagari.js` and read with the Hindi voice. Loanwords (tokens from loanword entries) pass through unconverted. Conversion happens at runtime from the romanization scheme; there are no extra content fields and the Devanagari is never shown or stored.
+  4. Otherwise `canSpeak()` is false: audio buttons are hidden, listen exercises and the Listen game are skipped, and a one-time note appears in Settings.
+- **Converter rules** (`devanagari.js`, deterministic): greedy longest match; aspirates `kh gh chh jh Th Dh th dh ph bh` and `sh` as single letters; nuqta letters `q x Gh z f` and flap `R`/`Rh` (ड़ ढ़); `cch` is च्च except in `acch…` (अच्छा); consonant + consonant gets a halant (the roman has no vowel there), word-final consonants don't; vowel + `n` + consonant is anusvara (`aankh` आंख); word-final `N` is anusvara over `ai ii i e o au` and chandrabindu otherwise (`maiN` मैं, `huuN` हूँ). Tested against all 60 worked examples in ROMANIZATION.md.
 - If an item has `audio` (a file path under `public/audio/`), it plays instead of TTS. The SW caches audio on first play (cache-first, prefixed cache).
 - `recorder.js` provides record → play back → play model, all in memory (Blob URL revoked on leave), with nothing persisted. It is hidden when `MediaRecorder` or microphone permission is unavailable.
 
@@ -365,6 +370,7 @@ D1–D4 and the curriculum/romanization changes were decided by you. The rest us
 | D16 | Production weighting | Desired retention 0.90 for production facets vs 0.85 for recognition and form facets, plus a 1.25× priority boost. |
 | D17 | Minor parts of speech | Adverbs, pronouns, postpositions and `other` get both `meaning_ur_en` and `meaning_en_ur`. |
 | D18 | Script track (added after Phase 0) | Optional track in Learn, built as Phase 7 (§13). Separate script deck, not in daily reviews unless a setting is on. Storage slots exist from v1 so no migration is needed. |
+| D13 | Audio fallback (decided after the Phase 1 voice test) | Voice test on the main iPhone (iOS 18.7): **no Urdu voice; one Hindi voice, hi-IN "Lekha"**. So: Urdu voice if present (speaks `ur`) → otherwise a runtime Roman Urdu → Devanagari converter read by a Hindi voice → pre-recorded `audio` files always win when present. No new content fields. `#/debug/voices` has a type-in box (Roman Urdu → Devanagari → hear it) so the quality can be judged on the phone. Built as a Phase 1 fix-up; lesson audio comes in Phase 3. Fallback quality is unproven until judged on the device; if it is poor, pre-generated audio (D2) is the next step. |
 
 ---
 

@@ -51,3 +51,7 @@ a { color: var(--primary); }
 
 /* Urdu script, when shown, uses Noto Nastaliq Urdu (self-hosted in Phase 3) with generous line height. */
 [lang='ur'] { font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif; line-height: 2.2; }
+
+/* Voice test: Hindi fallback box */
+.field { width: 100%; box-sizing: border-box; font: inherit; padding: 8px 10px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin: 6px 0; }
+.deva { font-size: 1.4rem; line-height: 1.6; word-break: break-word; }

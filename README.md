@@ -33,7 +33,7 @@ npm run build && npm run preview     # http://localhost:4173
 
 ## Voice test page
 
-Open `#/debug/voices` (e.g. `http://localhost:5173/#/debug/voices`, or the **Voice test** button on the home screen). It lists every text-to-speech voice the device offers, highlights Urdu ones (`ur`, `ur-PK`, `ur-IN`), has a "speak" button for each, and a **Copy report** button. Run it on your iPhone to find out whether an Urdu voice exists before we decide on recorded audio.
+Open `#/debug/voices` (e.g. `http://localhost:5173/#/debug/voices`, or the **Voice test** button on the home screen). It lists every text-to-speech voice the device offers, highlights Urdu ones (`ur`, `ur-PK`, `ur-IN`), has a "speak" button for each, and a **Copy report** button. Run it on your iPhone to find out whether an Urdu voice exists. It also has a **Hindi fallback** box: type Roman Urdu, see the Devanagari it becomes, and hear a Hindi voice read it (the fallback used when a device has no Urdu voice, PLAN D13).
 
 ## Deploying to GitHub Pages
 
