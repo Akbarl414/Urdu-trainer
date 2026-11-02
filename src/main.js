@@ -5,6 +5,8 @@ import { startRouter } from './router.js';
 import { showRecovery } from './ui/recovery.js';
 import { showBanner, hideBanner } from './ui/banner.js';
 import { registerServiceWorker } from './pwa.js';
+import { getContent } from './db/contentLoader.js';
+import { syncDeck } from './srs/deck.js';
 
 const app = document.getElementById('app');
 
@@ -28,6 +30,8 @@ function boot() {
   applyTheme();
   if (status.firstRun && navigator.storage?.persist) navigator.storage.persist().catch(() => {});
   store.touchOpened(__BUILD_ID__);
+  // Catches content added in a new build: creates any cards completed lessons call for. Additive and idempotent.
+  if (syncDeck(store.data, getContent(), Date.now()).length > 0) store.save();
 
   store.onStatusChange((s) => {
     if (s.quotaFull) showBanner({ id: 'quota', tone: 'warn', text: 'Storage is full: new progress is only kept until you close the app. Export a backup.' });

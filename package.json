@@ -18,5 +18,8 @@
   "devDependencies": {
     "ajv": "^8.17.1",
     "vite": "^8.3.5"
+  },
+  "dependencies": {
+    "ts-fsrs": "^6.0.0"
   }
 }

@@ -2,11 +2,25 @@
 import { h } from '../ui/dom.js';
 import { store } from '../db/storage.js';
 import { getContent } from '../db/contentLoader.js';
+import { withSeed } from '../srs/seed.js';
+import { describeCard } from '../srs/cardFace.js';
+import { buildQueue } from '../srs/queue.js';
+import { reviewsDoneToday } from '../srs/stats.js';
 
 export function render(container) {
   const content = getContent();
   const data = store.data;
   const cards = Object.keys(data.srs.decks.main.cards).length;
+  const source = withSeed(content);
+  const now = Date.now();
+  const plan = buildQueue({
+    cards: data.srs.decks.main.cards,
+    now,
+    rolloverHour: data.settings.dayRolloverHour,
+    cap: data.settings.dailyReviewCap,
+    doneToday: reviewsDoneToday(data, now),
+    isReviewable: (id) => describeCard(id, source) !== null,
+  });
 
   container.append(
     h(
@@ -28,6 +42,14 @@ export function render(container) {
           h('dt', {}, 'Saved progress'),
           h('dd', {}, `${Object.keys(data.progress.lessons).length} lessons · ${cards} review cards`),
         ),
+      ),
+      h(
+        'section',
+        { class: 'card' },
+        h('h2', {}, 'Review'),
+        h('p', {}, plan.dueTotal === 0 ? 'Nothing due right now.' : `${plan.dueTotal} due${plan.held ? ` · ${plan.queue.length} in today's session` : ''}.`),
+        h('a', { class: 'btn', href: '#/review' }, 'Start review'),
+        h('p', { class: 'small muted' }, h('a', { href: '#/debug/seed' }, 'Add or remove test cards')),
       ),
       h(
         'section',

@@ -55,3 +55,38 @@ a { color: var(--primary); }
 /* Voice test: Hindi fallback box */
 .field { width: 100%; box-sizing: border-box; font: inherit; padding: 8px 10px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin: 6px 0; }
 .deva { font-size: 1.4rem; line-height: 1.6; word-break: break-word; }
+
+/* ---- Review screen ---- */
+.center { text-align: center; }
+.review-top { margin-top: 0; }
+.prompt { text-align: center; padding: 18px 16px; }
+.prompt .row { justify-content: space-between; }
+.prompt-text { font-size: 1.4rem; font-weight: 600; margin: 0.4em 0; }
+.prompt-urdu { margin: 0.4em 0; }
+.urdu { display: inline-flex; flex-direction: column; align-items: center; }
+.urdu-roman { font-weight: 600; }
+.urdu-big .urdu-roman { font-size: 1.8rem; line-height: 1.25; }
+.urdu-script { font-size: 1.15em; color: var(--ink-muted); }
+.urdu-big .urdu-script { font-size: 1.5rem; }
+.tiles { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 10px 0; }
+.tile { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 6px 12px; font-weight: 600; }
+.weak { color: var(--accent); }
+.segmented { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.seg { min-height: 36px; padding: 0 14px; border: 0; background: transparent; color: var(--ink-muted); font: inherit; font-size: 0.9rem; cursor: pointer; }
+.seg.on { background: var(--primary); color: var(--primary-ink); }
+.show { width: 100%; }
+.choice { width: 100%; flex-direction: column; gap: 2px; padding-top: 6px; padding-bottom: 6px; }
+.reveal { display: grid; gap: 10px; }
+.reveal-row { display: flex; flex-direction: column; gap: 2px; }
+.diff mark { background: color-mix(in srgb, var(--bad) 25%, transparent); color: inherit; border-radius: 3px; text-decoration: underline; text-decoration-color: var(--bad); }
+.grades { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
+.grade { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 60px; padding: 6px 2px; border-radius: var(--radius); border: 2px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
+.grade-name { font-weight: 700; }
+.grade-int { font-size: 0.8rem; color: var(--ink-muted); }
+.grade-again { border-color: var(--bad); }
+.grade-hard { border-color: var(--accent); }
+.grade-good { border-color: var(--good); }
+.grade-easy { border-color: var(--primary); }
+.grade.suggested { box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 35%, transparent); background: color-mix(in srgb, var(--primary) 8%, var(--surface)); }
+.answer-area { margin-top: 10px; }
+.reveal .urdu { align-items: flex-start; }
