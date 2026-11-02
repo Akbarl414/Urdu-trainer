@@ -50,11 +50,13 @@ This file is the plan of record. Keep it up to date when content is generated. T
 | 003 | I am, you are | `honaa` present: `huuN / hai / haiN / ho` (full table) | You can say who and how people are | uk-life |
 | 004 | This is my mum | `ye` / `wo` as "this/he/she" and "that/he/she"; `meraa / merii` as a chunk; respect plural (`ammii haiN`) | You can introduce your family respectfully | family |
 | 005 | Yes, no and questions | `jii haaN`, `jii nahiiN`, `nahiiN` before the verb; `kyaa` at the start for yes/no questions | You can ask and answer yes/no questions | uk-life |
-| 006 | What's your name? Where are you from? | Question words stay in place: `aapkaa naam kyaa hai?`, `aap kahaaN se haiN?` (chunks) | You can exchange names and say where you're from | uk-life |
+| 006 | What's your name? Where are you from? | Question words stay in place: `aapkaa naam kyaa hai?`, `aap kahaaN se haiN?` (chunks); `aunty` / `uncle` for elders you don't call by name | You can exchange names and say where you're from | uk-life |
 | 007 | Happy, tired, busy | Describing words with `honaa`; invariable adjectives (`xush, udaas, biimaar, pareshaan, masruuf`) | You can say how you and others feel | family |
 | 008 | Thank you, sorry, goodbye | Set phrases and `jii` as a softener (`shukriyaa`, `maaf kiijiye`, `koii baat nahiiN`, `xudaa haafiz`, `phir milenge`) | You can thank, apologise and say goodbye politely | uk-life |
 | 009 | Welcome, come in! | Recognising hospitality chunks unanalysed (`aaiye`, `baiThiye`, `chaae lenge?`) | You can respond when you're welcomed into someone's home | family |
 | 010 | Review: Unit 1 | Mixed review; dialogue: visiting your partner's family | You can hold a two-minute greeting conversation | family |
+
+**Planned for lesson 006** (decided in Phase 3c, D26): `aunty` (f, آنٹی) and `uncle` (m, انکل) as `loanword` + `invariable` nouns: the same form for one, several, and before postpositions, so no `plural` / `oblique_pl`. Notes to include: you don't call an elder by their first name, so community elders, friends' parents and older neighbours are `aunty` / `uncle`; `aunty jii` and `uncle jii` add extra respect; `uncle log` is a casual "the uncles", meaning the older men as a group (`log` is taught properly in lesson 018, so here it is a note, not a sentence). They take the respectful `haiN` like any elder.
 
 **Recurring cast** (introduced in lessons 1–5; reuse these names, roles and genders in later dialogues):
 

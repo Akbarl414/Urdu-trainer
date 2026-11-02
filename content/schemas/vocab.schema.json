@@ -164,6 +164,14 @@
           "type": "boolean",
           "description": "Nouns that are grammatically plural even for one group (log, chaawal): roman is already the plural, verbs and adjectives agree in the plural."
         },
+        "plural_rare": {
+          "type": "boolean",
+          "description": "Nouns: plural and oblique_pl are grammatical but rarely said (ammiyaaN, abbuuoN). They are still listed, but never become plural cards, game items or plural reveals (src/lang/nounForms.js)."
+        },
+        "invariable": {
+          "type": "boolean",
+          "description": "Loanword nouns that never take Urdu endings (aunty, uncle): the same form for singular, plural and oblique. plural and oblique_pl are omitted; the app uses the roman for all three."
+        },
         "plural": {
           "$ref": "common.schema.json#/definitions/pair"
         },
@@ -246,13 +254,27 @@
               "pos"
             ],
             "not": {
-              "properties": {
-                "mass": {
-                  "const": true
+              "anyOf": [
+                {
+                  "properties": {
+                    "mass": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "mass"
+                  ]
+                },
+                {
+                  "properties": {
+                    "invariable": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "invariable"
+                  ]
                 }
-              },
-              "required": [
-                "mass"
               ]
             }
           },

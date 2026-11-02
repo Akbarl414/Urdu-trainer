@@ -8,6 +8,7 @@
 //   choice  pick an option (gender, takes_ne, multiple-choice and choose-form exercises)
 // A face lists the `modes` it supports; the Review screen offers a Speak/Type toggle when both exist.
 
+import { nounPlural } from '../lang/nounForms.js';
 import { parseCardId, itemKey } from './facets.js';
 import { tokens } from '../lang/normalise.js';
 import { forLearner } from '../lesson/learner.js';
@@ -69,7 +70,7 @@ function wordFace(id, parsed, source) {
         defaultMode: 'choice',
         options: [{ label: 'masculine', value: 'm' }, { label: 'feminine', value: 'f' }],
         correct: word.gender,
-        reveal: [{ en: word.gender === 'm' ? 'Masculine' : 'Feminine' }, word.plural ? { label: 'Plural', ...word.plural } : null, ...extras].filter(Boolean),
+        reveal: [{ en: word.gender === 'm' ? 'Masculine' : 'Feminine' }, nounPlural(word) ? { label: 'Plural', ...nounPlural(word).plural } : null, ...extras].filter(Boolean),
       };
     case 'perfective': {
       const p = word.perfective;

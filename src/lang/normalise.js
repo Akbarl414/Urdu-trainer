@@ -37,7 +37,8 @@ const PHONE_PHRASES = [
   { canonical: 'pataa nahiiN', variants: ['pta nhi', 'pata nhi', 'pta nahi', 'pta nai', 'pata nai'] },
   { canonical: 'nahiiN', variants: ['nhi', 'nai', 'nahee'] },
   { canonical: 'jii', variants: ['g'] },
-  { canonical: 'taiyaar', variants: ['tayyar', 'tayar', 'tyar', 'tayaar'] },
+  // tayyaar (D26): tayyar / tayar / tayaar already fold to it; these don't.
+  { canonical: 'tayyaar', variants: ['taiyaar', 'taiyar', 'tyar'] },
 ];
 
 /** Lowercase-free tokenisation shared by every comparison: hyphen = space, punctuation removed. */

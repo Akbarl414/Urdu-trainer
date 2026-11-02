@@ -214,6 +214,12 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
     if (word.pos === 'noun') {
       if (word.marked && word.gender !== 'm') err(v, `${path} is marked, so it must be masculine (gender "m")`);
       if (word.mass && word.plural_only) err(v, `${path} cannot be both mass and plural_only`);
+      if (word.invariable) {
+        if (!word.loanword) err(v, `${path} is invariable, which is only for English loanwords that never take Urdu endings`);
+        if (word.plural || word.oblique_pl) err(v, `${path} is invariable: leave out plural and oblique_pl (the roman is used for all of them)`);
+        if (word.marked || word.mass || word.plural_only || word.plural_rare) err(v, `${path} is invariable, so it cannot also be marked, mass, plural_only or plural_rare`);
+      }
+      if (word.plural_rare && !(word.plural && word.oblique_pl)) err(v, `${path} is plural_rare but lists no plural / oblique_pl`);
       if (word.marked && word.plural && word.oblique_pl) {
         const stem = word.roman.replace(/aa$/, '');
         if (!word.roman.endsWith('aa')) err(v, `${path} is marked but its roman does not end in "aa"`);
@@ -231,6 +237,7 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
       // After a long -uu the waw carries a hamza: ابو → ابوؤں, آلو → آلوؤں.
       if (word.oblique_pl && !(ends(word.oblique_pl, 'oN', 'وں') || ends(word.oblique_pl, 'uuoN', 'وؤں'))) err(v, `${path}.oblique_pl should end in "oN" / وں (ؤں after a long -uu)`);
     }
+    if (word.pos !== 'noun') for (const k of ['invariable', 'plural_rare']) if (word[k] !== undefined) err(v, `${path}: "${k}" is only for nouns`);
     if (word.variable !== undefined && ['noun', 'verb', 'phrase', 'adverb'].includes(word.pos)) err(v, `${path}: "variable" is only for adjectives, pronouns, postpositions and other (a ${word.pos} doesn't agree like acchaa)`);
     if (word.agreement) {
       if (!word.variable) err(v, `${path} has agreement forms but variable is not true`);

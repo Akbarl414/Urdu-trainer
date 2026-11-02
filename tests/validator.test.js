@@ -281,3 +281,14 @@ test('ur_alt: other real spellings, in Urdu code points, not repeating ur', () =
   b = makeBundle(); word(b, 'shukriyaa').ur_alt = ['شکريه']; failsWith(b, /look-alike/);
   b = makeBundle(); word(b, 'shukriyaa').ur_alt = ['شکریہ']; failsWith(b, /repeats ur/);
 });
+
+test('nouns: invariable loanwords omit plural forms; rare plurals must still list them (D26)', () => {
+  const inv = (b) => { const w = word(b, 'phone'); delete w.plural; delete w.oblique_pl; w.forms = ['phone']; w.invariable = true; return w; };
+  let b = makeBundle(); inv(b); assert.deepEqual(run(b).errors, []);
+  b = makeBundle(); delete word(b, 'kitaab').plural; delete word(b, 'kitaab').oblique_pl; failsWith(b, /plural/);
+  b = makeBundle(); inv(b).plural = { roman: 'phone', ur: 'فون' }; failsWith(b, /leave out plural and oblique_pl/);
+  b = makeBundle(); delete inv(b).loanword; failsWith(b, /only for English loanwords/);
+  b = makeBundle(); inv(b).plural_rare = true; failsWith(b, /cannot also be/);
+  b = makeBundle(); word(b, 'kitaab').plural_rare = true; assert.deepEqual(run(b).errors, []);
+  b = makeBundle(); const k = word(b, 'kitaab'); delete k.plural; delete k.oblique_pl; k.mass = true; k.plural_rare = true; failsWith(b, /plural_rare but lists no plural/);
+});

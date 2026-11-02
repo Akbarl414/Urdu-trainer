@@ -528,6 +528,7 @@
       },
       "gender": "f",
       "marked": false,
+      "plural_rare": true,
       "plural": { "roman": "ammiyaaN", "ur": "امیاں" },
       "oblique_pl": { "roman": "ammiyoN", "ur": "امیوں" }
     },
@@ -552,6 +553,7 @@
       },
       "gender": "m",
       "marked": false,
+      "plural_rare": true,
       "plural": { "roman": "abbuu", "ur": "ابو" },
       "oblique_pl": { "roman": "abbuuoN", "ur": "ابوؤں" }
     },
@@ -680,7 +682,7 @@
       "literal": "respect yes",
       "situation": "Your partner's father asks if you're well. Say yes, politely.",
       "example": {
-        "roman": "jii haaN, maiN taiyaar huuN.",
+        "roman": "jii haaN, maiN tayyaar huuN.",
         "ur": "جی ہاں، میں تیار ہوں۔",
         "en": "Yes, I'm ready."
       },
@@ -712,7 +714,7 @@
       "ur": "کیا",
       "meaning_en": "what?; (at the start) makes a yes/no question",
       "example": {
-        "roman": "kyaa aap taiyaar haiN?",
+        "roman": "kyaa aap tayyaar haiN?",
         "ur": "کیا آپ تیار ہیں؟",
         "en": "Are you ready?"
       },
@@ -760,7 +762,7 @@
       "ur": "شاید",
       "meaning_en": "maybe, perhaps",
       "example": {
-        "roman": "shaayad wo taiyaar hai.",
+        "roman": "shaayad wo tayyaar hai.",
         "ur": "شاید وہ تیار ہے۔",
         "en": "Maybe she's ready."
       },
@@ -771,17 +773,17 @@
     {
       "id": "taiyaar",
       "pos": "adjective",
-      "roman": "taiyaar",
+      "roman": "tayyaar",
       "ur": "تیار",
       "meaning_en": "ready",
       "example": {
-        "roman": "kyaa aap taiyaar haiN?",
+        "roman": "kyaa aap tayyaar haiN?",
         "ur": "کیا آپ تیار ہیں؟",
         "en": "Are you ready?"
       },
       "register": "neutral",
       "introduced_in": "lesson-005",
-      "notes": "Never changes, like `Thiik`: a man, a woman and a group are all `taiyaar`.",
+      "notes": "Never changes, like `Thiik`: a man, a woman and a group are all `tayyaar`. Also written `taiyaar`; typing either is fine.",
       "variable": false
     }
   ]

@@ -23,15 +23,15 @@
         "rows": [
           [{ "roman": "maiN student huuN.", "ur": "میں اسٹوڈنٹ ہوں۔", "en": "I'm a student." }, { "roman": "maiN student nahiiN huuN.", "ur": "میں اسٹوڈنٹ نہیں ہوں۔", "en": "I'm not a student." }],
           [{ "roman": "wo Thiik hai.", "ur": "وہ ٹھیک ہے۔", "en": "She's fine." }, { "roman": "wo Thiik nahiiN hai.", "ur": "وہ ٹھیک نہیں ہے۔", "en": "She isn't well." }],
-          [{ "roman": "ham taiyaar haiN.", "ur": "ہم تیار ہیں۔", "en": "We're ready." }, { "roman": "ham taiyaar nahiiN haiN.", "ur": "ہم تیار نہیں ہیں۔", "en": "We aren't ready." }]
+          [{ "roman": "ham tayyaar haiN.", "ur": "ہم تیار ہیں۔", "en": "We're ready." }, { "roman": "ham tayyaar nahiiN haiN.", "ur": "ہم تیار نہیں ہیں۔", "en": "We aren't ready." }]
         ]
       }
     },
     {
       "heading": "Questions: `kyaa` at the start",
-      "body": "Any sentence becomes a yes/no question if your voice goes up at the end: `aap taiyaar haiN?` To make it clearly a question, put `kyaa` at the start. Here `kyaa` doesn't mean \"what\"; it just marks the question, a bit like \"do\" or \"is\" in English. The word order stays the same.",
+      "body": "Any sentence becomes a yes/no question if your voice goes up at the end: `aap tayyaar haiN?` To make it clearly a question, put `kyaa` at the start. Here `kyaa` doesn't mean \"what\"; it just marks the question, a bit like \"do\" or \"is\" in English. The word order stays the same.",
       "examples": [
-        { "roman": "kyaa aap taiyaar haiN?", "ur": "کیا آپ تیار ہیں؟", "en": "Are you ready?" },
+        { "roman": "kyaa aap tayyaar haiN?", "ur": "کیا آپ تیار ہیں؟", "en": "Are you ready?" },
         { "roman": "kyaa wo student hai?", "ur": "کیا وہ اسٹوڈنٹ ہے؟", "en": "Is he a student? / Is she a student?" },
         { "roman": "kyaa tum Thiik ho?", "ur": "کیا تم ٹھیک ہو؟", "en": "Are you all right?" }
       ]
@@ -52,7 +52,7 @@
       "id": "e01",
       "type": "multiple-choice",
       "prompt": "Imran, your neighbour, asks you this. You are ready. What do you say?",
-      "sentence": { "roman": "kyaa aap taiyaar haiN?", "ur": "کیا آپ تیار ہیں؟", "en": "Are you ready?" },
+      "sentence": { "roman": "kyaa aap tayyaar haiN?", "ur": "کیا آپ تیار ہیں؟", "en": "Are you ready?" },
       "options": [
         { "roman": "jii haaN.", "ur": "جی ہاں۔", "en": "Yes." },
         { "roman": "jii nahiiN.", "ur": "جی نہیں۔", "en": "No." },
@@ -84,20 +84,20 @@
     {
       "id": "e04",
       "type": "transform",
-      "from": { "roman": "aap taiyaar haiN.", "ur": "آپ تیار ہیں۔", "en": "You're ready." },
+      "from": { "roman": "aap tayyaar haiN.", "ur": "آپ تیار ہیں۔", "en": "You're ready." },
       "instruction": "Make it a clear yes/no question with `kyaa`.",
-      "answers": [{ "roman": "kyaa aap taiyaar haiN?", "ur": "کیا آپ تیار ہیں؟" }],
+      "answers": [{ "roman": "kyaa aap tayyaar haiN?", "ur": "کیا آپ تیار ہیں؟" }],
       "explanation": "Put `kyaa` at the start. Nothing else moves.",
       "tags": ["questions"]
     },
     {
       "id": "e05",
       "type": "transform",
-      "from": { "roman": "ham taiyaar haiN.", "ur": "ہم تیار ہیں۔", "en": "We're ready." },
+      "from": { "roman": "ham tayyaar haiN.", "ur": "ہم تیار ہیں۔", "en": "We're ready." },
       "instruction": "Make it negative: we're not ready.",
       "answers": [
-        { "roman": "ham taiyaar nahiiN haiN.", "ur": "ہم تیار نہیں ہیں۔" },
-        { "roman": "ham taiyaar nahiiN.", "ur": "ہم تیار نہیں۔" }
+        { "roman": "ham tayyaar nahiiN haiN.", "ur": "ہم تیار نہیں ہیں۔" },
+        { "roman": "ham tayyaar nahiiN.", "ur": "ہم تیار نہیں۔" }
       ],
       "explanation": "`nahiiN` goes before `haiN`. Dropping `haiN` after `nahiiN` is just as natural.",
       "tags": ["negation"]
@@ -161,7 +161,7 @@
     {
       "id": "e11",
       "type": "fill-blank",
-      "sentence": { "roman": "jii ___, maiN taiyaar huuN.", "ur": "جی ___، میں تیار ہوں۔", "en": "Yes, I'm ready." },
+      "sentence": { "roman": "jii ___, maiN tayyaar huuN.", "ur": "جی ___، میں تیار ہوں۔", "en": "Yes, I'm ready." },
       "answer": "haaN",
       "answer_ur": "ہاں",
       "explanation": "`jii haaN` is the polite \"yes\".",
@@ -190,12 +190,12 @@
       { "id": "aaishaa", "en": "Aisha (neighbour)", "gender": "f" }
     ],
     "lines": [
-      { "speaker": "imraan", "roman": "assalaam-o-alaikum! kyaa aap taiyaar haiN?", "ur": "السلام علیکم! کیا آپ تیار ہیں؟", "en": "Hello! Are you ready?" },
-      { "speaker": "you", "roman": "wa-alaikum-assalaam! jii haaN, maiN taiyaar huuN.", "ur": "وعلیکم السلام! جی ہاں، میں تیار ہوں۔", "en": "Hello! Yes, I'm ready." },
-      { "speaker": "imraan", "roman": "kyaa sanaa bhii taiyaar hai?", "ur": "کیا ثنا بھی تیار ہے؟", "en": "Is Sana ready too?" },
+      { "speaker": "imraan", "roman": "assalaam-o-alaikum! kyaa aap tayyaar haiN?", "ur": "السلام علیکم! کیا آپ تیار ہیں؟", "en": "Hello! Are you ready?" },
+      { "speaker": "you", "roman": "wa-alaikum-assalaam! jii haaN, maiN tayyaar huuN.", "ur": "وعلیکم السلام! جی ہاں، میں تیار ہوں۔", "en": "Hello! Yes, I'm ready." },
+      { "speaker": "imraan", "roman": "kyaa sanaa bhii tayyaar hai?", "ur": "کیا ثنا بھی تیار ہے؟", "en": "Is Sana ready too?" },
       { "speaker": "you", "roman": "pataa nahiiN. shaayad nahiiN!", "ur": "پتا نہیں۔ شاید نہیں!", "en": "No idea. Maybe not!" },
-      { "speaker": "imraan", "roman": "aaishaa bhii taiyaar nahiiN hai.", "ur": "عائشہ بھی تیار نہیں ہے۔", "en": "Aisha isn't ready either." },
-      { "speaker": "aaishaa", "roman": "maiN taiyaar huuN!", "ur": "میں تیار ہوں!", "en": "I'm ready!" }
+      { "speaker": "imraan", "roman": "aaishaa bhii tayyaar nahiiN hai.", "ur": "عائشہ بھی تیار نہیں ہے۔", "en": "Aisha isn't ready either." },
+      { "speaker": "aaishaa", "roman": "maiN tayyaar huuN!", "ur": "میں تیار ہوں!", "en": "I'm ready!" }
     ]
   }
 }
