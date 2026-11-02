@@ -236,7 +236,9 @@ Vocabulary and dialogues are chosen for the learner's three contexts: family and
 
 **Phase 6 — Content pipeline docs.** Write `CONTENT_GUIDE.md` (modelled on the German one): how to generate the next unit, the one-unit-per-pass rule, the manual accuracy checklist, how to process an exported mistake-report file, and a ready-to-paste prompt for "generate unit N". Then finish Unit 1 (lessons 6–10). Stop.
 
-After Phase 6, new content is added one unit per session using `CONTENT_GUIDE.md`.
+**Phase 7 — Script track (optional).** An optional Urdu-script track in the Learn tab that never blocks daily lessons: about 12 lessons of ~10 minutes, teaching shapes in Naskh first and finishing with Nastaliq. Practice types are script→Roman reading with already-learned words, spelling with letter tiles, finger tracing (self-checked) and a letter-match game, with a separate script SRS deck and a "Practise script" button. It includes an alphabet reference chart stored as content (`content/script/alphabet.json`). Each unit's review lesson ends with a skippable "next Script lesson" suggestion. Full design in `PLAN.md` §13; the Phase 1 storage already has slots for it. Stop.
+
+After Phase 6, new content is added one unit per session using `CONTENT_GUIDE.md`; Phase 7 can be built in between those sessions.
 
 ## 12. Definition of done for any phase
 

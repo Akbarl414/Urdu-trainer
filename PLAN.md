@@ -40,7 +40,7 @@ vite.config.js                 # base './', plugin that writes the SW precache l
 public/
   manifest.webmanifest         # scope "./", start_url "./"
   icons/
-  fonts/                       # self-hosted Noto Nastaliq Urdu woff2 (D5)
+  fonts/                       # self-hosted Noto Nastaliq Urdu woff2 (D5); Noto Naskh Arabic added in Phase 7
   audio/                       # optional pre-generated audio files, referenced by `audio` fields (D2)
 src/
   main.js                      # boot: storage load → recovery gate → router → SW registration
@@ -66,9 +66,11 @@ src/
   audio/
     tts.js                     # Urdu voice detection, speak(ur), prefer `audio` file
     recorder.js                # MediaRecorder record & compare (memory only)
+  script/                      # Phase 7: letters.js, readable.js, deck.js, machine.js (§13)
   modules/                     # ── FREE TO REDESIGN ──
     today/  lesson/  review/  games/  library/  settings/
     debug/voices.js            # #/debug/voices: lists speechSynthesis voices on this device (Phase 1, D2)
+    script/                    # Phase 7: hub, lesson, chart, practise, trace, tiles, match
     exercises/                 # one renderer per exercise type
   ui/                          # ── FREE TO REDESIGN ──
     components/ (tabbar, button, card, urduText, audioButton, banner, ...)
@@ -77,6 +79,7 @@ content/                       # ── STABLE CONTRACT ──
   ROMANIZATION.md  CURRICULUM.md  shipped-ids.json
   schemas/ unit.schema.json, vocab.schema.json, lesson.schema.json, exercise.schema.json
   units/unit-01/ unit.json, vocab.json, lesson-001.json … lesson-010.json
+  script/ alphabet.json, lessons/script-01.json …   # Phase 7 (§13)
 scripts/
   validate-content.js          # schemas + cross-file rules + romanization + id lockfile
   check-coverage.js            # warning-only token coverage per lesson
@@ -111,21 +114,28 @@ Rule for imports: `modules/` and `ui/` may import from `db/`, `srs/`, `lesson/`,
   settings: {
     showScript: false, audio: true, speechRate: 0.9, voiceURI: null,
     dailyReviewCap: 60, theme: 'system', dayRolloverHour: 4,
-    noVoiceNoteSeen: false
+    noVoiceNoteSeen: false,
+    // script track (§13), inert until Phase 7
+    scriptInDailyReviews: false, scriptDailyCap: 30, scriptNewWordsPerDay: 5,
+    scriptSuggestions: true, scriptChartOrder: 'alphabetical', scriptChartFont: 'naskh'
   },
   progress: {
     lessons: {                       // lessonId -> record
       'lesson-001': { firstCompletedAt, lastCompletedAt, timesCompleted, knownWordIds: [] }
     },
-    run: null                        // the lesson in progress (see §6), or null
+    run: null,                       // the lesson in progress (see §6), or null
+    script: { lessons: {}, run: null, lastSuggestedAt: null }   // §13, inert until Phase 7
   },
   srs: {
-    cards: { '<cardId>': CompactCard }
+    decks: {
+      main:   { cards: { '<cardId>': CompactCard } },   // w:… and x:… cards
+      script: { cards: { '<cardId>': CompactCard } }    // s:… cards (§13), empty until Phase 7
+    }
   },
   stats: {
     streak, bestStreak, lastStudyDay,               // 'YYYY-MM-DD' in study-day terms
-    days: { 'YYYY-MM-DD': { reviews, newWords, lessons, games, seconds } },
-    pace: { reviewSec: 10, wordSec: 20, exerciseSec: 20 },  // moving averages for the planner
+    days: { 'YYYY-MM-DD': { reviews, newWords, lessons, games, seconds, scriptReviews, scriptLessons } },
+    pace: { reviewSec: 10, wordSec: 20, exerciseSec: 20, scriptReviewSec: 8 },  // moving averages for the planner
     gameBests: {}
   },
   flags: [ { id, createdAt, target: { kind, id, field }, note, build } ],  // "Report a mistake"
@@ -134,7 +144,7 @@ Rule for imports: `modules/` and `ui/` may import from `db/`, `srs/`, `lesson/`,
 ```
 
 **CompactCard** (`srs/fsrs.js` is the only module that knows how this maps to ts-fsrs's `Card`):
-`{ due, s, d, st, r, l, lr, sd, ls, weak? }` stores due (epoch ms), stability, difficulty, state (0 New, 1 Learning, 2 Review, 3 Relearning), reps, lapses, last review (ms), scheduled days, learning step, and an optional game "weak" timestamp. Short keys matter here. A full deck holds about 7,000 cards, roughly 0.6 MB compact versus about 1.8 MB verbose, and localStorage is capped at about 5 MB per origin, **which is shared with the German app**.
+`{ due, s, d, st, r, l, lr, sd, ls, weak? }` stores due (epoch ms), stability, difficulty, state (0 New, 1 Learning, 2 Review, 3 Relearning), reps, lapses, last review (ms), scheduled days, learning step, and an optional game "weak" timestamp. Short keys matter here. A full deck holds about 7,000 cards, roughly 0.6 MB compact versus about 1.8 MB verbose, and localStorage is capped at about 5 MB per origin, **which is shared with the German app**. The script deck adds at most ~80 letter cards plus 5 word cards per practice day (a few hundred in practice), which is small next to the main deck.
 
 ### 3.3 Migrations
 These work as in the reference: `MIGRATIONS[n]` upgrades n → n+1, entries are never removed or renumbered, and the additive merge runs afterwards. Additions:
@@ -174,6 +184,7 @@ These work as in the reference: `MIGRATIONS[n]` upgrades n → n+1, entries are 
 - Every `roman` and `answers[].roman` field passes `lang/romanization.js` (character set, the capital rule, `c` only in `ch`/`cch`, `N` only word-final after a vowel, no `v`, no `ee`/`oo`; see ROMANIZATION.md §6).
 - Loanword exemption: tokens that match the `roman` or `forms` of a `loanword: true` word introduced in this or an earlier lesson only need to be lowercase (a final `N` from an Urdu ending is allowed). Any other token is checked normally.
 - Every `roman` has a non-empty sibling `ur` (Arabic-script range check) and `en`.
+- `ur` fields use Urdu code points (`ی` U+06CC, `ک` U+06A9, `ہ` U+06C1, `ھ` U+06BE), never the Arabic look-alikes `ي ك ه`. This is needed by the script track (§13.6) and catches copy-paste errors.
 - Nouns require `gender` and `marked`; marked nouns require `plural` and `oblique_pl`. Verbs require `infinitive`, `stem`, `transitivity`, `takes_ne`, and `perfective.{m_sg,f_sg,m_pl}`.
 - Ids are unique across the whole app (words, lessons, units). `new_vocab` ids exist and their `introduced_in` equals the lesson. Each word is introduced exactly once.
 - Lessons have 6–10 new words (0–4 for review lessons) and 8–12 exercises. Units hold ≤ 80 words.
@@ -194,6 +205,7 @@ These work as in the reference: `MIGRATIONS[n]` upgrades n → n+1, entries are 
 ### 5.1 Card ids
 - `w:<wordId>:<facet>` for words and phrases (word ids are globally unique).
 - `x:<lessonId>:<exerciseId>` for exercises (one card each).
+- `s:l:<letterId>:<facet>` and `s:w:<wordId>:<facet>` for the script deck (§13.3). They live in `srs.decks.script`, never in `srs.decks.main`. The `s:` prefix is reserved from Phase 1.
 - `facets.js` builds and parses these. The format never changes; if it ever has to, a migration rewrites the keys.
 
 ### 5.2 Facets
@@ -325,6 +337,7 @@ Generated phrases come only from fields the validator has checked. Games never c
 - **P1**: storage (migrations over fixtures, prefixing, export/import round trip, corrupt data → recovery with no wipe, erase keeps foreign keys, quota path), validator (bad romanization, word-internal `N`, missing `ur`, missing `perfective`/`takes_ne`, duplicate ids, unknown vocab ids, lockfile, loanword exemption both ways), the banned-API grep. Manual check: open `#/debug/voices` on the iPhone and report the list.
 - **P2**: FSRS wiring, facet unlocking, cap, priority, backlog spreading, sibling spacing, already-know path, normaliser.
 - **P3**: planner budget and modes, machine transitions and resume, commit adds the right cards exactly once, unlock order.
+- **P7**: letter decomposition (`ur` → letter ids, including `لا`, `آ`, hamza forms), readable-word rule, script deck isolation (no script card in the main queue unless the setting is on; 1-in-4 cap when it is), new-word stream cap, alphabet validator rules, the review-lesson suggestion appears only after review lessons and never blocks.
 
 ---
 
@@ -351,3 +364,104 @@ D1–D4 and the curriculum/romanization changes were decided by you. The rest us
 | D15 | Snapshots | 3 rolling daily snapshots in localStorage; on quota pressure the oldest snapshot is dropped first, never the main key. Revisit IndexedDB only if storage gets tight. |
 | D16 | Production weighting | Desired retention 0.90 for production facets vs 0.85 for recognition and form facets, plus a 1.25× priority boost. |
 | D17 | Minor parts of speech | Adverbs, pronouns, postpositions and `other` get both `meaning_ur_en` and `meaning_en_ur`. |
+| D18 | Script track (added after Phase 0) | Optional track in Learn, built as Phase 7 (§13). Separate script deck, not in daily reviews unless a setting is on. Storage slots exist from v1 so no migration is needed. |
+
+---
+
+## 13. Script track (optional; designed now, built in Phase 7)
+
+Reading Urdu script is still not a goal of the main path. This is an **optional** side track for when you want it. It lives in the **Learn** tab and never blocks, gates, or slows the daily lessons.
+
+### 13.1 Shape of the track
+- **12 lessons of about 10 minutes**, unlocked in order, independent of the main lesson path.
+- **Shapes are taught in Naskh first** (upright, one letter after another, easy to see). Nastaliq, the sloping style real Urdu is printed in, comes in the last lesson.
+- **Suggestions, never pushes**: each unit's review lesson (`review: true`) ends its summary screen with a skippable card: "Next Script lesson: S04 · s-family · ~10 min" with **Start** and **Not now** buttons. The card isn't shown when the track is finished or `settings.scriptSuggestions` is off.
+
+| # | Id | Lesson | Covers |
+|---|---|---|---|
+| 1 | `script-01` | How the script works | Right to left; letters join; dots tell letters apart. Alif and the **b-family** `ب پ ت ٹ ث` |
+| 2 | `script-02` | Letters that don't join forwards | The **non-joining letters** `ا د ڈ ذ ر ڑ ز ژ و`, and why words break into pieces |
+| 3 | `script-03` | The j-family and its cousins | `ج چ ح خ`, then `ع غ` |
+| 4 | `script-04` | The s-family | `س ش ص ض ط ظ` |
+| 5 | `script-05` | f, q, k, g, l, m, n | `ف ق ک گ ل م ن` (the commonest consonants) |
+| 6 | `script-06` | The nasal ں | `ں` (nuun Ghunnaa) and how it maps to the word-final `N` of our scheme |
+| 7 | `script-07` | و and ی: consonant or vowel? | `و` = w / uu / o / au; `ی` = y / ii; `ی` vs `ے` (choTii ye / baRii ye) |
+| 8 | `script-08` | ہ and the aspirates | `ہ` vs `ھ`; `bh ph th Th jh chh dh Dh kh gh Rh` |
+| 9 | `script-09` | The marks people leave out | Short vowel marks (zabar, zer, pesh), jazm, shadd, `آ`, and why everyday text omits them |
+| 10 | `script-10` | Hamza and vowel pairs | `ء ئ ؤ ۓ` as in `gaye` گئے, `bhaaii` بھائی, `aaiye` آئیے |
+| 11 | `script-11` | Little words as whole shapes | High-frequency words read at a glance: `ہے ہیں میں کا کی کے نہیں اور` |
+| 12 | `script-12` | From Naskh to Nastaliq | Sloping words, stacked joins, dots that move; re-reading known words in Nastaliq |
+
+Each script lesson runs: intro (2–3 screens) → letters (forms and tracing for each new letter) → practice (mixed types below) → summary. It uses its own small state machine (`script/machine.js`, same pattern as §6.2), stored in `progress.script.run` so it can be resumed.
+
+### 13.2 Practice types
+| Type | What happens | SRS |
+|---|---|---|
+| **Read** (script → Roman) | A word you've already learned is shown in script, taken from its existing `ur` field. You type the roman (normaliser, §5.5) or pick from 4 options early on | `s:w:<wordId>:read` |
+| **Spell** (letter tiles) | You see roman + English and tap isolated-letter tiles in order. The word joins up live as you build it. The check compares letter sequences (diacritics stripped) against `ur`, plus an optional `ur_alt` | `s:w:<wordId>:spell` |
+| **Trace** | Your finger traces over a large faint letter outline on a canvas (the glyph is drawn from the Naskh font), then **Close enough / Try again**. Self-checked; no stroke-order data in v1 | none (practice only) |
+| **Letter match** (game) | Match isolated ↔ joined forms, or letter ↔ sound, against a timer | wrong → `weak` on the letter's cards (§5.6 rules) |
+
+**Which words are readable** (`script/readable.js`, pure, tested): a word becomes available for Read and Spell once (a) its lesson in the main path is complete and (b) every letter in its `ur` (after decomposition into letter ids; harakat stripped; `لا` → ل + ا; `آ` → alif madda) has been taught in a completed script lesson. Early on, when few learned words are readable, the pool is topped up with the alphabet chart's example words. These are marked "preview" and create no meaning cards.
+
+### 13.3 Script deck (separate from daily reviews)
+- **Letter cards**: `s:l:<letterId>:sound` (shape → sound) and `s:l:<letterId>:forms` (recognise the letter inside a joined word). They are created when the letter's script lesson is completed.
+- **Word cards**: `s:w:<wordId>:read` and `s:w:<wordId>:spell`. Unlike the main deck, the script deck has a **new-card stream**, because creating cards for every readable word would add ~2,900 cards: each "Practise script" session introduces up to `scriptNewWordsPerDay` (default 5) readable words, weakest-and-most-recent main-path words first.
+- **"Practise script"** button (Learn → Script) runs the script queue with its own cap `scriptDailyCap` (default 30). It has the same priority, sibling spacing and FSRS settings as §5.4, using the recognition retention (0.85).
+- **Not in daily reviews by default.** With `settings.scriptInDailyReviews: true`, due script cards join the daily queue, share the main `dailyReviewCap`, and are capped at 1 in 4 of the session so speaking practice stays dominant.
+- Script reviews are counted separately in stats (`scriptReviews`) and never count toward the main backlog, catch-up mode or the lesson planner.
+
+### 13.4 Alphabet reference chart
+A page in the Learn tab (`#/learn/alphabet`), linked from every script lesson's header. It is rendered entirely from **`content/script/alphabet.json`** (schema `content/schemas/alphabet.schema.json`). Nothing about letters is hard-coded in the UI.
+
+**One row per letter of the full Urdu alphabet (39)**, in alphabetical order: `ا ب پ ت ٹ ث ج چ ح خ د ڈ ذ ر ڑ ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن ں و ہ ھ ء ی ے`. This includes the Urdu-specific `ٹ ڈ ڑ ں ے ھ`. `آ` (alif madda) appears in the marks table.
+
+| Column | Source field | Notes |
+|---|---|---|
+| Letter, large | `char` | Must be the Urdu code point (`ی` U+06CC, `ک` U+06A9, `ہ` U+06C1, `ھ` U+06BE), never the Arabic look-alikes |
+| Name (Roman Urdu) | `name` + `name_ur` | e.g. `alif`, `be`, `pe`, `te`, `Te`, `jiim`, `nuun Ghunnaa`, `do-chashmii he`, `choTii ye`, `baRii ye`. Romanization rules apply |
+| Sound | `sounds: [{ roman, scheme_row }]` | Several sounds where needed (`و` → w / uu / o / au; `ع` → "silent"). `scheme_row` is an anchor id that links to the matching row of ROMANIZATION.md (anchors are added to that table in Phase 7; in the app the link opens a Spelling guide page rendered from ROMANIZATION.md with that row highlighted) |
+| Four forms | `joining: "dual" \| "right"`, optional `positions_unused` + `note` | Forms are **rendered by the font** using zero-width joiners (initial = `X‍`, medial = `‍X‍`, final = `‍X`), so nobody hand-types them wrongly. Non-joining (`right`) letters show initial/medial as "doesn't join forwards". `ں` and `ے` mark initial/medial as not used, `ھ` marks isolated as not used |
+| Example word | `example: { word_id }` or `example: { roman, ur, en }` | A course word is preferred (`word_id` is resolved from vocab). The validator checks that the example's `ur` contains the letter |
+| Audio | speaks `name_ur`; the example has its own button | Hidden without an Urdu voice or `audio` file (§10) |
+
+- **Toggles** (remembered in settings): order **Alphabetical / By shape family** (`family` field: `ب پ ت ٹ ث` together, `ج چ ح خ`, `د ڈ ذ`, `ر ڑ ز ژ`, `س ش`, `ص ض`, `ط ظ`, `ع غ`, `ف ق`, `ک گ`, `ن ں`, `ی ے`, `ہ ھ`, …) and font **Naskh / Nastaliq** for the whole chart.
+- **Marks table** below the letters, from `alphabet.json` → `marks[]`: zabar `َ`, zer `ِ`, pesh `ُ`, jazm `ْ`, shadd `ّ`, plus the aspiration marker `ھ` and alif madda `آ`. Each has its name, what it does, and an example (`اَب` ab, `دِل` dil, `تُم` tum, `پکّا` pakkaa, `گھر` ghar, `آپ` aap).
+- **Validator** (Phase 7): exactly the 39 letters, no duplicates; every `char` is a single Urdu code point; families cover every letter; `scheme_row` anchors exist in ROMANIZATION.md; example words exist and contain their letter; every letter is taught by exactly one `script-NN` lesson; ids go in the lockfile like all other content.
+- **Letter ids** are lowercase name-based and never change: `alif, be, pe, te, te-r, se, jiim, che, …, daal, daal-r, re, re-r, …, nuun-ghunnaa, do-chashmii-he, chotii-ye, barii-ye` (retroflex letters take `-r`, since lowercasing would otherwise make `Te` collide with `te`).
+
+### 13.5 Content and code layout (Phase 7)
+```
+content/script/alphabet.json            # letters + marks
+content/script/lessons/script-01.json … script-12.json
+content/schemas/alphabet.schema.json, script-lesson.schema.json
+public/fonts/                           # + self-hosted Noto Naskh Arabic (covers Urdu), precached
+src/script/ letters.js (ur → letter ids), readable.js, deck.js, machine.js
+src/modules/script/ hub, lesson, chart, practise, trace, tiles, match
+```
+
+### 13.6 What Phase 1 sets up now, so Phase 7 needs no migration
+The v1 blob (§3.2) already contains everything the script track will write, with inert defaults:
+- `srs.decks.script.cards: {}` alongside `srs.decks.main.cards`. These are two separate maps, so a script card can never leak into the main queue, backlog counts or the planner by accident.
+- `progress.script: { lessons: {}, run: null, lastSuggestedAt: null }`.
+- settings `scriptInDailyReviews: false`, `scriptDailyCap: 30`, `scriptNewWordsPerDay: 5`, `scriptSuggestions: true`, `scriptChartOrder: 'alphabetical'`, `scriptChartFont: 'naskh'`.
+- `stats.days[d]` counters include `scriptReviews` and `scriptLessons` (0 by default); `stats.pace.scriptReviewSec`.
+- Card-id parsing in `facets.js` reserves the `s:` prefix from day one.
+- The `tests/fixtures/storage-v1.json` fixture includes a populated script deck, so the "v1 survives every future migration" test covers it.
+
+Phase 1's validator also enforces now that all `ur` fields use Urdu code points (`ی ک ہ ھ`, not the Arabic `ي ك ه`). Letter decomposition depends on this, and it catches a common copy-paste error early.
+
+---
+
+## 14. Build phases
+
+| Phase | Scope |
+|---|---|
+| 0 | Plan: this file, CURRICULUM.md, ROMANIZATION.md ✅ |
+| 1 | Foundations: scaffold, storage + migrations + tests (including the script-deck slots, §13.6), content loader, schemas + validator, PWA + SW, deploy, CLAUDE.md, README.md, `#/debug/voices` |
+| 2 | SRS + Review: FSRS engine with facets, Review screen, normaliser, tests |
+| 3 | Lesson player + Unit 1 lessons 1–5: Today, lesson flow, auto-add to deck, TTS, script toggle |
+| 4 | Games: the six games, learned items only |
+| 5 | Library + Settings: grammar library, word list, mistake reports, all settings, export/import UI |
+| 6 | Content pipeline docs: CONTENT_GUIDE.md, then Unit 1 lessons 6–10 |
+| 7 | **Script track** (§13): alphabet chart + schema, 12 script lessons, script deck + "Practise script", Read / Spell / Trace / Letter match, review-lesson suggestions |
