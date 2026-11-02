@@ -1,0 +1,124 @@
+/* Lesson player, exercises and Today (Phase 3b). Uses the colour tokens from tokens.css. */
+
+[hidden] { display: none !important; }
+
+/* ---- Urdu script: always in the DOM, shown by the toggle (html.show-script) ---- */
+.urdu-script { display: none; }
+html.show-script .urdu-script { display: block; }
+.rom { font-weight: 600; white-space: nowrap; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.linklike { background: none; border: 0; padding: 0; font: inherit; color: var(--primary); text-decoration: underline; cursor: pointer; min-height: 32px; }
+.chip { display: inline-block; margin: 0 6px; padding: 1px 10px; font-size: 0.78rem; font-weight: 600; color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, transparent); border-radius: 999px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+.btn-big { min-height: 56px; width: 100%; font-size: 1.1rem; }
+.card.primary { display: grid; gap: 6px; }
+.card.primary .btn { width: 100%; }
+.card.ask { border-color: var(--accent); }
+.lesson-title { font-size: 1.15rem; font-weight: 700; margin: 0; }
+.progress-line { color: var(--ink-muted); margin: 0 0 6px; }
+.build { text-align: center; margin-top: 18px; }
+.tools .row { margin: 4px 0; }
+
+/* ---- audio and script buttons ---- */
+.urdu-line { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; }
+.urdu-line > .urdu { min-width: 0; }
+.audio-btn { flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: var(--tap); min-height: var(--tap); padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
+.audio-btn[hidden] { display: none; }
+.audio-btn.playing { background: color-mix(in srgb, var(--primary) 18%, var(--surface)); border-color: var(--primary); }
+.audio-big { min-height: 64px; padding: 0 28px; font-size: 1.1rem; font-weight: 600; }
+.listen-play { display: flex; justify-content: center; margin: 12px 0; }
+.script-toggle { min-width: var(--tap); min-height: var(--tap); border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-muted); font-size: 1.1rem; cursor: pointer; }
+.script-toggle[aria-pressed='true'] { background: var(--primary); color: var(--primary-ink); border-color: var(--primary); }
+.script-toggle [lang='ur'] { line-height: 1.6; }
+
+/* ---- lesson layout: one task per screen, actions pinned to the bottom ---- */
+.page.lesson { display: flex; flex-direction: column; min-height: 100dvh; padding-bottom: 0; }
+.lesson-top { position: sticky; top: 0; z-index: 5; background: var(--paper); padding-top: env(safe-area-inset-top); }
+.lesson-nav { margin: 0; flex-wrap: nowrap; gap: 8px; }
+.lesson-nav .back { white-space: nowrap; }
+.lesson-step { flex: 1; text-align: center; font-size: 0.85rem; color: var(--ink-muted); }
+.bar { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.bar-fill { display: block; height: 100%; width: 0; background: var(--primary); transition: width 0.25s; }
+.lesson-body { flex: 1; padding-bottom: 12px; min-width: 0; }
+.lesson-actions { position: sticky; bottom: 0; z-index: 5; display: grid; gap: 10px; padding: 10px 0 calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to bottom, transparent, var(--paper) 14px); }
+.lesson-actions:empty { display: none; }
+.lesson-actions .btn { width: 100%; }
+
+/* ---- grammar ---- */
+.grammar h2 { font-size: 1.25rem; }
+.gtable { margin: 12px 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.gtable-head, .gtable-row { display: grid; gap: 0; }
+.gtable-head { background: color-mix(in srgb, var(--primary) 10%, var(--surface)); font-weight: 600; font-size: 0.85rem; }
+.gtable-head > div, .gtable-cell { padding: 8px 10px; min-width: 0; overflow-wrap: anywhere; }
+.gtable-row { border-top: 1px solid var(--line); }
+.gtable-cell { display: flex; flex-direction: column; gap: 2px; }
+.examples { display: grid; gap: 12px; margin-top: 12px; }
+.example { display: flex; flex-direction: column; gap: 2px; }
+.ex-en { font-size: 0.9rem; }
+@media (max-width: 520px) {
+  .gtable-head { display: none; }
+  .gtable-row { grid-template-columns: 1fr !important; }
+  .gtable-cell::before { content: attr(data-label); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-muted); }
+}
+
+/* ---- words ---- */
+.word-intro { text-align: left; }
+.word-head { margin: 4px 0; }
+.word-meaning { font-size: 1.25rem; font-weight: 600; margin: 4px 0; }
+.note { margin-top: 10px; }
+.reveal-label { text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.72rem; }
+
+/* ---- exercises ---- */
+.exercise .ex-label { color: var(--ink-muted); font-size: 0.85rem; margin: 0 0 8px; }
+.ex-question { font-size: 1.15rem; font-weight: 600; margin: 4px 0 10px; }
+.ex-en-big { font-size: 1.3rem; font-weight: 600; margin: 6px 0 12px; }
+.ex-sentence { margin: 8px 0; display: flex; flex-direction: column; gap: 4px; }
+.ex-prompt, .ex-answer, .ex-after, .ex-hint { margin-top: 10px; }
+.ex-hint:empty { display: none; }
+.hint { background: color-mix(in srgb, var(--accent) 14%, transparent); border-radius: 10px; padding: 8px 12px; margin: 0; }
+.choices { margin: 8px 0; }
+.choice { width: 100%; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 16px; text-align: left; border-radius: var(--radius); min-height: 52px; }
+.choice .urdu { align-items: flex-start; }
+.choice-en { font-weight: 400; font-size: 0.9rem; color: var(--ink-muted); }
+.choice.is-correct { border-color: var(--good); background: color-mix(in srgb, var(--good) 14%, var(--surface)); color: var(--ink); opacity: 1; }
+.choice.is-wrong { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 12%, var(--surface)); color: var(--ink); opacity: 1; }
+.choice:disabled { opacity: 1; cursor: default; }
+.choice:disabled:not(.is-correct):not(.is-wrong) { opacity: 0.65; }
+.card.explain, .card.reveal { margin: 10px 0; }
+.tile-line, .tile-bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; align-items: center; padding: 8px; border-radius: 12px; }
+.tile-line { border: 2px dashed var(--line); margin-bottom: 12px; }
+.tile-line.is-correct { border: 2px solid var(--good); }
+.tile-line.is-wrong { border: 2px solid var(--bad); }
+.tile-btn { min-height: var(--tap); padding: 6px 14px; font: inherit; font-weight: 600; color: var(--ink); cursor: pointer; background: var(--surface); }
+.tile-gap { min-height: var(--tap); padding: 6px 14px; border-style: dashed; color: transparent; }
+.free-mode { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+.self-grade p { margin: 10px 0 4px; }
+.feedback { font-weight: 600; margin: 8px 0; }
+
+/* ---- dialogue ---- */
+.scene-setting { font-size: 1.05rem; }
+.cast { margin: 8px 0; padding-left: 20px; }
+.dline.mine { border-color: var(--primary); }
+.speaker { margin: 0 0 4px; font-weight: 600; color: var(--ink-muted); }
+.prev-line { opacity: 0.7; margin: 0 0 6px; font-size: 0.9rem; }
+.line-en { min-height: 4px; text-align: center; }
+
+/* ---- record & compare ---- */
+.rec { margin: 10px 0; }
+.rec-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn-rec { background: var(--bad); color: #fff; }
+.rec-note { margin: 6px 0 0; }
+
+/* ---- summary ---- */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0; text-align: center; }
+.stat { display: flex; flex-direction: column; }
+.stat strong { font-size: 1.3rem; }
+@media (max-width: 380px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---- Nastaliq needs vertical room: its ascenders and descenders overshoot the line box ---- */
+.urdu-script { line-height: 2.4; padding-top: 0.45em; }
+.urdu-big .urdu-script { line-height: 2.6; padding-top: 0.5em; }
+.page.lesson .urdu { align-items: stretch; }
+.page.lesson .urdu-script { text-align: right; }
+.page.lesson .prompt .urdu-script, .page.lesson .center .urdu-script { text-align: center; }
+.choice .urdu-script { padding-top: 0.3em; }

@@ -1,5 +1,6 @@
 import './ui/styles/tokens.css';
 import './ui/styles/base.css';
+import './ui/styles/lesson.css';
 import { store } from './db/storage.js';
 import { startRouter } from './router.js';
 import { showRecovery } from './ui/recovery.js';
@@ -8,6 +9,9 @@ import { registerServiceWorker } from './pwa.js';
 import { getContent } from './db/contentLoader.js';
 import { syncDeck } from './srs/deck.js';
 import { removeSeedCards } from './srs/seedCleanup.js';
+import { configureAudio, initAudio } from './audio/tts.js';
+import { loanwordTokens } from './lesson/loanwords.js';
+import { applyScriptSetting } from './ui/scriptToggle.js';
 
 const app = document.getElementById('app');
 
@@ -29,6 +33,9 @@ function boot() {
   }
 
   applyTheme();
+  applyScriptSetting();
+  configureAudio({ getSettings: () => store.data.settings, loanwords: loanwordTokens(getContent()) });
+  initAudio(); // voices load in the background; screens re-check when they arrive
   if (status.firstRun && navigator.storage?.persist) navigator.storage.persist().catch(() => {});
   store.touchOpened(__BUILD_ID__);
   // PLAN D21 (temporary): delete the Phase 2 test cards (`w:seed-…`, `x:seed-lesson:…`) and nothing else.

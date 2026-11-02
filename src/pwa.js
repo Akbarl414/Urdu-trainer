@@ -6,7 +6,11 @@
 export function registerServiceWorker({ onUpdateReady }) {
   if (!('serviceWorker' in navigator) || import.meta.env.DEV) return;
 
-  window.addEventListener('load', async () => {
+  // The page's `load` event can already have fired by the time this runs (main.js waits on the FSRS engine,
+  // a top-level await), so register right away when the document is already complete.
+  const onReady = (fn) => (document.readyState === 'complete' ? fn() : window.addEventListener('load', fn, { once: true }));
+
+  onReady(async () => {
     let registration;
     try {
       // sw.js sits next to index.html, so this stays inside this repo's path on GitHub Pages.

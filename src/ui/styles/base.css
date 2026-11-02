@@ -49,8 +49,16 @@ a { color: var(--primary); }
 .banner-warn { background: var(--accent); color: #1c1a18; }
 .banner .btn { background: var(--paper); color: var(--ink); }
 
-/* Urdu script, when shown, uses Noto Nastaliq Urdu (self-hosted in Phase 3) with generous line height. */
-[lang='ur'] { font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif; line-height: 2.2; }
+/* Urdu script uses Noto Nastaliq Urdu (OFL), self-hosted in public/fonts/ and precached by the service worker so it works offline (PLAN D5). Arabic-script subset only; the browser fetches it on first use. */
+@font-face {
+  font-family: 'Noto Nastaliq Urdu';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/NotoNastaliqUrdu-arabic.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+[lang='ur'] { font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', 'Geeza Pro', serif; line-height: 2.2; font-synthesis: none; }
 
 /* Voice test: Hindi fallback box */
 .field { width: 100%; box-sizing: border-box; font: inherit; padding: 8px 10px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin: 6px 0; }

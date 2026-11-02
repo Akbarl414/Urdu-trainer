@@ -2,7 +2,9 @@
 // A screen module exports `render(container)` and may return a cleanup function.
 
 const routes = {
-  '': () => import('./modules/home.js'),
+  '': () => import('./modules/today/today.js'),
+  '/lesson': () => import('./modules/lesson/player.js'),
+  '/lesson/extra': () => import('./modules/lesson/player.js').then((m) => ({ render: m.renderExtra })),
   '/review': () => import('./modules/review/review.js'),
   '/debug/voices': () => import('./modules/debug/voices.js'),
 };
