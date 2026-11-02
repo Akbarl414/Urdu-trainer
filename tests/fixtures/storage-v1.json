@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "meta": {
+    "createdAt": "2026-11-03T09:00:00.000Z",
+    "lastExportAt": "2026-11-10T20:15:00.000Z",
+    "lastOpenedAt": "2026-11-12T07:45:00.000Z",
+    "lastSeenBuild": "abc1234"
+  },
+  "settings": {
+    "showScript": true,
+    "audio": true,
+    "speechRate": 0.8,
+    "voiceURI": "com.apple.voice.compact.ur-PK.Example",
+    "dailyReviewCap": 45,
+    "theme": "dark",
+    "dayRolloverHour": 4,
+    "noVoiceNoteSeen": true,
+    "scriptInDailyReviews": false,
+    "scriptDailyCap": 20,
+    "scriptNewWordsPerDay": 3,
+    "scriptSuggestions": true,
+    "scriptChartOrder": "family",
+    "scriptChartFont": "nastaliq"
+  },
+  "progress": {
+    "lessons": {
+      "lesson-001": { "firstCompletedAt": "2026-11-03T09:20:00.000Z", "lastCompletedAt": "2026-11-03T09:20:00.000Z", "timesCompleted": 1, "knownWordIds": ["salaam", "shukriyaa"] },
+      "lesson-002": { "firstCompletedAt": "2026-11-04T09:18:00.000Z", "lastCompletedAt": "2026-11-09T18:02:00.000Z", "timesCompleted": 2, "knownWordIds": [] }
+    },
+    "run": {
+      "lessonId": "lesson-003",
+      "studyDay": "2026-11-12",
+      "plan": { "mode": "normal", "warmup": ["w:salaam:meaning_en_ur"], "practiceCount": 9 },
+      "step": "WORDS",
+      "index": 2,
+      "warmupDone": ["w:salaam:meaning_en_ur"],
+      "knownWordIds": [],
+      "wordResults": {},
+      "exerciseResults": {},
+      "startedAt": 1762933500000
+    },
+    "script": {
+      "lessons": { "script-01": { "firstCompletedAt": "2026-11-08T10:00:00.000Z", "lastCompletedAt": "2026-11-08T10:00:00.000Z", "timesCompleted": 1 } },
+      "run": null,
+      "lastSuggestedAt": "2026-11-05T09:40:00.000Z"
+    }
+  },
+  "srs": {
+    "decks": {
+      "main": {
+        "cards": {
+          "w:salaam:meaning_ur_en": { "due": 1763020800000, "s": 4.2, "d": 5.1, "st": 2, "r": 3, "l": 0, "lr": 1762934400000, "sd": 4, "ls": 0 },
+          "w:salaam:meaning_en_ur": { "due": 1762992000000, "s": 2.5, "d": 6.3, "st": 1, "r": 1, "l": 0, "lr": 1762905600000, "sd": 0, "ls": 1, "weak": 1762900000000 },
+          "w:shukriyaa:situation_to_phrase": { "due": 1763300000000, "s": 14.0, "d": 3.2, "st": 2, "r": 2, "l": 0, "lr": 1762000000000, "sd": 14, "ls": 0 },
+          "x:lesson-001:e01": { "due": 1763100000000, "s": 3.1, "d": 5.5, "st": 2, "r": 2, "l": 1, "lr": 1762950000000, "sd": 3, "ls": 0 }
+        }
+      },
+      "script": {
+        "cards": {
+          "s:l:alif:sound": { "due": 1763000000000, "s": 1.2, "d": 6.0, "st": 1, "r": 1, "l": 0, "lr": 1762950000000, "sd": 0, "ls": 0 },
+          "s:l:be:forms": { "due": 1763050000000, "s": 2.0, "d": 5.0, "st": 2, "r": 2, "l": 0, "lr": 1762950000000, "sd": 2, "ls": 0 }
+        }
+      }
+    }
+  },
+  "stats": {
+    "streak": 5,
+    "bestStreak": 7,
+    "lastStudyDay": "2026-11-12",
+    "days": {
+      "2026-11-11": { "reviews": 31, "newWords": 8, "lessons": 1, "games": 2, "seconds": 840, "scriptReviews": 4, "scriptLessons": 0 },
+      "2026-11-12": { "reviews": 12, "newWords": 0, "lessons": 0, "games": 0, "seconds": 300, "scriptReviews": 0, "scriptLessons": 0 }
+    },
+    "pace": { "reviewSec": 9, "wordSec": 22, "exerciseSec": 18, "scriptReviewSec": 7 },
+    "gameBests": { "match-pairs": 11 }
+  },
+  "flags": [
+    { "id": "flag-1", "createdAt": "2026-11-05T08:00:00.000Z", "target": { "kind": "word", "id": "salaam", "field": "example.en" }, "note": "Translation reads oddly", "build": "abc1234" }
+  ],
+  "userContent": { "words": [] }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "urdu-trainer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "dev": "vite",
+    "validate": "node scripts/validate-content.js",
+    "lock-ids": "node scripts/lock-ids.js",
+    "test": "node --test tests/*.test.js",
+    "build": "npm run validate && vite build",
+    "preview": "vite preview",
+    "icons": "node scripts/make-icons.js"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "vite": "^5.4.11"
+  }
+}

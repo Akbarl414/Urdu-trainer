@@ -1,0 +1,435 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "exercise.schema.json",
+  "title": "Exercise types",
+  "description": "Hints use the trailing \"(...)\" convention: text in the last pair of parentheses of a prompt is hidden behind a Hint button, and using it caps the grade at Hard.",
+  "definitions": {
+    "fill-blank": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "explanation",
+        "sentence",
+        "answer",
+        "answer_ur"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/definitions/exerciseId"
+        },
+        "type": {
+          "const": "fill-blank"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/definitions/kebabId"
+          },
+          "description": "e.g. agreement, ne, oblique. Games pick authored items by tag."
+        },
+        "retired": {
+          "type": "boolean"
+        },
+        "sentence": {
+          "$ref": "common.schema.json#/definitions/triple",
+          "description": "Roman and ur both contain the blank ___. `en` is REQUIRED: the full English translation."
+        },
+        "answer": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Roman answer."
+        },
+        "answer_ur": {
+          "type": "string",
+          "minLength": 1
+        },
+        "altAnswers": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "multiple-choice": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "explanation",
+        "prompt",
+        "options",
+        "answerIndex"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/definitions/exerciseId"
+        },
+        "type": {
+          "const": "multiple-choice"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/definitions/kebabId"
+          },
+          "description": "e.g. agreement, ne, oblique. Games pick authored items by tag."
+        },
+        "retired": {
+          "type": "boolean"
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The question, in English."
+        },
+        "sentence": {
+          "$ref": "common.schema.json#/definitions/triple"
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 6,
+          "items": {
+            "$ref": "common.schema.json#/definitions/choice"
+          }
+        },
+        "answerIndex": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "choose-form": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "explanation",
+        "sentence",
+        "options",
+        "answerIndex"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/definitions/exerciseId"
+        },
+        "type": {
+          "const": "choose-form"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/definitions/kebabId"
+          },
+          "description": "e.g. agreement, ne, oblique. Games pick authored items by tag."
+        },
+        "retired": {
+          "type": "boolean"
+        },
+        "sentence": {
+          "$ref": "common.schema.json#/definitions/triple",
+          "description": "Contains the blank ___."
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {
+            "$ref": "common.schema.json#/definitions/pair"
+          }
+        },
+        "answerIndex": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "reorder": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "explanation",
+        "sentence",
+        "tokens",
+        "answerOrders"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/definitions/exerciseId"
+        },
+        "type": {
+          "const": "reorder"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/definitions/kebabId"
+          },
+          "description": "e.g. agreement, ne, oblique. Games pick authored items by tag."
+        },
+        "retired": {
+          "type": "boolean"
+        },
+        "sentence": {
+          "$ref": "common.schema.json#/definitions/triple",
+          "description": "The canonical sentence."
+        },
+        "tokens": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "answerOrders": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "description": "EVERY valid order (Urdu word order is flexible). Each must be a permutation of tokens."
+        }
+      }
+    },
+    "error-spot": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "explanation",
+        "sentence",
+        "answer",
+        "answer_ur"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/definitions/exerciseId"
+        },
+        "type": {
+          "const": "error-spot"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/definitions/kebabId"
+          },
+          "description": "e.g. agreement, ne, oblique. Games pick authored items by tag."
+        },
+        "retired": {
+          "type": "boolean"
+        },
+        "sentence": {
+          "$ref": "common.schema.json#/definitions/triple",
+          "description": "The sentence containing one mistake."
+        },
+        "answer": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The corrected sentence, roman."
+        },
+        "answer_ur": {
+          "type": "string",
+          "minLength": 1
+        },
+        "altAnswers": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "translate": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "explanation",
+        "en",
+        "answers"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/definitions/exerciseId"
+        },
+        "type": {
+          "const": "translate"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/definitions/kebabId"
+          },
+          "description": "e.g. agreement, ne, oblique. Games pick authored items by tag."
+        },
+        "retired": {
+          "type": "boolean"
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "answers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "common.schema.json#/definitions/pair"
+          }
+        },
+        "self_grade": {
+          "type": "boolean",
+          "description": "Show model answers and let the learner mark themselves right/wrong."
+        }
+      }
+    },
+    "transform": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "explanation",
+        "from",
+        "instruction",
+        "answers"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/definitions/exerciseId"
+        },
+        "type": {
+          "const": "transform"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/definitions/kebabId"
+          },
+          "description": "e.g. agreement, ne, oblique. Games pick authored items by tag."
+        },
+        "retired": {
+          "type": "boolean"
+        },
+        "from": {
+          "$ref": "common.schema.json#/definitions/triple"
+        },
+        "instruction": {
+          "type": "string",
+          "minLength": 1,
+          "description": "e.g. Change to the past tense."
+        },
+        "answers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "common.schema.json#/definitions/pair"
+          }
+        }
+      }
+    },
+    "listen": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "explanation",
+        "audio_text",
+        "options",
+        "answerIndex"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/definitions/exerciseId"
+        },
+        "type": {
+          "const": "listen"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Shown after answering. Urdu inside `backticks`."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/definitions/kebabId"
+          },
+          "description": "e.g. agreement, ne, oblique. Games pick authored items by tag."
+        },
+        "retired": {
+          "type": "boolean"
+        },
+        "audio_text": {
+          "$ref": "common.schema.json#/definitions/triple"
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 6,
+          "items": {
+            "$ref": "common.schema.json#/definitions/choice"
+          }
+        },
+        "answerIndex": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

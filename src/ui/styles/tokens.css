@@ -1,0 +1,44 @@
+/* Colour direction (PLAN D10): warm and understated. Light, with a dark theme following the system. */
+:root {
+  --paper: #faf6ef;
+  --surface: #ffffff;
+  --ink: #2a2724;
+  --ink-muted: #6b645c;
+  --line: #e4dccf;
+  --primary: #1f6b66;
+  --primary-ink: #ffffff;
+  --accent: #c98a2b;
+  --good: #3c7d4a;
+  --bad: #b4483a;
+  --tap: 44px;
+  --radius: 14px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #1c1a18;
+    --surface: #26231f;
+    --ink: #ede7dc;
+    --ink-muted: #a59d92;
+    --line: #3a352f;
+    --primary: #4fa39c;
+    --primary-ink: #10201f;
+    --accent: #d9a04a;
+    --good: #6bb27a;
+    --bad: #d98173;
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --paper: #1c1a18;
+  --surface: #26231f;
+  --ink: #ede7dc;
+  --ink-muted: #a59d92;
+  --line: #3a352f;
+  --primary: #4fa39c;
+  --primary-ink: #10201f;
+  --accent: #d9a04a;
+  --good: #6bb27a;
+  --bad: #d98173;
+  color-scheme: dark;
+}

@@ -1,0 +1,274 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "vocab.schema.json",
+  "title": "Unit vocabulary (words and phrases)",
+  "type": "object",
+  "required": [
+    "id",
+    "unit",
+    "words"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^vocab-unit-\\d{2}$"
+    },
+    "unit": {
+      "$ref": "common.schema.json#/definitions/unitId"
+    },
+    "words": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/word"
+      }
+    }
+  },
+  "definitions": {
+    "word": {
+      "type": "object",
+      "required": [
+        "id",
+        "pos",
+        "roman",
+        "ur",
+        "meaning_en",
+        "example",
+        "register",
+        "introduced_in"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/definitions/kebabId"
+        },
+        "pos": {
+          "type": "string",
+          "enum": [
+            "noun",
+            "verb",
+            "adjective",
+            "adverb",
+            "postposition",
+            "pronoun",
+            "phrase",
+            "other"
+          ]
+        },
+        "roman": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ur": {
+          "type": "string",
+          "minLength": 1
+        },
+        "meaning_en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "example": {
+          "$ref": "common.schema.json#/definitions/triple"
+        },
+        "register": {
+          "type": "string",
+          "enum": [
+            "informal",
+            "neutral",
+            "formal"
+          ]
+        },
+        "introduced_in": {
+          "$ref": "common.schema.json#/definitions/lessonId"
+        },
+        "notes": {
+          "$ref": "common.schema.json#/definitions/prose"
+        },
+        "situation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Phrases: the situation shown as the prompt for the situation_to_phrase facet."
+        },
+        "hindi_variant": {
+          "type": "object",
+          "description": "A common film/TV Hindi alternative (e.g. shukriyaa vs dhanyawaad). Roman follows the same scheme; Devanagari is optional.",
+          "required": [
+            "roman"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "roman": {
+              "type": "string",
+              "minLength": 1
+            },
+            "devanagari": {
+              "type": "string",
+              "minLength": 1
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "audio": {
+          "$ref": "common.schema.json#/definitions/audioPath"
+        },
+        "forms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Inflected roman forms used in lesson sentences (for the coverage checker). Loanword forms like \"buseN\" must be listed here to be exempt."
+        },
+        "loanword": {
+          "type": "boolean",
+          "description": "English loanword: roman keeps lowercase English spelling and is exempt from the scheme rules (ROMANIZATION.md §5)."
+        },
+        "retired": {
+          "type": "boolean"
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "m",
+            "f"
+          ]
+        },
+        "marked": {
+          "type": "boolean",
+          "description": "True for masculine -aa nouns that inflect (laRkaa / laRke / laRkoN)."
+        },
+        "plural": {
+          "$ref": "common.schema.json#/definitions/pair"
+        },
+        "oblique_pl": {
+          "$ref": "common.schema.json#/definitions/pair"
+        },
+        "infinitive": {
+          "$ref": "common.schema.json#/definitions/pair"
+        },
+        "stem": {
+          "$ref": "common.schema.json#/definitions/pair"
+        },
+        "transitivity": {
+          "type": "string",
+          "enum": [
+            "intransitive",
+            "transitive"
+          ]
+        },
+        "takes_ne": {
+          "type": "boolean",
+          "description": "Must be stated explicitly; exceptions like laanaa matter."
+        },
+        "perfective": {
+          "type": "object",
+          "required": [
+            "m_sg",
+            "f_sg",
+            "m_pl"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "m_sg": {
+              "$ref": "common.schema.json#/definitions/pair"
+            },
+            "f_sg": {
+              "$ref": "common.schema.json#/definitions/pair"
+            },
+            "m_pl": {
+              "$ref": "common.schema.json#/definitions/pair"
+            }
+          }
+        },
+        "variable": {
+          "type": "boolean",
+          "description": "True for -aa adjectives that agree (acchaa / acchii / acche)."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "pos": {
+                "const": "noun"
+              }
+            },
+            "required": [
+              "pos"
+            ]
+          },
+          "then": {
+            "required": [
+              "gender",
+              "marked"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "pos": {
+                "const": "noun"
+              },
+              "marked": {
+                "const": true
+              }
+            },
+            "required": [
+              "pos",
+              "marked"
+            ]
+          },
+          "then": {
+            "required": [
+              "plural",
+              "oblique_pl"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "pos": {
+                "const": "verb"
+              }
+            },
+            "required": [
+              "pos"
+            ]
+          },
+          "then": {
+            "required": [
+              "infinitive",
+              "stem",
+              "transitivity",
+              "takes_ne",
+              "perfective"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "pos": {
+                "const": "adjective"
+              }
+            },
+            "required": [
+              "pos"
+            ]
+          },
+          "then": {
+            "required": [
+              "variable"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

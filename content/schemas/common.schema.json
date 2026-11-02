@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "common.schema.json",
+  "title": "Shared definitions",
+  "definitions": {
+    "kebabId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "unitId": {
+      "type": "string",
+      "pattern": "^unit-\\d{2}$"
+    },
+    "lessonId": {
+      "type": "string",
+      "pattern": "^lesson-\\d{3}$"
+    },
+    "exerciseId": {
+      "type": "string",
+      "pattern": "^e\\d{2}$"
+    },
+    "audioPath": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional pre-recorded/pre-generated file under public/audio/. Preferred over TTS when present."
+    },
+    "triple": {
+      "type": "object",
+      "description": "Every Urdu sentence or word is stored as roman + ur + en. Never roman alone (brief §7.1).",
+      "required": [
+        "roman",
+        "ur",
+        "en"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "roman": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ur": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "audio": {
+          "$ref": "#/definitions/audioPath"
+        }
+      }
+    },
+    "pair": {
+      "type": "object",
+      "description": "A Urdu form with no English gloss of its own: roman + ur.",
+      "required": [
+        "roman",
+        "ur"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "roman": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ur": {
+          "type": "string",
+          "minLength": 1
+        },
+        "audio": {
+          "$ref": "#/definitions/audioPath"
+        }
+      }
+    },
+    "choice": {
+      "description": "An answer option: plain English text, or a Urdu triple.",
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "$ref": "#/definitions/triple"
+        }
+      ]
+    },
+    "prose": {
+      "type": "string",
+      "minLength": 1,
+      "description": "English prose. Urdu inside prose goes in `backticks` so the validator can check the romanization."
+    }
+  }
+}
