@@ -9,13 +9,15 @@
 //   weak epoch ms when a game marked it weak (cleared by the next real review)
 //
 // Scheduling (PLAN §5.3, D16): two instances. Production facets (saying/writing Urdu) use
-// request_retention 0.90, recognition and form facets 0.85, so production comes back more often.
+// desired retention 0.90, recognition and form facets 0.85, so production comes back more often.
 //
-// ts-fsrs 6 marks the classic fsrs()/repeat()/next() API deprecated in favour of
-// DefaultScheduler; the classic API is still exported and stable, and being confined to this
-// file makes a later switch a one-file change.
+// Uses ts-fsrs's current DefaultScheduler API, pinned to the FSRS-6 model (its default is FSRS-7,
+// which would change every interval). The scheduler is created asynchronously, so this module
+// awaits it once at load (top-level await). The stored CompactCard shape is independent of the
+// library's own card fields: toFsrs()/fromFsrs() translate, so upgrading the library never
+// touches stored data.
 
-import { fsrs, generatorParameters, createEmptyCard, Rating, State } from 'ts-fsrs';
+import { DefaultScheduler } from 'ts-fsrs';
 
 export const GRADE = Object.freeze({ again: 1, hard: 2, good: 3, easy: 4 });
 export const GRADES = [GRADE.again, GRADE.hard, GRADE.good, GRADE.easy];
@@ -29,84 +31,87 @@ const DAY_MS = 86400000;
 
 export const isProductionFacet = (facet) => PRODUCTION_FACETS.has(facet);
 
-const RATING = { 1: Rating.Again, 2: Rating.Hard, 3: Rating.Good, 4: Rating.Easy };
+// The library's schedule status has three values; Relearning is state 3 with status 'learning'.
+const STATUS = ['new', 'learning', 'review', 'learning'];
+/** Fuzz is seeded by the card id, so cards without one share a seed (fine for tests and previews). */
+const NO_ID = 'card';
 
-function toFsrs(c) {
+function toFsrs(c, cardId = NO_ID) {
   return {
-    due: new Date(c.due),
     stability: c.s,
     difficulty: c.d,
-    elapsed_days: 0,
-    scheduled_days: c.sd,
+    state: c.st,
+    scheduleStatus: STATUS[c.st],
+    cardId,
+    dueAt: new Date(c.due),
+    lastReviewAt: c.lr == null ? null : new Date(c.lr),
     reps: c.r,
     lapses: c.l,
-    learning_steps: c.ls,
-    state: c.st,
-    last_review: c.lr == null ? undefined : new Date(c.lr),
+    scheduledDays: c.sd,
+    learningStep: c.ls,
   };
 }
 
 function fromFsrs(card, weak) {
   const out = {
-    due: card.due.getTime(),
+    due: card.dueAt.getTime(),
     s: card.stability,
     d: card.difficulty,
     st: card.state,
     r: card.reps,
     l: card.lapses,
-    lr: card.last_review ? card.last_review.getTime() : null,
-    sd: card.scheduled_days,
-    ls: card.learning_steps,
+    lr: card.lastReviewAt ? card.lastReviewAt.getTime() : null,
+    sd: card.scheduledDays,
+    ls: card.learningStep,
   };
   if (weak) out.weak = weak;
   return out;
 }
 
 /** @param {{ fuzz?: boolean }} [opts]  fuzz spreads intervals so lessons don't create review clumps; tests turn it off. */
-export function createEngine({ fuzz = true } = {}) {
-  const make = (retention) => fsrs(generatorParameters({ request_retention: retention, enable_fuzz: fuzz }));
-  const engines = { production: make(RETENTION.production), recognition: make(RETENTION.recognition) };
+export async function createEngine({ fuzz = true } = {}) {
+  const make = (desiredRetention) => DefaultScheduler({ version: 'FSRS-6', desiredRetention, enableFuzz: fuzz });
+  const engines = { production: await make(RETENTION.production), recognition: await make(RETENTION.recognition) };
   const pick = (facet) => engines[isProductionFacet(facet) ? 'production' : 'recognition'];
 
   /** A brand-new card, due immediately. */
   function newCard(now) {
-    return fromFsrs(createEmptyCard(new Date(now)));
+    return fromFsrs(engines.recognition.newCard({ now: new Date(now) }));
   }
 
   /** What each button would schedule: { 1: { due, ms }, 2: …, 3: …, 4: … } (ms = time from `now`). */
-  function preview(card, facet, now) {
-    const log = pick(facet).repeat(toFsrs(card), new Date(now));
+  function preview(card, facet, now, cardId) {
     const out = {};
-    for (const g of GRADES) {
-      const due = log[RATING[g]].card.due.getTime();
-      out[g] = { due, ms: Math.max(0, due - now) };
+    for (const item of pick(facet).preview({ card: toFsrs(card, cardId), now: new Date(now) })) {
+      const due = item.card.dueAt.getTime();
+      out[item.grade] = { due, ms: Math.max(0, due - now) };
     }
     return out;
   }
 
   /** Apply a grade. Returns a NEW card; a game's `weak` mark is cleared by a real review. */
-  function review(card, facet, grade, now) {
-    if (!RATING[grade]) throw new Error(`Invalid grade: ${grade}`);
-    const next = pick(facet).next(toFsrs(card), new Date(now), RATING[grade]);
-    return fromFsrs(next.card);
+  function review(card, facet, grade, now, cardId) {
+    if (!GRADES.includes(grade)) throw new Error(`Invalid grade: ${grade}`);
+    return fromFsrs(pick(facet).review({ card: toFsrs(card, cardId), now: new Date(now), grade }).card);
   }
 
-  /** Probability of recalling the card at `now`; New cards report 0. */
+  /** Probability of recalling the card at `now`; New cards report 0. Elapsed time is whole days, as in the classic API. */
   function retrievability(card, facet, now) {
     if (card.st === CARD_STATE.new) return 0;
-    return pick(facet).retrievability(toFsrs(card), new Date(now));
+    const elapsedDays = card.lr == null ? 0 : Math.max(0, Math.floor((now - card.lr) / DAY_MS));
+    return pick(facet).model.forgettingCurve({ stability: card.s, difficulty: card.d }, elapsedDays);
   }
 
   /** "I already know this": Easy twice about a minute apart, for a first interval of roughly 1–3 weeks. */
-  function alreadyKnow(card, facet, now) {
-    const once = review(card, facet, GRADE.easy, now);
-    return review(once, facet, GRADE.easy, now + KNOWN_GAP_MS);
+  function alreadyKnow(card, facet, now, cardId) {
+    const once = review(card, facet, GRADE.easy, now, cardId);
+    return review(once, facet, GRADE.easy, now + KNOWN_GAP_MS, cardId);
   }
 
   return { newCard, preview, review, retrievability, alreadyKnow };
 }
 
-export const engine = createEngine();
+export const engine = await createEngine();
 export const { newCard, preview, review, retrievability, alreadyKnow } = engine;
 
 /**

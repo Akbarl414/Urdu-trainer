@@ -18,7 +18,7 @@
 import { DATA_KEY, SNAPSHOTS_KEY, recoveryKey, isRecoveryKey, isOwnKey } from './keys.js';
 import { studyDay } from './day.js';
 
-export const STORAGE_VERSION = 1;
+export const STORAGE_VERSION = 2;
 export const BACKUP_FORMAT = 'urdu-trainer-backup';
 
 const DAILY_SNAPSHOTS_KEPT = 3; // D15
@@ -32,7 +32,11 @@ const BACKUP_REMINDER_DAYS = 7;
  * missing fields; it is NOT a substitute for a real migration.
  * @type {Record<number, (data: any) => any>}
  */
-export const MIGRATIONS = {};
+export const MIGRATIONS = {
+  // v1 → v2 (Phase 2): settings.answerMode, the remembered Speak/Type choice on the Review screen.
+  // null = no choice made yet (each card type uses its own default). Never overwrites a value.
+  1: (data) => ({ ...data, settings: { ...(data.settings || {}), answerMode: data.settings?.answerMode ?? null } }),
+};
 
 export class StorageReadOnlyError extends Error {
   constructor(message) {
@@ -66,6 +70,7 @@ export function defaultData(now = Date.now()) {
       theme: 'system', // 'light' | 'dark' | 'system'
       dayRolloverHour: 4,
       noVoiceNoteSeen: false,
+      answerMode: null, // 'speak' | 'type' | null: the Review screen's remembered Speak/Type toggle (v2)
       // Script track (PLAN §13): inert until Phase 7, present now so no migration is needed.
       scriptInDailyReviews: false,
       scriptDailyCap: 30,

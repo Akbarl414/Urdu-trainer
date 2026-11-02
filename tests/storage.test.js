@@ -353,3 +353,28 @@ test('erase with keepRecovery leaves the raw recovery copies (used by "start fre
   assert.equal(store.status().mode, 'ok'); // fresh start
   restore();
 });
+
+test('v1 → v2 migration adds settings.answerMode (null) and never overwrites a value', () => {
+  assert.equal(STORAGE_VERSION, 2);
+  assert.equal(defaultData().settings.answerMode, null);
+  const out = migrate(v1);
+  assert.equal(out.version, 2);
+  assert.equal(out.settings.answerMode, null);
+  assert.equal(MIGRATIONS[1]({ version: 1, settings: { answerMode: 'type' } }).settings.answerMode, 'type');
+  assert.equal(MIGRATIONS[1]({ version: 1 }).settings.answerMode, null, 'even with no settings object');
+  const v2 = JSON.parse(readFileSync(join(fixtureDir, 'storage-v2.json'), 'utf8'));
+  assert.equal(migrate(v2).settings.answerMode, 'type');
+  // every card, lesson record and flag of the v1 device is still there after the migration
+  assert.deepEqual(out.srs.decks.main.cards, v1.srs.decks.main.cards);
+  assert.deepEqual(out.progress.lessons, v1.progress.lessons);
+});
+
+test('a device on v1 loads, is migrated to v2 with a pre-migration snapshot, and keeps its cards', () => {
+  const backend = memoryStorage({ initial: { [DATA_KEY]: JSON.stringify(v1) } });
+  const store = createStore({ backend: () => backend });
+  assert.equal(store.data.version, 2);
+  assert.equal(store.data.settings.answerMode, null);
+  assert.deepEqual(store.data.srs.decks.main.cards, v1.srs.decks.main.cards);
+  const snaps = JSON.parse(backend.getItem(SNAPSHOTS_KEY));
+  assert.ok(snaps.some((s) => s.reason === 'pre-migration' && s.data.version === 1));
+});

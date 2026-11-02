@@ -150,7 +150,7 @@ The validator can't check things that need the ear, like vowel quality (`behen`)
 - **Exact**: same letters and capitals, ignoring punctuation and extra spaces. A hyphen counts as a space.
 - **Close enough (counted correct, the exact form shown with differences highlighted)**:
   - capitals ignored: `T/t`, `D/d`, `R/r`, `Gh/gh`;
-  - nasal marking ignored: `huuN ~ hun ~ hu`, `nahiiN ~ nahin ~ nahi`;
+  - nasal marking ignored **only where the expected word has `N`**: `huuN ~ hun ~ hu`, `nahiiN ~ nahin ~ nahi`. A plain consonant `n` must match: `din ≠ dii`, `jaan ≠ jaa`, in both directions;
   - vowel length ignored: `aa ~ a`, `ii ~ i`, `uu ~ u`;
   - doubled consonants ignored: `pakkaa ~ pakaa`;
   - common phone spellings accepted: `ee → ii` (`theek`), `oo → uu` (`hoon`), `v → w` (`vo`), `mein → meN`, `hain → haiN`.

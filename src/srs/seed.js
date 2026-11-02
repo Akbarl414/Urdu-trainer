@@ -7,6 +7,9 @@
 import { createEngine, GRADE, CARD_STATE } from './fsrs.js';
 import { wordCardId, exerciseCardId, allFacets } from './facets.js';
 
+// Deterministic schedules for the test cards (no fuzz).
+const engine = await createEngine({ fuzz: false });
+
 const t = (roman, ur, en) => ({ roman, ur, en });
 const f = (roman, ur) => ({ roman, ur });
 const word = (w) => ({ register: 'neutral', introduced_in: 'seed-lesson', ...w });
@@ -83,7 +86,6 @@ const HISTORIES = [
  * @returns {number} cards added
  */
 export function addSeedCards(data, now) {
-  const engine = createEngine({ fuzz: false });
   const cards = data.srs.decks.main.cards;
   let added = 0;
   seedCardIds().forEach((id, i) => {

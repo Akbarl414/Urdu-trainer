@@ -12,9 +12,6 @@ import { preview, review, formatInterval, GRADE } from '../../srs/fsrs.js';
 import { recordReview, reviewsDoneToday } from '../../srs/stats.js';
 import { check, isCorrect } from '../../lang/normalise.js';
 
-// Remembered for this page load only (nothing is written to storage for a UI preference).
-let preferredMode = null; // 'speak' | 'type'
-
 const GRADE_BUTTONS = [
   [GRADE.again, 'Again', 'again'],
   [GRADE.hard, 'Hard', 'hard'],
@@ -125,7 +122,8 @@ export function render(container) {
     const shownAt = Date.now();
     const modes = face.modes;
     let mode = face.defaultMode;
-    if (modes.includes('speak') && modes.includes('type') && preferredMode && modes.includes(preferredMode)) mode = preferredMode;
+    const saved = store.data.settings.answerMode; // the remembered Speak/Type choice, or null
+    if (saved && modes.includes(saved) && modes.includes('speak') && modes.includes('type')) mode = saved;
     let outcome = null; // set once answered: { suggested?: grade, feedback?: Node }
 
     const body = h('div', { class: 'answer-area' });
@@ -149,7 +147,7 @@ export function render(container) {
     }
 
     function modeToggle() {
-      const btn = (m, label) => h('button', { class: `seg${mode === m ? ' on' : ''}`, 'aria-pressed': mode === m ? 'true' : 'false', onclick: () => ((mode = m), (preferredMode = m), draw()) }, label);
+      const btn = (m, label) => h('button', { class: `seg${mode === m ? ' on' : ''}`, 'aria-pressed': mode === m ? 'true' : 'false', onclick: () => ((mode = m), store.updateSettings({ answerMode: m }), draw()) }, label);
       return h('div', { class: 'segmented', role: 'group', 'aria-label': 'Answer mode' }, btn('speak', 'Speak'), btn('type', 'Type'));
     }
 
@@ -205,7 +203,7 @@ export function render(container) {
     }
 
     function answeredView() {
-      const intervals = preview(card, face.facet, Date.now());
+      const intervals = preview(card, face.facet, Date.now(), id);
       return [
         outcome.feedback,
         h(
@@ -234,7 +232,7 @@ export function render(container) {
 
     function grade(g) {
       const now = Date.now();
-      const updated = review(card, face.facet, g, now);
+      const updated = review(card, face.facet, g, now, id);
       cards[id] = updated;
       recordReview(data, { now, previousState: card.st, seconds: (now - shownAt) / 1000 });
       store.save(); // false = storage full: the banner is already showing and progress stays in memory

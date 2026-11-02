@@ -10,7 +10,7 @@ const { defaultData } = await import('../src/db/storage.js');
 
 const DAY = 86400000;
 const NOW = Date.parse('2026-11-02T10:00:00Z'); // 10:00 GMT, study day 2026-11-02
-const e = createEngine({ fuzz: false });
+const e = await createEngine({ fuzz: false });
 
 /** A Review card last reviewed `ageDays` ago with the given stability, so its retrievability is knowable. */
 function reviewCard(stabilityDays, overdueDays, extra = {}) {

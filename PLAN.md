@@ -85,7 +85,7 @@ scripts/
   check-coverage.js            # warning-only token coverage per lesson
   lock-ids.js                  # appends newly shipped ids to content/shipped-ids.json
 tests/
-  fixtures/storage-v1.json     # one snapshot per STORAGE_VERSION, never edited once added
+  fixtures/storage-v1.json, storage-v2.json  # one snapshot per STORAGE_VERSION, never edited once added
   *.test.js                    # node --test
 ```
 
@@ -105,13 +105,14 @@ Rule for imports: `modules/` and `ui/` may import from `db/`, `srs/`, `lesson/`,
 
 `localStorage.clear()` is banned. The validator/test suite greps `src/` for `localStorage.clear`, `caches.delete(` outside `sw.js`, and raw key strings outside `keys.js`, and fails if it finds any. "Erase all progress" iterates over `localStorage` keys and removes only those that start with `urdu-trainer:`. A test seeds foreign keys such as `german-app-data-v1` and asserts that they survive.
 
-### 3.2 Blob shape (v1)
+### 3.2 Blob shape (v2; v1 plus `settings.answerMode`)
 
 ```js
 {
-  version: 1,
+  version: 2,
   meta: { createdAt, lastExportAt, lastOpenedAt, lastSeenBuild },
   settings: {
+    answerMode: null,                // v2: 'speak' | 'type' | null, the Review screen's remembered toggle
     showScript: false, audio: true, speechRate: 0.9, voiceURI: null,
     dailyReviewCap: 60, theme: 'system', dayRolloverHour: 4,
     noVoiceNoteSeen: false,
@@ -223,7 +224,8 @@ These work as in the reference: `MIGRATIONS[n]` upgrades n → n+1, entries are 
 
 ### 5.3 Scheduling (ts-fsrs, pinned to the current major version)
 - Two scheduler instances (D16): **production** facets (`meaning_en_ur`, `situation_to_phrase`) use `request_retention: 0.90`; **recognition** and form facets use `0.85`. Production items therefore come back more often, which reflects the goal of speaking. Fuzz is enabled so lessons don't create review clumps.
-- Buttons show `scheduler.repeat(card, now)[rating].card.due`, formatted like `10m · 1d · 3d · 9d`.
+- Uses the current `DefaultScheduler` API pinned to `version: 'FSRS-6'` (its default is FSRS-7, which would change every interval), created once at module load (it is async). The card id seeds fuzz, so cards spread out but each card is stable. The stored CompactCard is independent of the library's own card fields (`toFsrs`/`fromFsrs` in `srs/fsrs.js` translate), so upgrading the library never touches stored data. Verified against the previous classic-API build: identical results on 45 of 50 comparison points; the 5 differences are cards with stability under a day, where the classic API gave Good and Easy the same interval and this one separates them by a day.
+- Buttons show the `preview()` due time of each grade, formatted like `10m · 1d · 3d · 9d`.
 - **Lesson items on commit**: a new word's cards start New and get one rating from what happened in the lesson (practised correctly → Good, missed → Again). They first come back later the same day or the next day. **"I already know this"** cards get Easy applied twice, about 1 minute apart internally. That gives a first interval of roughly 1–3 weeks, and the facets keep their own memory state.
 - **Exercise cards** get their rating from the lesson attempt (correct → Good, hint → Hard, wrong → Again).
 
@@ -235,7 +237,7 @@ These work as in the reference: `MIGRATIONS[n]` upgrades n → n+1, entries are 
 
 ### 5.5 Answer checking (`lang/normalise.js`)
 - `exact(a, b)`: trim, collapse whitespace, strip punctuation; then compare byte for byte (case matters because `T ≠ t`).
-- `lenientKey(s)` is applied to **both** sides. It lowercases (folding T/D/R/N/Gh), drops a nasal `n` that ends a word after a vowel (so `huuN`, `hun`, and `hu` match), collapses `aa→a`, `ii→i`, `uu→u`, collapses doubled consonants (`pakkaa ~ pakaa`), treats a hyphen as a space, and maps `ee→i`, `oo→u`, `v→w`, `mein→me`, `hain→hai` (D4: accepts the common phone spellings `theek`, `hoon`, `mein`, `vo`). Loanwords are matched case-insensitively, ignoring punctuation.
+- `lenientKey(s)` folds both sides. It lowercases (folding T/D/R/N/Gh), and a word-final nasal is optional **only when the expected word has a capital `N`** (so `huuN`, `hun`, `hu` all match `huuN`). A plain final `n` is a real consonant: `din ≠ dii`, `jaan ≠ jaa`, an extra or missing one is a mismatch in both directions. collapses `aa→a`, `ii→i`, `uu→u`, collapses doubled consonants (`pakkaa ~ pakaa`), treats a hyphen as a space, and maps `ee→i`, `oo→u`, `v→w`, `mein→me`, `hain→hai` (D4: accepts the common phone spellings `theek`, `hoon`, `mein`, `vo`). Loanwords are matched case-insensitively, ignoring punctuation.
 - A lenient-but-not-exact answer is marked correct, and the screen shows the exact form with a character diff. Typed answers compare against every listed answer and pick the closest one.
 - `translate` and other free-word-order answers: if the typed answer matches any listed answer, it is marked correct. Otherwise the app shows the model answers and asks "Did you get it?" (✓ / ✗).
 - `normalise.test.js` covers every row of the romanization table and a list of near misses that must **not** pass (`laRkaa` vs `laRkii`, `gayaa` vs `gaye`, `kaa` vs `kii`). Gender and agreement endings are what the lenient match must never blur. Vowel-length collapse could merge `kaa` and `ka`, but no *wrong ending* collapses into a right one, since `aa/ii/e` stay distinct after folding.
@@ -371,9 +373,9 @@ D1–D4 and the curriculum/romanization changes were decided by you. The rest us
 | D17 | Minor parts of speech | Adverbs, pronouns, postpositions and `other` get both `meaning_ur_en` and `meaning_en_ur`. |
 | D18 | Script track (added after Phase 0) | Optional track in Learn, built as Phase 7 (§13). Separate script deck, not in daily reviews unless a setting is on. Storage slots exist from v1 so no migration is needed. |
 | D13 | Audio fallback (decided after the Phase 1 voice test) | Voice test on the main iPhone (iOS 18.7): **no Urdu voice; one Hindi voice, hi-IN "Lekha"**. So: Urdu voice if present (speaks `ur`) → otherwise a runtime Roman Urdu → Devanagari converter read by a Hindi voice → pre-recorded `audio` files always win when present. No new content fields. `#/debug/voices` has a type-in box (Roman Urdu → Devanagari → hear it) so the quality can be judged on the phone. Built as a Phase 1 fix-up; lesson audio comes in Phase 3. Fallback quality is unproven until judged on the device; if it is poor, pre-generated audio (D2) is the next step. |
-| D19 | Review answer modes (Phase 2) | Facets declare which modes they support (`src/srs/cardFace.js`). **Reveal**: recognition facets (`meaning_ur_en`), self-graded. **Speak / Type**: production and form facets. Speak = say it aloud, reveal, self-grade; Type = type Roman Urdu, checked by `lang/normalise.js`, and the result only *suggests* a grade (the learner always presses it; free-order answers such as `translate` can't be judged by the checker). Production facets and `translate` default to Speak; typed-form facets (`perfective`, `fill-blank`, `transform`, `error-spot`) default to Type. **Choice**: `gender`, `takes_ne`, `multiple-choice`, `choose-form`. A Speak/Type toggle is on the card; the chosen mode is remembered in memory for the page load only (no storage change). `listen` exercises are not reviewable until audio arrives in Phase 3. |
+| D19 | Review answer modes (Phase 2) | Facets declare which modes they support (`src/srs/cardFace.js`). **Reveal**: recognition facets (`meaning_ur_en`), self-graded. **Speak / Type**: production and form facets. Speak = say it aloud, reveal, self-grade; Type = type Roman Urdu, checked by `lang/normalise.js`, and the result only *suggests* a grade (the learner always presses it; free-order answers such as `translate` can't be judged by the checker). Production facets and `translate` default to Speak; typed-form facets (`perfective`, `fill-blank`, `transform`, `error-spot`) default to Type. **Choice**: `gender`, `takes_ne`, `multiple-choice`, `choose-form`. A Speak/Type toggle is on the card; the choice is saved as `settings.answerMode` (`'speak' | 'type' | null`, null = no choice yet, so each card type uses its own default) and applies to every card that offers both modes. Adding the field bumped `STORAGE_VERSION` to 2 with `MIGRATIONS[1]` (sets it to null, never overwrites) and `tests/fixtures/storage-v2.json`, per CLAUDE.md. `listen` exercises are not reviewable until audio arrives in Phase 3. |
 | D20 | New-state cards in the queue (Phase 2) | §5.4 said New cards are excluded. But a facet unlocked later (e.g. `perfective` for every verb already learned) is created New with nothing to rate it, so it would never appear. The queue therefore includes due New cards at a neutral priority (retrievability 0.8): introduced soon, never ahead of genuinely overdue cards. Cards born from a lesson still arrive with their first rating. |
-| D21 | Test cards (Phase 2) | `src/srs/seed.js` and `#/debug/seed` add ids prefixed `w:seed-` / `x:seed-lesson:` to the main deck. They are additive, never overwrite a card, and the page's remove button deletes only those ids. Review resolves their words from `seed.js` when the course content doesn't have them. Delete both when real content exists. |
+| D21 | Test cards (Phase 2) | `src/srs/seed.js` and `#/debug/seed` add ids prefixed `w:seed-` / `x:seed-lesson:` to the main deck. They are additive, never overwrite a card, and the page's remove button deletes only those ids. Review resolves their words from `seed.js` when the course content doesn't have them. **Phase 3 starts by deleting `src/srs/seed.js`, `src/modules/debug/seed.js` (and its route and home-screen link), and adding a one-off boot cleanup that removes cards whose ids start with `seed-` (`w:seed-…` and `x:seed-lesson:…`) from the main deck, and nothing else; the cleanup is itself removed once it has had time to run on the devices that used the test cards.** |
 
 ---
 
@@ -469,7 +471,7 @@ Phase 1's validator also enforces now that all `ur` fields use Urdu code points 
 | 0 | Plan: this file, CURRICULUM.md, ROMANIZATION.md ✅ |
 | 1 | Foundations: scaffold, storage + migrations + tests (including the script-deck slots, §13.6), content loader, schemas + validator, PWA + SW, deploy, CLAUDE.md, README.md, `#/debug/voices` |
 | 2 | SRS + Review: FSRS engine with facets, Review screen, normaliser, tests |
-| 3 | Lesson player + Unit 1 lessons 1–5: Today, lesson flow, auto-add to deck, TTS, script toggle |
+| 3 | Lesson player + Unit 1 lessons 1–5: Today, lesson flow, auto-add to deck, TTS, script toggle. **Starts by removing the Phase 2 test cards (D21)** |
 | 4 | Games: the six games, learned items only |
 | 5 | Library + Settings: grammar library, word list, mistake reports, all settings, export/import UI |
 | 6 | Content pipeline docs: CONTENT_GUIDE.md, then Unit 1 lessons 6–10 |

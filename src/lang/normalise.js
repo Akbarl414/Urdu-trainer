@@ -2,7 +2,8 @@
 //
 //   exact   same letters AND capitals, ignoring punctuation and extra spaces (hyphen = space).
 //   close   counts as correct, but the exact form is shown with the differences highlighted:
-//           capitals ignored (T/t, D/d, R/r, Gh/gh), a word-final nasal ignored (huuN ~ hun ~ hu),
+//           capitals ignored (T/t, D/d, R/r, Gh/gh), a nasal `N` in the expected word is optional (huuN ~ hun ~ hu; but a plain
+//           consonant n is not: din ≠ dii, jaan ≠ jaa),
 //           vowel length ignored (aa~a, ii~i, uu~u), doubled consonants ignored (pakkaa ~ pakaa),
 //           and the common phone spellings (theek, hoon, mein, hain, nahin, vo).
 //   wrong   anything else.
@@ -36,10 +37,7 @@ export function exact(a, b) {
 
 function foldToken(lower, dropFinalNasal) {
   let t = lower;
-  if (Object.hasOwn(PHONE_WORDS, t)) {
-    t = PHONE_WORDS[t];
-    dropFinalNasal = true;
-  }
+  if (dropFinalNasal && Object.hasOwn(PHONE_WORDS, t)) t = PHONE_WORDS[t];
   if (dropFinalNasal) t = t.replace(/([aeiou])n$/, '$1');
   return t
     .replace(/ee/g, 'ii')
@@ -53,26 +51,28 @@ function foldToken(lower, dropFinalNasal) {
 
 /**
  * The lenient key of an EXPECTED (schema-spelt) word: a final capital N is the nasal marker
- * and is dropped. A plain final `n` is a real consonant (din, kaun) and is kept.
+ * and is dropped. A plain final `n` is a real consonant (din, jaan) and is kept.
  */
 export function lenientKey(expectedWord) {
-  const dropN = /N$/.test(expectedWord);
-  return foldToken(expectedWord.toLowerCase(), dropN);
+  return foldToken(expectedWord.toLowerCase(), /N$/.test(expectedWord));
 }
 
-/** Lenient keys a TYPED word could mean: a final lowercase n may be the nasal (hun, hoon) or a consonant (din). */
-function typedKeys(word) {
+/**
+ * Lenient keys a TYPED word may have, given the expected word. Only an expected nasal `N` makes the
+ * final n/N optional (hun, hu, huuN all match huuN). When the expected word has no N, a final
+ * n is a consonant: an extra or missing one is a mismatch (din ≠ dii, jaan ≠ jaa).
+ */
+function typedKeys(word, expectedHasNasal) {
   const lower = word.toLowerCase();
-  const keys = new Set([foldToken(lower, /N$/.test(word))]);
-  keys.add(foldToken(lower, true));
-  return keys;
+  if (!expectedHasNasal) return new Set([foldToken(lower, false)]);
+  return new Set([foldToken(lower, false), foldToken(lower, true)]);
 }
 
 /** Compare one token. Loanwords are matched case-insensitively and nothing else. */
 function compareToken(typed, expected, loanwords) {
   if (typed === expected) return 'exact';
   if (loanwords?.has(expected.toLowerCase())) return typed.toLowerCase() === expected.toLowerCase() ? 'close' : 'wrong';
-  return typedKeys(typed).has(lenientKey(expected)) ? 'close' : 'wrong';
+  return typedKeys(typed, /N$/.test(expected)).has(lenientKey(expected)) ? 'close' : 'wrong';
 }
 
 /**

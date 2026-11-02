@@ -56,8 +56,8 @@ export function syncDeck(data, content, now, { grades = {}, known = [] } = {}) {
   for (const { id, facet, wordId } of wantedCards(data, content)) {
     if (cards[id]) continue;
     let card = newCard(now);
-    if (wordId && knownSet.has(wordId)) card = alreadyKnow(card, facet, now);
-    else if (grades[id]) card = review(card, facet, grades[id], now);
+    if (wordId && knownSet.has(wordId)) card = alreadyKnow(card, facet, now, id);
+    else if (grades[id]) card = review(card, facet, grades[id], now, id);
     cards[id] = card;
     created.push(id);
   }
@@ -79,7 +79,7 @@ export function markWordKnown(data, content, wordId, now) {
     const id = wordCardId(wordId, facet);
     const existing = cards[id];
     if (existing && existing.st !== 0) continue;
-    cards[id] = alreadyKnow(existing ?? newCard(now), facet, now);
+    cards[id] = alreadyKnow(existing ?? newCard(now), facet, now, id);
     changed.push(id);
   }
   return changed;

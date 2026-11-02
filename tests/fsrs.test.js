@@ -1,10 +1,12 @@
 import { test } from 'node:test';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { createEngine, GRADE, CARD_STATE, RETENTION, formatInterval, markWeak, isProductionFacet } from '../src/srs/fsrs.js';
 
 const DAY = 86400000;
 const NOW = Date.parse('2026-11-02T10:00:00Z');
-const e = createEngine({ fuzz: false });
+const e = await createEngine({ fuzz: false });
 
 test('a new card is due now, in the New state', () => {
   const c = e.newCard(NOW);
@@ -82,8 +84,8 @@ test('"I already know this": first interval of roughly 1-4 weeks, in the Review 
   assert.ok(e.alreadyKnow(e.newCard(NOW), 'meaning_ur_en', NOW).due > plain.due);
 });
 
-test('fuzz is on by default and still stays near the unfuzzed interval', () => {
-  const fuzzy = createEngine();
+test('fuzz is on by default and still stays near the unfuzzed interval', async () => {
+  const fuzzy = await createEngine();
   const c = e.review(e.newCard(NOW), 'meaning_ur_en', GRADE.easy, NOW - 30 * DAY);
   const base = e.preview(c, 'meaning_ur_en', NOW)[3].ms;
   const got = fuzzy.preview(c, 'meaning_ur_en', NOW)[3].ms;
@@ -111,4 +113,60 @@ test('formatInterval is Anki-style', () => {
 
 test('invalid grades are rejected', () => {
   assert.throws(() => e.review(e.newCard(NOW), 'meaning_ur_en', 7, NOW));
+});
+
+// ---- the stored card shape and the library upgrade ----
+
+const GRADES_ALL = [1, 2, 3, 4];
+const SHAPE = ['d', 'due', 'l', 'lr', 'ls', 'r', 's', 'sd', 'st'];
+const keysOf = (c) => Object.keys(c).filter((k) => k !== 'weak').sort();
+
+test('stored shape is unchanged: every card the engine returns has exactly the compact keys', () => {
+  let c = e.newCard(NOW);
+  assert.deepEqual(keysOf(c), SHAPE);
+  for (const g of [GRADE.good, GRADE.again, GRADE.good, GRADE.easy]) {
+    c = e.review(c, 'meaning_ur_en', g, NOW);
+    assert.deepEqual(keysOf(c), SHAPE);
+    for (const k of SHAPE) assert.ok(k === 'lr' && c[k] === null ? false : Number.isFinite(c[k]), k);
+  }
+  assert.ok(Object.values(e.alreadyKnow(e.newCard(NOW), 'gender', NOW)).every((v) => v === null || Number.isFinite(v)));
+});
+
+test('cards saved by the previous (classic API) build still load and schedule, with the same results', () => {
+  // Captured from the classic fsrs()/repeat() build before the switch (fuzz off, facet meaning_ur_en).
+  const learning = { due: 1790158200000, s: 2.3065, d: 2.11810397, st: 1, r: 1, l: 0, lr: 1790157600000, sd: 0, ls: 1 };
+  const at = learning.due; // the moment the card came up for review
+  assert.deepEqual([1, 2, 3, 4].map((g) => e.preview(learning, 'meaning_ur_en', at)[g].due), [1790158260000, 1790158530000, 1790503800000, 1790849400000]);
+  assert.equal(e.retrievability(learning, 'meaning_ur_en', at + 3 * DAY), 0.88094796);
+  assert.deepEqual(e.alreadyKnow(e.newCard(NOW), 'meaning_ur_en', NOW), { due: 1795773660000, s: 13.04606469, d: 1, st: 2, r: 2, l: 0, lr: 1793613660000, sd: 25, ls: 0 });
+});
+
+test('every card in the v1 storage fixture (a saved device) previews and reviews, in every state', () => {
+  const fixture = JSON.parse(readFileSync(fileURLToPath(new URL('./fixtures/storage-v1.json', import.meta.url)), 'utf8'));
+  const cards = Object.entries(fixture.srs.decks.main.cards);
+  assert.ok(cards.length >= 3);
+  const states = new Set(cards.map(([, c]) => c.st));
+  assert.ok(states.size >= 2, 'fixture covers more than one state');
+  for (const [id, card] of cards) {
+    const facet = id.split(':')[2];
+    const now = card.lr + 2 * DAY;
+    const p = e.preview(card, facet, now, id);
+    for (const g of GRADES_ALL) {
+      assert.ok(p[g].due >= now, `${id} grade ${g}`);
+      const next = e.review(card, facet, g, now, id);
+      assert.deepEqual(keysOf(next), SHAPE, id);
+      assert.equal(next.due, p[g].due, `${id}: the shown interval is what grading does`);
+      assert.equal(next.r, card.r + 1);
+      assert.equal(next.weak, undefined, 'a real review clears weak');
+    }
+  }
+});
+
+test('the card id seeds fuzz: different cards spread out, the same card is stable', async () => {
+  const fuzzy = await createEngine();
+  const c = e.review(e.newCard(NOW), 'meaning_ur_en', GRADE.easy, NOW - 60 * DAY);
+  const dueFor = (id) => fuzzy.review(c, 'meaning_ur_en', GRADE.good, NOW, id).due;
+  const ids = Array.from({ length: 20 }, (_, i) => `w:word${i}:meaning_ur_en`);
+  assert.ok(new Set(ids.map(dueFor)).size > 3, 'not clumped on one day');
+  assert.equal(dueFor(ids[0]), dueFor(ids[0]));
 });

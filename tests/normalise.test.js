@@ -25,10 +25,31 @@ test('close: a word-final nasal is optional (huuN ~ hun ~ hu)', () => {
   assert.ok(isCorrect(compare('laRkon', 'laRkoN')));
 });
 
-test('a real consonant n is not treated as a nasal: din is not di', () => {
-  assert.equal(compare('din', 'din'), 'exact');
+test('a nasal is optional only when the expected word has N', () => {
+  // expected N: a typed final n, N or nothing all match
+  for (const typed of ['huuN', 'hun', 'huun', 'hu', 'huu', 'hoon']) assert.ok(isCorrect(compare(typed, 'huuN')), typed);
+  for (const typed of ['kahaaN', 'kahaan', 'kahaa', 'kaha']) assert.ok(isCorrect(compare(typed, 'kahaaN')), typed);
+});
+
+test('a plain consonant n must match: din ≠ dii, jaan ≠ jaa, both directions', () => {
+  // expected has no N → an extra typed n is wrong
+  assert.equal(compare('din', 'dii'), 'wrong');
+  assert.equal(compare('din', 'di'), 'wrong');
+  assert.equal(compare('jaan', 'jaa'), 'wrong');
+  assert.equal(compare('huuN', 'huu'), 'wrong', 'a typed nasal marker is not accepted for a word without one');
+  // expected has a consonant n → a missing typed n is wrong
+  assert.equal(compare('dii', 'din'), 'wrong');
   assert.equal(compare('di', 'din'), 'wrong');
+  assert.equal(compare('jaa', 'jaan'), 'wrong');
   assert.equal(compare('kau', 'kaun'), 'wrong');
+  // and the correct spellings still pass
+  assert.equal(compare('din', 'din'), 'exact');
+  assert.ok(isCorrect(compare('jaan', 'jaan')));
+  assert.ok(isCorrect(compare('Din', 'din')));
+  assert.ok(isCorrect(compare('jan', 'jaan')), 'vowel length is still lenient');
+  // inside a longer answer too
+  assert.equal(compare('aaj din Thiik hai', 'aaj dii Thiik hai'), 'wrong');
+  assert.equal(compare('aaj dii Thiik hai', 'aaj din Thiik hai'), 'wrong');
 });
 
 test('close: vowel length and doubled consonants are ignored', () => {
