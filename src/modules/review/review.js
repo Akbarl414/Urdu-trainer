@@ -116,7 +116,7 @@ export function render(container) {
   // ---------------------------------------------------------------- one card
 
   function renderCard(id) {
-    const face = describeCard(id, source);
+    const face = describeCard(id, source, { learnerGender: data.settings.learnerGender });
     const card = cards[id];
     const shownAt = Date.now();
     const modes = face.modes;

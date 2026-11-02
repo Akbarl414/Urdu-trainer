@@ -64,6 +64,16 @@
           "type": "string",
           "minLength": 1
         },
+        "ur_alt": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Other correct Urdu spellings in common use (الحمد للہ / الحمدللہ). Accepted by the script track's Spell practice; ur stays the one shown."
+        },
         "meaning_en": {
           "type": "string",
           "minLength": 1

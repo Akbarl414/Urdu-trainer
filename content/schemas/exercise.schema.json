@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "exercise.schema.json",
   "title": "Exercise types",
-  "description": "Hints go in the optional `hint` field (shown behind a Hint button; using it caps the grade at Hard). Prompts here are roman/ur/en triples that are reused in reveals, so the German app's trailing \"(...)\" hint convention is not used (PLAN D22).",
+  "description": "Hints go in the optional `hint` field (shown behind a Hint button; using it caps the grade at Hard). Prompts here are roman/ur/en triples that are reused in reveals, so the German app's trailing \"(...)\" hint convention is not used (PLAN D22). When the learner speaks about themselves and a woman would say it differently (maiN thakaa / thakii huuN), the base fields are the man's form and `learner_f` lists the fields a woman's version replaces (PLAN D23).",
   "definitions": {
     "fill-blank": {
       "type": "object",
@@ -61,6 +61,11 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "learner_f": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "The woman learner's version: each field listed here REPLACES the whole base field (shallow); id, type, tags and retired can't be replaced. The merged exercise is validated like any other. The app shows it when settings.learnerGender is 'f'."
         }
       }
     },
@@ -120,6 +125,11 @@
         "answerIndex": {
           "type": "integer",
           "minimum": 0
+        },
+        "learner_f": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "The woman learner's version: each field listed here REPLACES the whole base field (shallow); id, type, tags and retired can't be replaced. The merged exercise is validated like any other. The app shows it when settings.learnerGender is 'f'."
         }
       }
     },
@@ -175,6 +185,11 @@
         "answerIndex": {
           "type": "integer",
           "minimum": 0
+        },
+        "learner_f": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "The woman learner's version: each field listed here REPLACES the whole base field (shallow); id, type, tags and retired can't be replaced. The merged exercise is validated like any other. The app shows it when settings.learnerGender is 'f'."
         }
       }
     },
@@ -239,6 +254,11 @@
             }
           },
           "description": "EVERY valid order (Urdu word order is flexible). Each must be a permutation of tokens."
+        },
+        "learner_f": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "The woman learner's version: each field listed here REPLACES the whole base field (shallow); id, type, tags and retired can't be replaced. The merged exercise is validated like any other. The app shows it when settings.learnerGender is 'f'."
         }
       }
     },
@@ -299,6 +319,11 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "learner_f": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "The woman learner's version: each field listed here REPLACES the whole base field (shallow); id, type, tags and retired can't be replaced. The merged exercise is validated like any other. The app shows it when settings.learnerGender is 'f'."
         }
       }
     },
@@ -352,6 +377,11 @@
         "self_grade": {
           "type": "boolean",
           "description": "Show model answers and let the learner mark themselves right/wrong."
+        },
+        "learner_f": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "The woman learner's version: each field listed here REPLACES the whole base field (shallow); id, type, tags and retired can't be replaced. The merged exercise is validated like any other. The app shows it when settings.learnerGender is 'f'."
         }
       }
     },
@@ -406,6 +436,11 @@
           "items": {
             "$ref": "common.schema.json#/definitions/pair"
           }
+        },
+        "learner_f": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "The woman learner's version: each field listed here REPLACES the whole base field (shallow); id, type, tags and retired can't be replaced. The merged exercise is validated like any other. The app shows it when settings.learnerGender is 'f'."
         }
       }
     },
@@ -460,6 +495,11 @@
         "answerIndex": {
           "type": "integer",
           "minimum": 0
+        },
+        "learner_f": {
+          "type": "object",
+          "minProperties": 1,
+          "description": "The woman learner's version: each field listed here REPLACES the whole base field (shallow); id, type, tags and retired can't be replaced. The merged exercise is validated like any other. The app shows it when settings.learnerGender is 'f'."
         }
       }
     }

@@ -8,7 +8,7 @@
   "grammar": [
     {
       "heading": "The verb comes last",
-      "body": "In English the verb sits in the middle: \"I am fine\". In Urdu it goes at the very end. So `maiN Thiik huuN` is, word for word, \"I fine am\". Questions work the same way: `aap kaise haiN?` is \"you how are?\". Who, then the rest, then the verb.",
+      "body": "In English the verb sits in the middle: \"I am fine\". In Urdu it goes at the very end. So `maiN Thiik huuN` is, word for word, \"I fine am\". Questions work the same way: `aap kaise haiN?` is \"you how are?\". Relaxed speech often moves the verb earlier (`kaise haiN aap?`), but verb-last is always right.",
       "table": {
         "headers": ["Urdu", "Word for word"],
         "rows": [
@@ -144,7 +144,7 @@
         ["aap", "kaise", "haiN"],
         ["kaise", "haiN", "aap"]
       ],
-      "explanation": "The usual order puts the verb last: `aap kaise haiN?`. In relaxed speech you'll also hear `kaise haiN aap?`, which is fine too.",
+      "explanation": "The usual order puts the verb last: `aap kaise haiN?`. Relaxed speech often moves the verb earlier, so `kaise haiN aap?` is fine too.",
       "tags": ["word-order"]
     },
     {
@@ -198,7 +198,7 @@
     }
   ],
   "dialogue": {
-    "setting": "You're visiting your partner's parents for the first time. Their mum opens the door, and their dad comes to say hello a moment later.",
+    "setting": "You're visiting your partner's parents for the first time. Their mum opens the door, then shows you into the sitting room, where their dad is waiting. You're the one arriving, and the younger one, so you greet first both times.",
     "speakers": [
       { "id": "you", "en": "You", "learner": true },
       { "id": "mum", "en": "Partner's mum", "gender": "f" },

@@ -17,6 +17,24 @@ const PUNCT = /[.,?!…;:"'“”‘’()[\]]/g;
 /** Phone spellings the letter rules below can't reach (hain, nahin, hoon, theek, vo all fold by rule). */
 const PHONE_WORDS = { mein: 'men' };
 
+/**
+ * Fixed phrases people type in many ways on a phone (D23 decisions, ROMANIZATION.md §7). When the
+ * EXPECTED answer contains `canonical`, a typed variant in the same place counts as close enough
+ * (never exact). Variants are compared after the usual folding, so vowel length and doubled
+ * letters don't need listing. A variant only ever stands in for its own phrase.
+ */
+const PHONE_PHRASES = [
+  {
+    canonical: 'assalaam o alaikum',
+    variants: ['assalamualaikum', 'assalamu alaikum', 'assalam alaikum', 'asalamualaikum', 'aslamualaikum', 'aslam o alaikum', 'salam alaikum', 'salamualaikum', 'salam'],
+  },
+  {
+    canonical: 'wa alaikum assalaam',
+    variants: ['walaikum assalam', 'walaikumassalam', 'walaikum salam', 'wa alaikum salam', 'waalaikum assalam', 'walekum assalam'],
+  },
+  { canonical: 'alhamdulillaah', variants: ['alhamdu lillah', 'alhamdolillah', 'alhumdulillah', 'alhamdulilah'] },
+];
+
 /** Lowercase-free tokenisation shared by every comparison: hyphen = space, punctuation removed. */
 export function tokens(s) {
   return String(s ?? '')
@@ -83,8 +101,8 @@ function compareToken(typed, expected, loanwords) {
  * @returns {'exact'|'close'|'wrong'}
  */
 export function compare(typed, expected, { loanwords } = {}) {
-  const a = tokens(typed);
   const b = tokens(expected);
+  const { list: a, aliased } = rewritePhonePhrases(tokens(typed), b);
   if (a.length === 0 || a.length !== b.length) return 'wrong';
   let result = 'exact';
   for (let i = 0; i < a.length; i++) {
@@ -92,7 +110,40 @@ export function compare(typed, expected, { loanwords } = {}) {
     if (r === 'wrong') return 'wrong';
     if (r === 'close') result = 'close';
   }
-  return result;
+  return aliased && result === 'exact' ? 'close' : result;
+}
+
+const foldKey = (t) => foldToken(t.toLowerCase(), false);
+const foldSeq = (s) => tokens(s).map(foldKey);
+const PHRASES_FOLDED = PHONE_PHRASES.map((p) => ({ canonical: tokens(p.canonical), key: foldSeq(p.canonical), variants: p.variants.map(foldSeq).sort((x, y) => y.length - x.length) }));
+const startsAt = (list, i, seq) => seq.length > 0 && seq.every((k, j) => list[i + j] !== undefined && foldKey(list[i + j]) === k);
+
+/**
+ * Replace typed phone spellings of fixed phrases with the expected tokens, but only for phrases the
+ * expected answer actually contains. Returns the new token list and whether anything was replaced.
+ */
+function rewritePhonePhrases(typed, expected) {
+  const wanted = PHRASES_FOLDED.filter((p) => expected.some((_, i) => startsAt(expected, i, p.key)));
+  if (!wanted.length) return { list: typed, aliased: false };
+  // Longest variants first, so "walaikum assalam" wins over "walaikum".
+  const candidates = wanted.flatMap((p) => p.variants.map((v) => ({ p, v }))).sort((x, y) => y.v.length - x.v.length);
+  const out = [];
+  let aliased = false;
+  for (let i = 0; i < typed.length; ) {
+    // Already the scheme's spelling (perhaps leniently): leave it to the normal comparison.
+    const canonicalHere = wanted.find((p) => startsAt(typed, i, p.key));
+    const hit = canonicalHere ? null : candidates.find(({ v }) => startsAt(typed, i, v));
+    if (canonicalHere) {
+      out.push(...typed.slice(i, i + canonicalHere.key.length));
+      i += canonicalHere.key.length;
+    } else if (hit) {
+      const at = expected.findIndex((_, k) => startsAt(expected, k, hit.p.key));
+      out.push(...expected.slice(at, at + hit.p.canonical.length));
+      i += hit.v.length;
+      aliased = true;
+    } else out.push(typed[i++]);
+  }
+  return { list: out, aliased };
 }
 
 /**

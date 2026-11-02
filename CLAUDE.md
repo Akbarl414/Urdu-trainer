@@ -33,6 +33,7 @@ One scheme everywhere, defined in `content/ROMANIZATION.md` and enforced by `src
 
 - Content ids never change once shipped (lessons, words, exercises, game items, units). Add new ids; retire old content with `"retired": true`, never delete. `content/shipped-ids.json` locks shipped ids and `npm run validate` fails if one disappears. **Before merging content to `main`, run `npm run lock-ids` and commit the result**: the deploy workflow runs `npm run lock-ids -- --check` and fails if any id is unlocked.
 - Urdu accuracy matters more than volume: at most one unit (≈10 lessons, ≤80 items) per generation pass; validate and hand-check genders, plurals, obliques, perfectives and `takes_ne` before continuing.
+- The learner's gender is a setting (PLAN D23). Wherever the learner speaks about themselves (their dialogue lines, first-person exercises), the base fields are the man's form and `learner_f` holds the woman's when it differs (`maiN thakaa / thakii huuN`). Other speakers have a fixed `gender`. Heed the validator's "Add learner_f" warnings.
 - Lesson ids are global (`lesson-001`…`lesson-180`) and `order` equals the number in the id.
 
 ## Commands

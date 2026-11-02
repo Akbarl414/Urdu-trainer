@@ -153,5 +153,6 @@ The validator can't check things that need the ear, like vowel quality (`behen`)
   - nasal marking ignored **only where the expected word has `N`**: `huuN ~ hun ~ hu`, `nahiiN ~ nahin ~ nahi`. A plain consonant `n` must match: `din ≠ dii`, `jaan ≠ jaa`, in both directions;
   - vowel length ignored: `aa ~ a`, `ii ~ i`, `uu ~ u`;
   - doubled consonants ignored: `pakkaa ~ pakaa`;
-  - common phone spellings accepted: `ee → ii` (`theek`), `oo → uu` (`hoon`), `v → w` (`vo`), `mein → meN`, `hain → haiN`.
+  - common phone spellings accepted: `ee → ii` (`theek`), `oo → uu` (`hoon`), `v → w` (`vo`), `mein → meN`, `hain → haiN`;
+  - fixed greetings as people type them, when the answer contains that greeting: `assalamualaikum`, `asalamualaikum`, `salam alaikum`, `salam` for `assalaam-o-alaikum`; `walaikum assalam`, `walaikumassalam`, `walaikum salam` for `wa-alaikum-assalaam`; `alhamdolillah`, `alhumdulillah` for `alhamdulillaah`. The list is `PHONE_PHRASES` in `normalise.js`. A variant never counts for a different phrase (`salam` is not the reply).
 - **Never close enough on endings that carry grammar**: `laRkaa ≠ laRkii ≠ laRke`, `gayaa ≠ gayii ≠ gaye`, `kaa ≠ kii ≠ ke`. Collapsing vowel length must never let a wrong ending match a right one. The normaliser tests cover every one of these pairs.

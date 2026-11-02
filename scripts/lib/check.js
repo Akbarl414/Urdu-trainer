@@ -11,7 +11,9 @@ const MAX_WORDS_PER_UNIT = 80;
 /** Keys whose string (or string-array) values are Roman Urdu. */
 const ROMAN_KEYS = new Set(['roman', 'answer', 'altAnswers', 'tokens', 'answerOrders', 'forms']);
 /** English prose keys: Urdu inside `backticks` is checked against the scheme. */
-const PROSE_KEYS = new Set(['body', 'heading', 'notes', 'explanation', 'hint', 'setting', 'situation', 'literal', 'instruction', 'prompt']);
+const PROSE_KEYS = new Set(['body', 'heading', 'notes', 'explanation', 'hint', 'setting', 'situation', 'literal', 'instruction', 'prompt', 'note']);
+/** Exercise fields a learner_f override may not replace (D23). */
+const FIXED_EXERCISE_KEYS = ['id', 'type', 'tags', 'retired', 'learner_f'];
 const isUrKey = (k) => k === 'ur' || k.endsWith('_ur');
 
 const lessonNumber = (id) => Number(LESSON_NUM.exec(id)?.[1] ?? NaN);
@@ -150,6 +152,10 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
           });
           continue;
         }
+        if (k === 'ur_alt' && Array.isArray(v)) {
+          v.forEach((u, i) => checkUrdu(u).forEach((m) => err(it, `${here}[${i}] ("${u}") ${m}`)));
+          continue;
+        }
         if (isUrKey(k) && typeof v === 'string') {
           for (const m of checkUrdu(v, { allowBlank: true })) err(it, `${here} ("${v}") ${m}`);
           continue;
@@ -198,6 +204,7 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
         if (!intro.data.new_vocab.includes(word.id)) err(v, `${path} says it is introduced in ${word.introduced_in}, but that lesson's new_vocab does not list it`);
       }
       checkForms(v, word, path);
+      if (word.ur_alt?.includes(word.ur)) err(v, `${path}.ur_alt repeats ur; list only other spellings`);
     });
   }
 
@@ -247,12 +254,73 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
       else if (!sp.gender) err(l, `dialogue.speakers[${i}] (${sp.id}) needs a gender (only the learner's role has none)`);
     });
     if (learners > 1) err(l, `dialogue has ${learners} learner speakers; at most one`);
+    const learnerIds = new Set(dialogue.speakers.filter((sp) => sp.learner).map((sp) => sp.id));
     const used = new Set();
     dialogue.lines.forEach((line, i) => {
       if (!ids.has(line.speaker)) err(l, `dialogue.lines[${i}].speaker "${line.speaker}" is not in dialogue.speakers`);
       used.add(line.speaker);
+      if (!learnerIds.has(line.speaker)) {
+        if (line.learner_f) err(l, `dialogue.lines[${i}].learner_f is only for the learner's own lines (speaker "${line.speaker}" has a fixed gender)`);
+        return;
+      }
+      if (line.learner_f) {
+        if (line.learner_f.roman === line.roman) warnings.push(`${label(l)}: dialogue.lines[${i}].learner_f.roman is the same as the base line`);
+      } else if (gendered(line.roman)) {
+        warnings.push(`${label(l)}: dialogue.lines[${i}] is the learner speaking about themselves with a form that may change for a woman ("${gendered(line.roman)}"). Add learner_f if a woman says it differently.`);
+      }
     });
     for (const id of ids) if (!used.has(id)) warnings.push(`${label(l)}: dialogue speaker "${id}" has no lines`);
+  }
+
+  // ---- learner gender (D23) ----------------------------------------------
+  // Vocab forms that change with the speaker's gender, plus habitual/future/progressive endings.
+  const genderedForms = new Set();
+  for (const { word } of wordById.values()) {
+    for (const p of [word.agreement?.m_sg, word.agreement?.f, word.perfective?.m_sg, word.perfective?.f_sg]) if (p?.roman) genderedForms.add(p.roman);
+  }
+  const GENDERED_WORDS = new Set(['thaa', 'thii', 'rahaa', 'rahii', 'gayaa', 'gayii']);
+  /** The first gendered token in a first-person sentence ("maiN … huuN"), or null. */
+  function gendered(text) {
+    for (const sentence of String(text).split(/[.?!…]/)) {
+      const toks = sentence.replace(/[,;:"()-]/g, ' ').split(/\s+/).filter(Boolean);
+      if (!toks.includes('maiN') && !toks.includes('huuN')) continue;
+      const hit = toks.find((t) => genderedForms.has(t) || GENDERED_WORDS.has(t) || (t.length > 4 && /(taa|tii|ngaa|ngii)$/.test(t)));
+      if (hit) return hit;
+    }
+    return null;
+  }
+  const romanStrings = (node) => {
+    const out = [];
+    const walk = (n, key) => {
+      if (Array.isArray(n)) return n.forEach((x) => walk(x, key));
+      if (typeof n === 'string') return void (ROMAN_KEYS.has(key) && out.push(n));
+      if (n && typeof n === 'object') for (const [k, v] of Object.entries(n)) if (k !== 'learner_f') walk(v, k);
+    };
+    walk(node, '');
+    return out;
+  };
+
+  function checkLearnerVariant(l, e, path) {
+    if (!e.learner_f) {
+      // A blank hides the gendered word, so also read the sentence with the answer filled in.
+      const filled = [];
+      if (e.sentence?.roman && e.answer) filled.push(e.sentence.roman.replace('___', e.answer));
+      if (e.sentence?.roman && e.type === 'choose-form') filled.push(e.sentence.roman.replace('___', e.options[e.answerIndex]?.roman ?? ''));
+      const hit = [...romanStrings(e), ...filled].map(gendered).find(Boolean);
+      if (hit) warnings.push(`${label(l)}: ${path} has the learner speaking about themselves with a form that may change for a woman ("${hit}"). Add learner_f if a woman says it differently.`);
+      return;
+    }
+    const bad = FIXED_EXERCISE_KEYS.filter((k) => k in e.learner_f);
+    if (bad.length) return err(l, `${path}.learner_f may not replace ${bad.join(', ')}`);
+    const { learner_f: f, ...base } = e;
+    const merged = { ...base, ...f };
+    const validate = ajv.getSchema(`exercise.schema.json#/definitions/${e.type}`);
+    if (validate && !validate(merged)) {
+      for (const x of validate.errors) err(l, `${path} (woman's version) ${x.instancePath || '(root)'} ${x.message}${x.params?.additionalProperty ? ` "${x.params.additionalProperty}"` : ''}`);
+      return;
+    }
+    checkExercise(l, merged, `${path} (woman's version)`);
+    if (JSON.stringify(merged) === JSON.stringify(base)) warnings.push(`${label(l)}: ${path}.learner_f changes nothing`);
   }
 
   // ---- 4. lessons -------------------------------------------------------
@@ -274,7 +342,9 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
     d.exercises.forEach((e, i) => {
       if (exIds.has(e.id)) err(l, `exercises[${i}] duplicate exercise id "${e.id}"`);
       exIds.add(e.id);
-      checkExercise(l, e, `exercises[${i}] (${e.id})`);
+      const path = `exercises[${i}] (${e.id})`;
+      checkExercise(l, e, path);
+      checkLearnerVariant(l, e, path);
     });
     const gids = new Set();
     (d.game_items || []).forEach((g) => {

@@ -231,3 +231,50 @@ test('hints and grammar examples are checked; unlocks must be a known feature', 
   b = makeBundle(); lesson(b).unlocks = ['perfectve']; failsWith(b, /unlocks/);
   b = makeBundle(); lesson(b).unlocks = ['gender']; assert.deepEqual(run(b).errors, []);
 });
+
+// ---- learner gender and other spellings (PLAN D23) -----------------------------------
+const learnerLine = (b) => lesson(b).dialogue.lines[1]; // speaker "you" in the fixture
+const firstPerson = (b) => {
+  const e = { id: 'e09', type: 'fill-blank', explanation: 'x', sentence: { roman: 'maiN ___ huuN.', ur: 'میں ___ ہوں۔', en: "I'm good." }, answer: 'acchaa', answer_ur: 'اچھا' };
+  lesson(b).exercises.push(e);
+  return e;
+};
+
+test('learner_f: only on the learner\'s own dialogue lines, checked like any line', () => {
+  let b = makeBundle(); learnerLine(b).learner_f = { roman: 'wa-alaikum-assalaam!', ur: 'وعلیکم السلام!' };
+  assert.deepEqual(run(b).errors, []);
+  b = makeBundle(); lesson(b).dialogue.lines[0].learner_f = { roman: 'x', ur: 'ک' }; failsWith(b, /only for the learner's own lines/);
+  b = makeBundle(); learnerLine(b).learner_f = { roman: 'Theek', ur: 'ٹھیک' }; failsWith(b, /capital|"ee"/);
+  b = makeBundle(); learnerLine(b).learner_f = { roman: 'Thiik', ur: 'ٹهيک' }; failsWith(b, /look-alike/);
+  b = makeBundle(); learnerLine(b).learner_f = { roman: 'Thiik' }; failsWith(b, /ur/);
+});
+
+test('learner_f on exercises: the merged woman\'s version must be valid too', () => {
+  let b = makeBundle(); firstPerson(b).learner_f = { answer: 'acchii', answer_ur: 'اچھی' };
+  assert.deepEqual(run(b).errors, []);
+  b = makeBundle(); firstPerson(b).learner_f = { answer: 'acchi i', answer_ur: 'اچھی', id: 'e10' }; failsWith(b, /may not replace id/);
+  b = makeBundle(); firstPerson(b).learner_f = { sentence: { roman: 'maiN acchii huuN.', ur: 'میں اچھی ہوں۔', en: "I'm good." } }; failsWith(b, /woman's version.*needs a ___ blank/);
+  b = makeBundle(); firstPerson(b).learner_f = { sentence: { roman: 'maiN ___ huuN.' } }; failsWith(b, /woman's version.*ur/);
+  b = makeBundle(); firstPerson(b).learner_f = { answer: 'Acchii' }; failsWith(b, /capital "A"/);
+  b = makeBundle(); firstPerson(b).learner_f = { colour: 'red' }; failsWith(b, /woman's version.*colour/);
+});
+
+test('a first-person sentence with a gendered form and no learner_f is a warning, not an error', () => {
+  let b = makeBundle(); firstPerson(b);
+  let r = run(b);
+  assert.deepEqual(r.errors, []);
+  assert.ok(r.warnings.some((w) => /e09.*"acchaa".*Add learner_f/.test(w)), r.warnings.join('\n'));
+  b = makeBundle(); firstPerson(b).learner_f = { answer: 'acchii', answer_ur: 'اچھی' };
+  assert.ok(!run(b).warnings.some((w) => /Add learner_f/.test(w)));
+  b = makeBundle(); learnerLine(b).roman = 'maiN ghar jaataa huuN.'; learnerLine(b).ur = 'میں گھر جاتا ہوں۔';
+  assert.ok(run(b).warnings.some((w) => /dialogue.lines\[1\].*"jaataa"/.test(w)));
+  b = makeBundle(); learnerLine(b).roman = 'Thiik huuN. wo laRkii acchii hai.'; learnerLine(b).ur = 'ٹھیک ہوں۔ وہ لڑکی اچھی ہے۔';
+  assert.ok(!run(b).warnings.some((w) => /Add learner_f/.test(w)), 'third-person sentences are not flagged');
+});
+
+test('ur_alt: other real spellings, in Urdu code points, not repeating ur', () => {
+  let b = makeBundle(); word(b, 'shukriyaa').ur_alt = ['شکریا'];
+  assert.deepEqual(run(b).errors, []);
+  b = makeBundle(); word(b, 'shukriyaa').ur_alt = ['شکريه']; failsWith(b, /look-alike/);
+  b = makeBundle(); word(b, 'shukriyaa').ur_alt = ['شکریہ']; failsWith(b, /repeats ur/);
+});

@@ -21,7 +21,7 @@
       "hindi_variant": {
         "roman": "namaste",
         "devanagari": "नमस्ते",
-        "note": "The usual greeting in Hindi films and TV. Pakistani Urdu speakers say assalaam-o-alaikum."
+        "note": "The usual greeting in Hindi films and TV. Muslim characters in films usually say `aadaab` or `salaam`; in Pakistan it's `assalaam-o-alaikum`."
       }
     },
     {
@@ -127,6 +127,7 @@
       "pos": "phrase",
       "roman": "alhamdulillaah",
       "ur": "الحمد للہ",
+      "ur_alt": ["الحمدللہ"],
       "meaning_en": "thank God (praise be to God)",
       "literal": "all praise is for God",
       "situation": "Someone asks how you are. Before saying you're well, give thanks to God, as most Pakistanis do.",

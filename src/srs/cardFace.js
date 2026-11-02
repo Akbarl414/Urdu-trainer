@@ -10,6 +10,7 @@
 
 import { parseCardId, itemKey } from './facets.js';
 import { tokens } from '../lang/normalise.js';
+import { forLearner } from '../lesson/learner.js';
 
 const FACET_LABEL = {
   meaning_ur_en: 'What does this mean?',
@@ -96,9 +97,11 @@ function wordFace(id, parsed, source) {
   }
 }
 
-function exerciseFace(id, parsed, source) {
-  const ex = source.getExercise(parsed.lessonId, parsed.exerciseId);
-  if (!ex || ex.retired) return null;
+function exerciseFace(id, parsed, source, { learnerGender = null } = {}) {
+  const raw = source.getExercise(parsed.lessonId, parsed.exerciseId);
+  if (!raw || raw.retired) return null;
+  // The learner's own sentences in their gender (D23): same card, the matching form.
+  const ex = forLearner(raw, learnerGender);
   const base = { id, facet: 'default', kind: 'exercise', itemKey: itemKey(id), loanwords: new Set(), exercise: ex };
   const why = ex.explanation ? [{ label: 'Why', en: ex.explanation }] : [];
   const sentence = ex.sentence ? triple(ex.sentence) : null;
@@ -190,13 +193,14 @@ function exerciseFace(id, parsed, source) {
 /**
  * @param {string} id  card id
  * @param {{ getWord: (id: string) => any, getExercise: (lessonId: string, exerciseId: string) => any }} source
+ * @param {{ learnerGender?: 'm'|'f'|null }} [opts]  settings.learnerGender: picks the learner's own form (D23)
  * @returns {any|null}  null when the card can't be shown (content missing, retired, or needs audio)
  */
-export function describeCard(id, source) {
+export function describeCard(id, source, opts = {}) {
   const parsed = parseCardId(id);
   if (!parsed) return null;
   if (parsed.kind === 'word') return wordFace(id, parsed, source);
-  if (parsed.kind === 'exercise') return exerciseFace(id, parsed, source);
+  if (parsed.kind === 'exercise') return exerciseFace(id, parsed, source, opts);
   return null;
 }
 

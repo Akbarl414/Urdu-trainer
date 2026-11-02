@@ -330,7 +330,7 @@
               },
               "learner": {
                 "type": "boolean",
-                "description": "The learner's own role (at most one). Their lines must read the same for a man or a woman, since the learner's gender is not known."
+                "description": "The learner's own role (at most one). Its gender comes from settings.learnerGender. Lines a woman would say differently carry learner_f (D23)."
               }
             }
           }
@@ -366,6 +366,32 @@
               },
               "audio": {
                 "$ref": "common.schema.json#/definitions/audioPath"
+              },
+              "learner_f": {
+                "type": "object",
+                "required": [
+                  "roman",
+                  "ur"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "roman": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "ur": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "en": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "audio": {
+                    "$ref": "common.schema.json#/definitions/audioPath"
+                  }
+                },
+                "description": "Learner lines only: the woman's version of this line (base fields are the man's). en only if the English differs."
               }
             }
           }

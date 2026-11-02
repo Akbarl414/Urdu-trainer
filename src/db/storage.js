@@ -18,7 +18,7 @@
 import { DATA_KEY, SNAPSHOTS_KEY, recoveryKey, isRecoveryKey, isOwnKey } from './keys.js';
 import { studyDay } from './day.js';
 
-export const STORAGE_VERSION = 2;
+export const STORAGE_VERSION = 3;
 export const BACKUP_FORMAT = 'urdu-trainer-backup';
 
 const DAILY_SNAPSHOTS_KEPT = 3; // D15
@@ -36,6 +36,9 @@ export const MIGRATIONS = {
   // v1 → v2 (Phase 2): settings.answerMode, the remembered Speak/Type choice on the Review screen.
   // null = no choice made yet (each card type uses its own default). Never overwrites a value.
   1: (data) => ({ ...data, settings: { ...(data.settings || {}), answerMode: data.settings?.answerMode ?? null } }),
+  // v2 → v3 (Phase 3a, PLAN D23): settings.learnerGender, so lessons show the learner's own lines
+  // in the right form ('m' | 'f'). null = not chosen yet: the app asks once. Never overwrites a value.
+  2: (data) => ({ ...data, settings: { ...(data.settings || {}), learnerGender: data.settings?.learnerGender ?? null } }),
 };
 
 export class StorageReadOnlyError extends Error {
@@ -71,6 +74,7 @@ export function defaultData(now = Date.now()) {
       dayRolloverHour: 4,
       noVoiceNoteSeen: false,
       answerMode: null, // 'speak' | 'type' | null: the Review screen's remembered Speak/Type toggle (v2)
+      learnerGender: null, // 'm' | 'f' | null (not chosen yet): which form of the learner's own lines to show (v3, D23)
       // Script track (PLAN §13): inert until Phase 7, present now so no migration is needed.
       scriptInDailyReviews: false,
       scriptDailyCap: 30,

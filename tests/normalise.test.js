@@ -135,3 +135,26 @@ test('diff highlights the expected characters the typed text did not have', () =
   assert.ok(full.some((s) => !s.same));
   assert.ok(diffAgainst('hai', 'hai').every((s) => s.same));
 });
+
+test('greetings: common phone spellings are close enough, never exact, and only for their own phrase', () => {
+  const hello = 'assalaam-o-alaikum';
+  for (const typed of ['assalamualaikum', 'Assalamu alaikum', 'asalamualaikum', 'aslamualaikum', 'salam', 'salaam', 'salam alaikum', 'assalam o alaikum']) {
+    assert.equal(check(typed, [hello]).result, 'close', typed);
+  }
+  assert.equal(check('assalaam-o-alaikum', [hello]).result, 'exact');
+  assert.equal(check('assalaam o alaikum', [hello]).result, 'exact', 'hyphen = space');
+  const reply = 'wa-alaikum-assalaam';
+  for (const typed of ['walaikum assalam', 'Walaikumassalam', 'walaikum salam', 'wa alaikum salam', 'wa alaikum assalam']) {
+    assert.equal(check(typed, [reply]).result, 'close', typed);
+  }
+  assert.equal(check('walaikum assalam', [hello]).result, 'wrong', 'the reply is not the greeting');
+  assert.equal(check('salam', [reply]).result, 'wrong', 'the greeting is not the reply');
+  for (const typed of ['alhamdulillah', 'alhamdolillah', 'alhumdulillah', 'alhamdu lillah']) assert.equal(check(typed, ['alhamdulillaah']).result, 'close', typed);
+});
+
+test('greeting spellings also work inside a longer answer, and other words are still checked', () => {
+  assert.equal(check('assalamualaikum! aap kaise hain?', ['assalaam-o-alaikum! aap kaise haiN?']).result, 'close');
+  assert.equal(check('alhamdulillah, theek hoon. aur aap?', ['alhamdulillaah, Thiik huuN. aur aap?']).result, 'close');
+  assert.equal(check('assalamualaikum! aap kaisii hain?', ['assalaam-o-alaikum! aap kaise haiN?']).result, 'wrong', 'an ending that carries grammar still counts');
+  assert.equal(check('salam', ['salaam']).result, 'close', 'a different phrase is untouched (ordinary vowel folding only)');
+});
