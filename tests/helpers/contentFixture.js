@@ -20,10 +20,10 @@ const words = [
 ].map((w) => ({ register: 'neutral', introduced_in: 'lesson-001', ...w }));
 
 const exercises = [
-  { id: 'e01', type: 'fill-blank', explanation: 'The verb `huuN` goes last.', sentence: t('maiN ___ huuN.', 'میں ___ ہوں۔', 'I am fine.'), answer: 'Thiik', answer_ur: 'ٹھیک' },
-  { id: 'e02', type: 'multiple-choice', explanation: '`shukriyaa` means thank you.', prompt: 'What does this mean?', sentence: t('shukriyaa', 'شکریہ', 'thank you'), options: ['Thank you', 'Sorry', 'Goodbye'], answerIndex: 0 },
+  { id: 'e01', sentence_card: true, type: 'fill-blank', explanation: 'The verb `huuN` goes last.', sentence: t('maiN ___ huuN.', 'میں ___ ہوں۔', 'I am fine.'), answer: 'Thiik', answer_ur: 'ٹھیک' },
+  { id: 'e02', sentence_card: true, type: 'multiple-choice', explanation: '`shukriyaa` means thank you.', prompt: 'What does this mean?', sentence: t('shukriyaa', 'شکریہ', 'thank you'), options: ['Thank you', 'Sorry', 'Goodbye'], answerIndex: 0 },
   { id: 'e03', type: 'choose-form', explanation: '`laRkii` is feminine, so `acchii`.', sentence: t('wo laRkii ___ hai.', 'وہ لڑکی ___ ہے۔', 'That girl is good.'), options: [f('acchaa', 'اچھا'), f('acchii', 'اچھی'), f('acche', 'اچھے')], answerIndex: 1, tags: ['agreement'] },
-  { id: 'e04', type: 'reorder', explanation: 'Verb last.', sentence: t('maiN Thiik huuN.', 'میں ٹھیک ہوں۔', 'I am fine.'), tokens: ['maiN', 'Thiik', 'huuN'], answerOrders: [['maiN', 'Thiik', 'huuN'], ['Thiik', 'maiN', 'huuN']] },
+  { id: 'e04', sentence_card: true, type: 'reorder', explanation: 'Verb last.', sentence: t('maiN Thiik huuN.', 'میں ٹھیک ہوں۔', 'I am fine.'), tokens: ['maiN', 'Thiik', 'huuN'], answerOrders: [['maiN', 'Thiik', 'huuN'], ['Thiik', 'maiN', 'huuN']] },
   { id: 'e05', type: 'error-spot', explanation: 'A feminine subject needs `gayii`.', sentence: t('wo laRkii gayaa.', 'وہ لڑکی گیا۔', 'The girl went.'), answer: 'wo laRkii gayii.', answer_ur: 'وہ لڑکی گئی۔' },
   { id: 'e06', type: 'translate', explanation: 'Add `bahut` for very much.', en: 'Thank you very much.', answers: [f('bahut shukriyaa.', 'بہت شکریہ۔')] },
   { id: 'e07', type: 'transform', explanation: '`aap` takes `haiN`.', from: t('tum Thiik ho.', 'تم ٹھیک ہو۔', 'You are fine.'), instruction: 'Change tum to aap.', answers: [f('aap Thiik haiN.', 'آپ ٹھیک ہیں۔')] },

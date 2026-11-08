@@ -14,8 +14,8 @@ export const CARD_WORDS = [
   word({ id: 'seed-phone', pos: 'noun', roman: 'phone', ur: 'فون', meaning_en: 'phone', loanword: true, forms: ['phone'], gender: 'm', marked: false, example: t('meraa phone yahaaN hai.', 'میرا فون یہاں ہے۔', 'My phone is here.') }),
   word({ id: 'seed-acchaa', pos: 'adjective', roman: 'acchaa', ur: 'اچھا', meaning_en: 'good', variable: true, example: t('ye kitaab acchii hai.', 'یہ کتاب اچھی ہے۔', 'This book is good.') }),
   word({ id: 'seed-bahut', pos: 'adverb', roman: 'bahut', ur: 'بہت', meaning_en: 'very, a lot', example: t('bahut shukriyaa.', 'بہت شکریہ۔', 'Thank you very much.') }),
-  word({ id: 'seed-shukriya', pos: 'phrase', roman: 'shukriyaa', ur: 'شکریہ', meaning_en: 'thank you', example: t('bahut shukriyaa.', 'بہت شکریہ۔', 'Thank you very much.') }),
-  word({ id: 'seed-kya-haal', pos: 'phrase', roman: 'kyaa haal hai?', ur: 'کیا حال ہے؟', meaning_en: 'how are you? (informal)', register: 'informal', example: t('kyaa haal hai, bhaaii?', 'کیا حال ہے، بھائی؟', 'How are you, brother?') }),
+  word({ id: 'seed-shukriya', pos: 'phrase', roman: 'shukriyaa', ur: 'شکریہ', meaning_en: 'thank you', situation: 'Someone hands you a cup of tea.', example: t('bahut shukriyaa.', 'بہت شکریہ۔', 'Thank you very much.') }),
+  word({ id: 'seed-kya-haal', pos: 'phrase', roman: 'kyaa haal hai?', ur: 'کیا حال ہے؟', meaning_en: 'how are you? (informal)', situation: 'A friend rings for a chat.', register: 'informal', example: t('kyaa haal hai, bhaaii?', 'کیا حال ہے، بھائی؟', 'How are you, brother?') }),
   word({
     id: 'seed-jaana', pos: 'verb', roman: 'jaanaa', ur: 'جانا', meaning_en: 'to go', infinitive: f('jaanaa', 'جانا'), stem: f('jaa', 'جا'), transitivity: 'intransitive', takes_ne: false,
     perfective: { m_sg: f('gayaa', 'گیا'), f_sg: f('gayii', 'گئی'), m_pl: f('gaye', 'گئے') }, example: t('wo ghar gayaa.', 'وہ گھر گیا۔', 'He went home.'),
@@ -29,11 +29,11 @@ export const CARD_WORDS = [
 export const CARD_LESSON = {
   id: 'seed-lesson',
   exercises: [
-    { id: 'e01', type: 'fill-blank', explanation: 'The verb `huuN` goes last.', sentence: t('maiN ___ huuN.', 'میں ___ ہوں۔', 'I am fine.'), answer: 'Thiik', answer_ur: 'ٹھیک' },
-    { id: 'e02', type: 'choose-form', explanation: '`laRkii` is feminine, so `acchii`.', sentence: t('wo laRkii ___ hai.', 'وہ لڑکی ___ ہے۔', 'That girl is good.'), options: [f('acchaa', 'اچھا'), f('acchii', 'اچھی'), f('acche', 'اچھے')], answerIndex: 1, tags: ['agreement'] },
-    { id: 'e03', type: 'translate', explanation: 'Add `bahut` for very much.', en: 'Thank you very much.', answers: [f('bahut shukriyaa.', 'بہت شکریہ۔')] },
-    { id: 'e04', type: 'reorder', explanation: 'Urdu verbs go last.', sentence: t('maiN Thiik huuN.', 'میں ٹھیک ہوں۔', 'I am fine.'), tokens: ['maiN', 'Thiik', 'huuN'], answerOrders: [['maiN', 'Thiik', 'huuN'], ['Thiik', 'maiN', 'huuN']] },
-    { id: 'e05', type: 'error-spot', explanation: 'A feminine subject needs `gayii`.', sentence: t('wo laRkii gayaa.', 'وہ لڑکی گیا۔', 'The girl went.'), answer: 'wo laRkii gayii.', answer_ur: 'وہ لڑکی گئی۔' },
+    { id: 'e01', sentence_card: true, type: 'fill-blank', explanation: 'The verb `huuN` goes last.', sentence: t('maiN ___ huuN.', 'میں ___ ہوں۔', 'I am fine.'), answer: 'Thiik', answer_ur: 'ٹھیک' },
+    { id: 'e02', sentence_card: true, type: 'choose-form', explanation: '`laRkii` is feminine, so `acchii`.', sentence: t('wo laRkii ___ hai.', 'وہ لڑکی ___ ہے۔', 'That girl is good.'), options: [f('acchaa', 'اچھا'), f('acchii', 'اچھی'), f('acche', 'اچھے')], answerIndex: 1, tags: ['agreement'] },
+    { id: 'e03', sentence_card: true, type: 'translate', explanation: 'Add `bahut` for very much.', en: 'Thank you very much.', answers: [f('bahut shukriyaa.', 'بہت شکریہ۔')] },
+    { id: 'e04', sentence_card: true, type: 'reorder', explanation: 'Urdu verbs go last.', sentence: t('maiN Thiik huuN.', 'میں ٹھیک ہوں۔', 'I am fine.'), tokens: ['maiN', 'Thiik', 'huuN'], answerOrders: [['maiN', 'Thiik', 'huuN'], ['Thiik', 'maiN', 'huuN']] },
+    { id: 'e05', sentence_card: true, type: 'error-spot', explanation: 'A feminine subject needs `gayii`.', sentence: t('wo laRkii gayaa.', 'وہ لڑکی گیا۔', 'The girl went.'), answer: 'wo laRkii gayii.', answer_ur: 'وہ لڑکی گئی۔' },
   ],
 };
 
@@ -41,6 +41,7 @@ export const CARD_LESSON = {
 export const cardSource = {
   getWord: (id) => CARD_WORDS.find((w) => w.id === id),
   getExercise: (lessonId, exerciseId) => (lessonId === CARD_LESSON.id ? CARD_LESSON.exercises.find((e) => e.id === exerciseId) : undefined),
+  words: CARD_WORDS,
 };
 
 /** Every facet of every fixture word (all features treated as unlocked) plus the exercises. */

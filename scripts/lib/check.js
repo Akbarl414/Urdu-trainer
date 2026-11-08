@@ -13,7 +13,7 @@ const ROMAN_KEYS = new Set(['roman', 'answer', 'altAnswers', 'tokens', 'answerOr
 /** English prose keys: Urdu inside `backticks` is checked against the scheme. */
 const PROSE_KEYS = new Set(['body', 'heading', 'notes', 'explanation', 'hint', 'setting', 'situation', 'literal', 'instruction', 'prompt', 'note']);
 /** Exercise fields a learner_f override may not replace (D23). */
-const FIXED_EXERCISE_KEYS = ['id', 'type', 'tags', 'retired', 'learner_f'];
+const FIXED_EXERCISE_KEYS = ['id', 'type', 'tags', 'retired', 'sentence_card', 'learner_f'];
 const isUrKey = (k) => k === 'ur' || k.endsWith('_ur');
 
 const lessonNumber = (id) => Number(LESSON_NUM.exec(id)?.[1] ?? NaN);
@@ -332,6 +332,8 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
   }
 
   // ---- 4. lessons -------------------------------------------------------
+  const neOrders = lessons.filter((l) => (l.data.unlocks || []).includes('ne')).map((l) => l.data.order);
+  const neFrom = neOrders.length ? Math.min(...neOrders) : null;
   const introducedCount = new Map();
   for (const l of lessons) {
     const d = l.data;
@@ -354,6 +356,11 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
       checkExercise(l, e, path);
       checkLearnerVariant(l, e, path);
     });
+    // Sentence cards (PLAN D28): 2–3 per lesson are reviewed; the other exercises stay in the lesson and practice replay.
+    const flagged = d.exercises.filter((e) => e.sentence_card && !e.retired);
+    if (flagged.length > 3 || (!d.review && flagged.length < 2)) err(l, `lessons flag 2–3 exercises as sentence_card (has ${flagged.length})`);
+    for (const e of flagged) if (e.type === 'listen') err(l, `exercise ${e.id}: a listen exercise can't be a sentence_card (a voice may not be available)`);
+    if (neFrom !== null && d.order >= neFrom && !flagged.some((e) => (e.tags || []).includes('ne'))) warnings.push(`${label(l)}: no sentence_card is tagged "ne"; ne/no-ne is practised through sentence cards from lesson ${neFrom} on.`);
     const gids = new Set();
     (d.game_items || []).forEach((g) => {
       if (gids.has(g.id)) err(l, `duplicate game item id "${g.id}"`);

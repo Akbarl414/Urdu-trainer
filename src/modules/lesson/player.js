@@ -12,7 +12,7 @@ import { studyDay } from '../../db/day.js';
 import { planLesson } from '../../lesson/planner.js';
 import { startRun, advance, skipStep, resumeOn, runProblem, progressLine, overallProgress, addActiveSeconds } from '../../lesson/machine.js';
 import { commitLesson } from '../../lesson/commit.js';
-import { nextLesson, todayQueue } from '../../lesson/path.js';
+import { nextLesson, todayQueue, warmupPicker } from '../../lesson/path.js';
 import { startPractice, practiceProblem } from '../../lesson/practice.js';
 import { loanwordTokens } from '../../lesson/loanwords.js';
 import { whenAudioReady, canSpeak, stopSpeaking } from '../../audio/tts.js';
@@ -190,7 +190,7 @@ function mount(container, { extra = false, practiceId = null }) {
     const day = studyDay(now, data.settings.dayRolloverHour);
     const canListen = () => canSpeak({ roman: 'x', ur: 'x' }); // any voice at all; files are per item and checked on screen
     const planFor = (l, q) =>
-      planLesson({ lesson: l, dueQueue: q.queue, dueTotal: q.dueTotal, capRemaining: q.capRemaining, dailyReviewCap: data.settings.dailyReviewCap, pace: data.stats.pace, canListen: canListen() });
+      planLesson({ lesson: l, dueQueue: q.queue, dueTotal: q.dueTotal, capRemaining: q.capRemaining, dailyReviewCap: data.settings.dailyReviewCap, pace: data.stats.pace, canListen: canListen(), pickWarmup: warmupPicker(data, content) });
 
     const stored = data.progress.run;
     if (stored) {

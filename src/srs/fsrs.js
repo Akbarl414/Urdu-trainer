@@ -3,13 +3,15 @@
 //
 // A CompactCard is what lives in storage (PLAN §3.2; short keys because the deck is large
 // and localStorage is shared with the German app):
-//   { due, s, d, st, r, l, lr, sd, ls, weak? }
+//   { due, s, d, st, r, l, lr, sd, ls, weak?, f?, retired? }
 //   due epoch ms · s stability · d difficulty · st state (0 New, 1 Learning, 2 Review, 3 Relearning)
 //   r reps · l lapses · lr last review (ms or null) · sd scheduled days · ls learning step
 //   weak epoch ms when a game marked it weak (cleared by the next real review)
+//   f the format last shown (main cards, format.js) · retired true = kept in storage, never shown again (v5)
+//   gc the study day a game last earned this card credit (gameCredit.js, PLAN D30)
 //
-// Scheduling (PLAN §5.3, D16): two instances. Production facets (saying/writing Urdu) use
-// desired retention 0.90, recognition and form facets 0.85, so production comes back more often.
+// Scheduling (PLAN §5.3, D29): one desired retention for every card, from settings.memoryTarget
+// (Relaxed 0.80, Balanced 0.85, Strong 0.90). A change applies from each card's next review; nothing is rescheduled.
 //
 // Uses ts-fsrs's current DefaultScheduler API, pinned to the FSRS-6 model (its default is FSRS-7,
 // which would change every interval). The scheduler is created asynchronously, so this module
@@ -23,8 +25,10 @@ export const GRADE = Object.freeze({ again: 1, hard: 2, good: 3, easy: 4 });
 export const GRADES = [GRADE.again, GRADE.hard, GRADE.good, GRADE.easy];
 export const CARD_STATE = Object.freeze({ new: 0, learning: 1, review: 2, relearning: 3 });
 
-export const RETENTION = Object.freeze({ production: 0.9, recognition: 0.85 });
-const PRODUCTION_FACETS = new Set(['meaning_en_ur', 'situation_to_phrase']);
+export const MEMORY_TARGETS = Object.freeze({ relaxed: 0.8, balanced: 0.85, strong: 0.9 });
+export const DEFAULT_MEMORY_TARGET = 'relaxed';
+// These come first in the daily queue (queue.js). `main` is the one card per word (PLAN D28); the older facets stay listed for their stored cards.
+const PRODUCTION_FACETS = new Set(['main', 'meaning_en_ur', 'situation_to_phrase']);
 /** "Already know this": Easy twice, this far apart (internal, never shown). */
 const KNOWN_GAP_MS = 60 * 1000;
 const DAY_MS = 86400000;
@@ -68,21 +72,29 @@ function fromFsrs(card, weak) {
   return out;
 }
 
-/** @param {{ fuzz?: boolean }} [opts]  fuzz spreads intervals so lessons don't create review clumps; tests turn it off. */
-export async function createEngine({ fuzz = true } = {}) {
+/**
+ * @param {{ fuzz?: boolean, retention?: number, getTarget?: () => string }} [opts]
+ *   fuzz spreads intervals so lessons don't create review clumps; tests turn it off.
+ *   retention fixes the desired retention instead of following the setting (npm run simulate-load uses it).
+ *   getTarget reads the memory target; an unknown value means the default.
+ * The `facet` arguments below no longer change the schedule (every card has one retention); callers still pass them.
+ */
+export async function createEngine({ fuzz = true, retention, getTarget = () => DEFAULT_MEMORY_TARGET } = {}) {
   const make = (desiredRetention) => DefaultScheduler({ version: 'FSRS-6', desiredRetention, enableFuzz: fuzz });
-  const engines = { production: await make(RETENTION.production), recognition: await make(RETENTION.recognition) };
-  const pick = (facet) => engines[isProductionFacet(facet) ? 'production' : 'recognition'];
+  const fixed = retention === undefined ? null : await make(retention);
+  const byTarget = {};
+  for (const [name, r] of Object.entries(MEMORY_TARGETS)) byTarget[name] = await make(r);
+  const pick = () => fixed ?? byTarget[getTarget()] ?? byTarget[DEFAULT_MEMORY_TARGET];
 
   /** A brand-new card, due immediately. */
   function newCard(now) {
-    return fromFsrs(engines.recognition.newCard({ now: new Date(now) }));
+    return fromFsrs(pick().newCard({ now: new Date(now) }));
   }
 
   /** What each button would schedule: { 1: { due, ms }, 2: …, 3: …, 4: … } (ms = time from `now`). */
   function preview(card, facet, now, cardId) {
     const out = {};
-    for (const item of pick(facet).preview({ card: toFsrs(card, cardId), now: new Date(now) })) {
+    for (const item of pick().preview({ card: toFsrs(card, cardId), now: new Date(now) })) {
       const due = item.card.dueAt.getTime();
       out[item.grade] = { due, ms: Math.max(0, due - now) };
     }
@@ -92,14 +104,14 @@ export async function createEngine({ fuzz = true } = {}) {
   /** Apply a grade. Returns a NEW card; a game's `weak` mark is cleared by a real review. */
   function review(card, facet, grade, now, cardId) {
     if (!GRADES.includes(grade)) throw new Error(`Invalid grade: ${grade}`);
-    return fromFsrs(pick(facet).review({ card: toFsrs(card, cardId), now: new Date(now), grade }).card);
+    return fromFsrs(pick().review({ card: toFsrs(card, cardId), now: new Date(now), grade }).card);
   }
 
   /** Probability of recalling the card at `now`; New cards report 0. Elapsed time is whole days, as in the classic API. */
   function retrievability(card, facet, now) {
     if (card.st === CARD_STATE.new) return 0;
     const elapsedDays = card.lr == null ? 0 : Math.max(0, Math.floor((now - card.lr) / DAY_MS));
-    return pick(facet).model.forgettingCurve({ stability: card.s, difficulty: card.d }, elapsedDays);
+    return pick().model.forgettingCurve({ stability: card.s, difficulty: card.d }, elapsedDays);
   }
 
   /** "I already know this": Easy twice about a minute apart, for a first interval of roughly 1–3 weeks. */
@@ -111,7 +123,13 @@ export async function createEngine({ fuzz = true } = {}) {
   return { newCard, preview, review, retrievability, alreadyKnow };
 }
 
-export const engine = await createEngine();
+let readTarget = () => DEFAULT_MEMORY_TARGET;
+/** Boot tells the scheduler where the setting lives, so it is read live (a change or an imported backup applies at once). */
+export function configureMemoryTarget(getTarget) {
+  readTarget = getTarget;
+}
+
+export const engine = await createEngine({ getTarget: () => readTarget() });
 export const { newCard, preview, review, retrievability, alreadyKnow } = engine;
 
 /**

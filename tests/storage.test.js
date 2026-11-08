@@ -11,7 +11,8 @@ const here = dirname(fileURLToPath(import.meta.url));
 const fixtureDir = join(here, 'fixtures');
 const v1 = JSON.parse(readFileSync(join(fixtureDir, 'storage-v1.json'), 'utf8'));
 // What the v1 fixture looks like once loaded: v3 → v4 deliberately moved the colour mode from settings.theme to settings.themeMode (PLAN D27).
-const v1Loaded = { ...v1, settings: { ...v1.settings, theme: 'truck-art', themeMode: v1.settings.theme } };
+// v4 → v5 moved the old default cap of 60 to the new default (PLAN D28).
+const v1Loaded = { ...v1, settings: { ...v1.settings, theme: 'truck-art', themeMode: v1.settings.theme, dailyReviewCap: v1.settings.dailyReviewCap === 60 ? 35 : v1.settings.dailyReviewCap } };
 
 const quiet = () => {
   const orig = console.error;
@@ -100,7 +101,8 @@ test('additive merge fills missing fields but never drops existing ones', () => 
   assert.equal(out.settings.dailyReviewCap, 5);
   assert.equal(out.settings.somethingCustom, 'x');
   assert.equal(out.settings.audio, true); // default filled in
-  assert.deepEqual(out.srs.decks.main.cards['w:a:meaning_ur_en'], { due: 1 });
+  assert.deepEqual(out.srs.decks.main.cards['w:a:meaning_ur_en'], { due: 1, retired: true }, 'kept; v4 → v5 retires it (PLAN D28)');
+  assert.deepEqual(out.srs.decks.main.cards['w:a:main'], { due: 1 }, 'and its state carries over to the main card');
   assert.deepEqual(out.srs.decks.script, { cards: {} });
 });
 
@@ -121,6 +123,8 @@ test('every fixture snapshot survives migration to the current version', () => {
       expected.settings.themeMode = fixture.settings.theme;
       expected.settings.theme = 'truck-art';
     }
+    // v4 → v5 deliberately moved the old default cap to the new one (PLAN D28); cards are only ever added to or marked retired.
+    if (fixture.version < 5 && fixture.settings.dailyReviewCap === 60) expected.settings.dailyReviewCap = 35;
     assertSurvives(expected, out);
   }
 });
@@ -217,7 +221,7 @@ test('recovery can be left by importing a backup; the raw copy is kept', () => {
   const { store, backend } = makeStore({ initial: { [DATA_KEY]: bad } });
   const backup = JSON.stringify({ format: BACKUP_FORMAT, exportedAt: '2026-11-10T00:00:00Z', version: 1, data: v1 });
   const preview = store.previewImport(backup);
-  assert.equal(preview.summary.mainCards, 4);
+  assert.equal(preview.summary.mainCards, 6, 'the 4 stored cards plus the main cards v5 adds');
   store.applyImport(preview);
   assert.equal(store.status().mode, 'ok');
   assertSurvives(v1Loaded, store.data);
@@ -237,7 +241,7 @@ test('export → import round trip loses nothing', () => {
   const preview = b.store.previewImport(json);
   assert.deepEqual(
     { cards: preview.summary.mainCards, scriptCards: preview.summary.scriptCards, lessons: preview.summary.lessons, flags: preview.summary.flags },
-    { cards: 4, scriptCards: 2, lessons: 2, flags: 1 },
+    { cards: 6, scriptCards: 2, lessons: 2, flags: 1 }, // the 4 stored cards plus the main cards v5 adds
   );
   b.store.applyImport(preview);
   assertSurvives({ ...v1Loaded, meta: { ...v1.meta, lastExportAt: parsed.exportedAt } }, b.store.data); // export stamps lastExportAt
@@ -345,7 +349,7 @@ test('erase removes only prefixed keys and leaves foreign keys', () => {
   assert.deepEqual(backend._keys().sort(), Object.keys(foreign).sort());
   for (const [k, v] of Object.entries(foreign)) assert.equal(backend.getItem(k), v);
   // and the store starts cleanly afterwards
-  assert.equal(store.data.settings.dailyReviewCap, 60);
+  assert.equal(store.data.settings.dailyReviewCap, 35);
   restore();
 });
 
@@ -382,7 +386,7 @@ test('a device on v1 loads, is migrated to the current version with a pre-migrat
   assert.equal(store.data.version, STORAGE_VERSION);
   assert.equal(store.data.settings.learnerGender, null, 'v2 → v3 ran too');
   assert.equal(store.data.settings.answerMode, 'type', 'v3 → v4 turned "no choice yet" into the Type default');
-  assert.deepEqual(store.data.srs.decks.main.cards, v1.srs.decks.main.cards);
+  assertSurvives(v1.srs.decks.main.cards, store.data.srs.decks.main.cards);
   const snaps = JSON.parse(backend.getItem(SNAPSHOTS_KEY));
   assert.ok(snaps.some((s) => s.reason === 'pre-migration' && s.data.version === 1));
 });
@@ -410,7 +414,7 @@ test('a device on v2 loads, is migrated to the current version with a pre-migrat
   assert.equal(store.status().mode, 'ok');
   assert.equal(store.data.version, STORAGE_VERSION);
   assert.equal(store.data.settings.learnerGender, null);
-  assertSurvives({ ...v2, settings: { ...v2.settings, theme: 'truck-art', themeMode: 'dark' } }, store.data);
+  assertSurvives({ ...v2, settings: { ...v2.settings, theme: 'truck-art', themeMode: 'dark', dailyReviewCap: v2.settings.dailyReviewCap === 60 ? 35 : v2.settings.dailyReviewCap } }, store.data);
   assert.equal(JSON.parse(backend.getItem(DATA_KEY)).version, STORAGE_VERSION, 'migrated blob persisted');
   const snaps = JSON.parse(backend.getItem(SNAPSHOTS_KEY));
   assert.ok(snaps.some((s) => s.reason === 'pre-migration' && s.data.version === 2));
@@ -421,11 +425,10 @@ test('a device on v2 loads, is migrated to the current version with a pre-migrat
 const v3fixture = () => JSON.parse(readFileSync(join(fixtureDir, 'storage-v3.json'), 'utf8'));
 
 test('v3 → v4: settings.theme becomes the look, the old colour mode moves to themeMode, and nothing else changes', () => {
-  assert.equal(STORAGE_VERSION, 4);
-  assert.equal(defaultData().settings.theme, 'truck-art');
+    assert.equal(defaultData().settings.theme, 'truck-art');
   assert.equal(defaultData().settings.themeMode, 'system');
   const v3 = v3fixture(); // theme: 'dark'
-  const out = migrate(v3);
+  const out = migrate(v3, { version: 4 });
   assert.equal(out.version, 4);
   assert.equal(out.settings.themeMode, 'dark', 'a device that chose dark stays dark');
   assert.equal(out.settings.theme, 'truck-art');
@@ -475,9 +478,9 @@ test('a device on v3 loads, is migrated to v4 with a pre-migration snapshot, and
   const backend = memoryStorage({ initial: { [DATA_KEY]: JSON.stringify(v3) } });
   const store = createStore({ backend: () => backend });
   assert.equal(store.status().mode, 'ok');
-  assert.equal(store.data.version, 4);
+  assert.equal(store.data.version, STORAGE_VERSION);
   assert.equal(store.data.settings.themeMode, 'dark');
-  assert.deepEqual(store.data.srs, v3.srs);
-  assert.equal(JSON.parse(backend.getItem(DATA_KEY)).version, 4, 'migrated blob persisted');
+  assertSurvives(v3.srs, store.data.srs);
+  assert.equal(JSON.parse(backend.getItem(DATA_KEY)).version, STORAGE_VERSION, 'migrated blob persisted');
   assert.ok(JSON.parse(backend.getItem(SNAPSHOTS_KEY)).some((s) => s.reason === 'pre-migration' && s.data.version === 3 && s.data.settings.theme === 'dark'), 'the snapshot holds the original v3 blob');
 });

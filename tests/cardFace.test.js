@@ -1,8 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { describeCard, isReviewable } from '../src/srs/cardFace.js';
+import { describeCard, isReviewable, isTilesCorrect } from '../src/srs/cardFace.js';
 import { CARD_WORDS, CARD_LESSON, cardSource, cardIds } from './helpers/cardFixture.js';
-import { defaultData } from '../src/db/storage.js';
 import { buildContentIndex } from '../src/db/contentIndex.js';
 import { checkRoman, checkUrdu, checkLoanwordRoman } from '../src/lang/romanization.js';
 import { check } from '../src/lang/normalise.js';
@@ -34,35 +33,82 @@ test('fixture content obeys the romanization scheme and Urdu code points', () =>
   for (const e of CARD_LESSON.exercises) if (e.sentence) assert.deepEqual(checkRoman(e.sentence.roman, { allowBlank: true }), [], e.id);
 });
 
-test('facet prompts: recognition reveals, production is Speak/Type, forms and grammar are typed or chosen', () => {
-  const f = (id) => describeCard(id, src);
-  assert.deepEqual(f('w:seed-ghar:meaning_ur_en').modes, ['reveal']);
-  assert.equal(f('w:seed-ghar:meaning_ur_en').prompt.roman, 'ghar');
-  const prod = f('w:seed-ghar:meaning_en_ur');
-  assert.deepEqual(prod.modes, ['speak', 'type']);
-  assert.equal(prod.defaultMode, 'speak');
-  assert.deepEqual(prod.answers, ['ghar']);
-  assert.equal(prod.prompt.text, 'house, home');
-  assert.equal(f('w:seed-shukriya:situation_to_phrase').defaultMode, 'speak');
-  const g = f('w:seed-larka:gender');
-  assert.equal(g.defaultMode, 'choice');
-  assert.equal(g.correct, 'm');
-  assert.equal(f('w:seed-kitab:gender').correct, 'f');
-  assert.ok(f('w:seed-larka:gender').reveal.some((r) => r.roman === 'laRke'), 'plural shown on reveal');
-  const p = f('w:seed-jaana:perfective');
+const opts = (extra = {}) => ({ learned: CARD_WORDS, features: new Set(['gender']), canListen: () => true, ...extra });
+const cardAt = (stability, f) => ({ s: stability, st: 2, r: 5, f });
+
+test('main card: the format follows stability and uses the right prompts', () => {
+  const f = (card, extra) => describeCard('w:seed-ghar:main', src, opts({ card, ...extra }));
+  const choice = f(cardAt(1));
+  assert.equal(choice.format, 'choice');
+  assert.equal(choice.defaultMode, 'choice');
+  assert.equal(choice.prompt.roman, 'ghar');
+  assert.equal(choice.options[choice.correct].label, 'house, home');
+  const tiles = f(cardAt(6));
+  assert.equal(tiles.format, 'tiles');
+  assert.ok(isTilesCorrect(tiles, ['gh', 'a', 'r']));
+  assert.equal(tiles.tiles.partial, true, 'wrong tiles are mixed in');
+  const typed = f(cardAt(20));
+  assert.equal(typed.format, 'typed');
+  assert.equal(typed.prompt.text, 'house, home');
+  assert.deepEqual(typed.answers, ['ghar']);
+  assert.deepEqual(typed.modes, ['type', 'speak']);
+  const listen = f(cardAt(60));
+  assert.equal(listen.format, 'listen');
+  assert.equal(listen.prompt.roman, undefined, 'nothing is written until the reveal');
+  assert.equal(listen.prompt.listen.roman, 'ghar');
+  const noVoice = f(cardAt(60), { canListen: () => false });
+  assert.equal(noVoice.format, 'sentence');
+  assert.equal(noVoice.prompt.roman, 'maiN ___ jaataa huuN.');
+  assert.ok(noVoice.prompt.ur.includes('___'));
+});
+
+test('main card: a phrase rotates between meaning and situation', () => {
+  const f = (card) => describeCard('w:seed-shukriya:main', src, opts({ card }));
+  assert.equal(f(cardAt(1)).format, 'meaning_choice');
+  const asked = f(cardAt(1, 'meaning_choice'));
+  assert.equal(asked.format, 'situation_choice');
+  assert.equal(asked.prompt.text, 'Someone hands you a cup of tea.');
+  assert.equal(asked.options[asked.correct].label, 'shukriyaa');
+  assert.equal(f(cardAt(1, 'situation_choice')).format, 'meaning_choice');
+  assert.equal(f(cardAt(20)).format, 'situation_typed');
+  assert.equal(f(cardAt(20, 'situation_typed')).format, 'listen');
+});
+
+test('main card: nouns ask gender once the feature is unlocked; mf nouns and others never do', () => {
+  const noun = (id, extra) => describeCard(`w:${id}:main`, src, opts({ card: cardAt(20), ...extra }));
+  assert.equal(noun('seed-larka').gender.correct, 'm');
+  assert.equal(noun('seed-kitab').gender.correct, 'f');
+  assert.equal(noun('seed-larka').gender.plural.roman, 'laRke', 'plural comes with the reveal');
+  assert.equal(noun('seed-larka', { features: new Set() }).gender, null, 'before lesson 11 there is no tap');
+  assert.equal(noun('seed-ghar').format, 'typed');
+  assert.equal(noun('seed-bahut').gender, null, 'not a noun');
+  const mf = { ...CARD_WORDS[0], id: 'seed-dost', pos: 'noun', gender: 'mf', roman: 'dost' };
+  const source = { ...src, getWord: (id) => (id === 'seed-dost' ? mf : src.getWord(id)) };
+  assert.equal(describeCard('w:seed-dost:main', source, opts({ card: cardAt(20) })).gender, null, 'mf nouns skip the tap');
+});
+
+test('perfective card: only irregular verbs, typed', () => {
+  const p = describeCard('w:seed-jaana:perfective', src);
   assert.deepEqual(p.answers, ['gayaa']);
   assert.equal(p.defaultMode, 'type');
   assert.deepEqual(p.reveal.slice(0, 3).map((r) => r.roman), ['gayaa', 'gayii', 'gaye']);
-  assert.equal(f('w:seed-khaana:takes_ne').correct, true);
-  assert.equal(f('w:seed-jaana:takes_ne').correct, false);
+  assert.equal(describeCard('w:seed-khaana:perfective', src), null, 'khaayaa is regular');
+  assert.equal(isReviewable('w:seed-khaana:perfective', src), false);
 });
 
-test('typing the answer to a production card runs through the lenient normaliser', () => {
-  const face = describeCard('w:seed-larka:meaning_en_ur', src);
+test('cards of the earlier design are not shown any more', () => {
+  for (const facet of ['meaning_ur_en', 'meaning_en_ur', 'situation_to_phrase', 'gender', 'takes_ne']) {
+    assert.equal(describeCard(`w:seed-ghar:${facet}`, src), null, facet);
+    assert.equal(isReviewable(`w:seed-ghar:${facet}`, src), false, facet);
+  }
+});
+
+test('typing the answer to a main card runs through the lenient normaliser', () => {
+  const face = describeCard('w:seed-larka:main', src, opts({ card: cardAt(20), features: new Set() }));
   assert.equal(check('laRkaa', face.answers).result, 'exact');
   assert.equal(check('larka', face.answers).result, 'close');
   assert.equal(check('laRkii', face.answers).result, 'wrong');
-  const phone = describeCard('w:seed-phone:meaning_en_ur', src);
+  const phone = describeCard('w:seed-phone:main', src, opts({ card: cardAt(20), features: new Set() }));
   assert.ok(phone.loanwords.has('phone'));
   assert.equal(check('Phone', phone.answers, { loanwords: phone.loanwords }).result, 'close');
 });
@@ -79,24 +125,25 @@ test('exercise faces by type', () => {
   assert.deepEqual(tr.answers, ['bahut shukriyaa.']);
   const re = f('e04');
   assert.deepEqual(re.answers, ['maiN Thiik huuN', 'Thiik maiN huuN']);
-  assert.deepEqual([...re.prompt.tiles].sort(), ['Thiik', 'huuN', 'maiN']);
-  assert.deepEqual(describeCard('x:seed-lesson:e04', src).prompt.tiles, re.prompt.tiles, 'tile order is stable');
-  assert.equal(check('Thiik maiN huuN', re.answers).result, 'exact', 'every listed word order is accepted');
+  assert.deepEqual([...re.tiles.tokens].sort(), ['Thiik', 'huuN', 'maiN']);
+  assert.deepEqual(describeCard('x:seed-lesson:e04', src).tiles.tokens, re.tiles.tokens, 'tile order is stable');
+  assert.ok(isTilesCorrect(re, ['Thiik', 'maiN', 'huuN']), 'every listed word order is accepted');
+  assert.equal(isTilesCorrect(re, ['huuN', 'maiN', 'Thiik']), false);
   assert.deepEqual(f('e05').answers, ['wo laRkii gayii.']);
 });
 
-test('listen exercises, retired items and missing content are not reviewable', () => {
+test('only flagged exercises are reviewable; listen exercises, retired items and missing content are not', () => {
   const b = makeBundle();
   const content = buildContentIndex({ units: b.units.map((x) => x.data), vocabs: b.vocabs.map((x) => x.data), lessons: b.lessons.map((x) => x.data) });
-  assert.equal(describeCard('x:lesson-001:e08', content), null, 'needs audio (Phase 3)');
-  assert.ok(describeCard('x:lesson-001:e07', content), 'transform');
-  assert.ok(describeCard('x:lesson-001:e06', content), 'translate');
-  assert.ok(describeCard('w:larkaa:gender', content));
-  assert.equal(describeCard('w:no-such-word:meaning_ur_en', content), null);
+  assert.equal(describeCard('x:lesson-001:e08', content), null, 'listen');
+  assert.equal(isReviewable('x:lesson-001:e08', content), false);
+  assert.equal(describeCard('x:lesson-001:e07', content), null, 'not flagged');
+  assert.ok(describeCard('x:lesson-001:e01', content), 'flagged');
+  assert.ok(describeCard('w:larkaa:main', content));
+  assert.equal(describeCard('w:no-such-word:main', content), null);
   assert.equal(describeCard('x:lesson-001:e99', content), null);
   assert.equal(describeCard('s:l:alif:sound', content), null);
   assert.equal(describeCard('garbage', content), null);
   content.getWord('larkaa').retired = true;
-  assert.equal(isReviewable('w:larkaa:gender', content), false);
+  assert.equal(isReviewable('w:larkaa:main', content), false);
 });
-

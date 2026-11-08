@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 process.env.TZ = 'Europe/London';
-const { planLesson, BUDGET_SEC } = await import('../src/lesson/planner.js');
+const { planLesson, BUDGET_SEC, WARMUP_MAX } = await import('../src/lesson/planner.js');
 const M = await import('../src/lesson/machine.js');
 const { commitLesson, lessonGrades } = await import('../src/lesson/commit.js');
 const { todayState, nextLesson, currentStreak } = await import('../src/lesson/path.js');
@@ -15,7 +15,7 @@ const NOW = Date.parse('2026-11-02T10:00:00Z');
 const DAY = '2026-11-02';
 const content = realContent();
 const lesson = content.getLesson('lesson-001');
-const queueOf = (n) => Array.from({ length: n }, (_, i) => `w:due${i}:meaning_ur_en`);
+const queueOf = (n) => Array.from({ length: n }, (_, i) => `w:due${i}:main`);
 
 // ---------------------------------------------------------------- planner
 
@@ -27,13 +27,19 @@ test('planner: with nothing due the warm-up is empty and practice keeps all 12 e
   assert.ok(p.estimateSec <= BUDGET_SEC);
 });
 
-test('planner: the warm-up fills the time that is left, and the total stays within about 15 minutes', () => {
+test('planner: the warm-up is at most 6 cards, whatever the time left (PLAN D28)', () => {
   const p = planLesson({ lesson, dueQueue: queueOf(40), dueTotal: 40, pace: {} });
-  // fixed = 4*30 + 10*20 + 7*12 + 30 = 434; practice 12*20 = 240; (900-434-240)/10 = 22 warm-up slots
+  // fixed = 4*30 + 10*20 + 7*12 + 30 = 434; practice 12*20 = 240; (900-434-240)/10 = 22 slots of time
   assert.equal(p.warmupSlots, 22);
-  assert.equal(p.warmup.length, 22);
+  assert.equal(p.warmup.length, WARMUP_MAX);
+  assert.equal(WARMUP_MAX, 6);
   assert.ok(p.estimateSec <= BUDGET_SEC);
   assert.equal(p.mode, 'normal', '40 due is not over 2 × 22');
+});
+
+test('planner: pickWarmup chooses which cards the warm-up shows', () => {
+  const p = planLesson({ lesson, dueQueue: queueOf(10), dueTotal: 10, pickWarmup: (q, n) => q.slice(-n) });
+  assert.deepEqual(p.warmup, queueOf(10).slice(-6));
 });
 
 test('planner: the daily cap limits the warm-up', () => {
@@ -44,7 +50,8 @@ test('planner: the daily cap limits the warm-up', () => {
 test('planner: a slow learner gets fewer warm-up reviews, never fewer than 8 exercises unless the lesson has fewer', () => {
   const mild = planLesson({ lesson, dueQueue: queueOf(40), dueTotal: 3, pace: { reviewSec: 20, wordSec: 25, exerciseSec: 30 } });
   assert.ok(mild.exerciseIds.length >= 8 && mild.exerciseIds.length <= 12);
-  assert.ok(mild.warmup.length < 22, 'slower reviews fit fewer into the time');
+  assert.ok(mild.warmupSlots < 22, 'slower reviews fit fewer into the time');
+  assert.ok(mild.warmup.length <= WARMUP_MAX);
   const crawl = planLesson({ lesson, dueQueue: [], pace: { reviewSec: 30, wordSec: 60, exerciseSec: 90 } });
   assert.equal(crawl.exerciseIds.length, 8, 'practice shrinks to its floor when the rest already fills the time');
   assert.equal(crawl.warmupSlots, 0);
@@ -52,11 +59,11 @@ test('planner: a slow learner gets fewer warm-up reviews, never fewer than 8 exe
   assert.equal(planLesson({ lesson, dueQueue: queueOf(3), dueTotal: 3, pace: { reviewSec: 30, wordSec: 60, exerciseSec: 90 } }).mode, 'review-heavy');
 });
 
-test('planner: review-heavy when due > 2 × slots, with a longer warm-up and 8 exercises', () => {
+test('planner: review-heavy when due > 2 × slots: 8 exercises, and still a 6-card warm-up', () => {
   const p = planLesson({ lesson, dueQueue: queueOf(60), dueTotal: 60, dailyReviewCap: 60 });
   assert.equal(p.mode, 'review-heavy');
   assert.equal(p.exerciseIds.length, 8);
-  assert.equal(p.warmup.length, 48, 'about 8 minutes at 10 s each');
+  assert.equal(p.warmup.length, WARMUP_MAX);
 });
 
 test('planner: catch-up when due > 2 × the daily cap', () => {
@@ -173,14 +180,13 @@ function playThrough({ known = ['main', 'aap'], wrong = ['e03'], hinted = ['e05'
   return { ...run, step: 'summary', index: 0, sub: null, activeSec: 540 };
 }
 
-test('commit: a finished lesson adds every word, phrase and exercise to the deck, once', () => {
+test('commit: a finished lesson adds a main card per word and its flagged sentence cards, once', () => {
   const data = defaultData(NOW);
   data.progress.run = playThrough();
   const r = commitLesson(data, content, NOW);
   const cards = data.srs.decks.main.cards;
-  // 10 words, two facets each (recognition + production; phrases use situation_to_phrase for production)
-  assert.equal(Object.keys(cards).filter((id) => id.startsWith('w:')).length, lesson.new_vocab.length * 2);
-  assert.equal(Object.keys(cards).filter((id) => id.startsWith('x:lesson-001:')).length, 12);
+  assert.equal(Object.keys(cards).filter((id) => id.startsWith('w:')).length, lesson.new_vocab.length, 'one card per word');
+  assert.deepEqual(Object.keys(cards).filter((id) => id.startsWith('x:lesson-001:')).sort(), lesson.exercises.filter((e) => e.sentence_card).map((e) => `x:lesson-001:${e.id}`).sort());
   assert.equal(r.cardsAdded, Object.keys(cards).length);
   assert.equal(data.progress.run, null);
   assert.equal(data.progress.lessons['lesson-001'].timesCompleted, 1);
@@ -190,20 +196,20 @@ test('commit: a finished lesson adds every word, phrase and exercise to the deck
 
 test('commit: ratings come from what happened in the lesson', () => {
   const data = defaultData(NOW);
-  data.progress.run = playThrough();
+  data.progress.run = playThrough({ wrong: ['e07'], hinted: ['e09'] });
   commitLesson(data, content, NOW);
   const cards = data.srs.decks.main.cards;
-  const st = (id) => cards[id].st;
-  // practised words: recognition correct → reviewed once; production wrong ('aur') → Again → still Learning
-  assert.notEqual(st('w:thiik:meaning_ur_en'), CARD_STATE.new);
-  assert.equal(cards['w:thiik:meaning_ur_en'].r, 1);
-  assert.equal(cards['w:aur:meaning_en_ur'].l, 0, 'a first Again is a learning step, not a lapse');
-  assert.equal(st('w:aur:meaning_en_ur'), CARD_STATE.learning);
-  assert.ok(cards['w:aur:meaning_en_ur'].due < cards['w:thiik:meaning_en_ur'].due, 'a missed word comes back sooner');
-  // exercises: e03 wrong, e05 hinted (Hard), the rest Good
-  assert.equal(st('x:lesson-001:e03'), CARD_STATE.learning);
-  assert.ok(cards['x:lesson-001:e03'].due < cards['x:lesson-001:e01'].due);
-  assert.ok(cards['x:lesson-001:e05'].due <= cards['x:lesson-001:e01'].due, 'Hard comes back no later than Good');
+  // both word checks right → graduated; a missed check ('aur') → Again → still Learning
+  assert.equal(cards['w:thiik:main'].st, CARD_STATE.review, 'both checks right: graduated');
+  assert.ok(cards['w:thiik:main'].due - NOW >= 86400000, 'and it comes back another day');
+  assert.equal(cards['w:aur:main'].st, CARD_STATE.learning);
+  assert.equal(cards['w:aur:main'].l, 0, 'a first Again is a learning step, not a lapse');
+  assert.ok(cards['w:aur:main'].due < cards['w:thiik:main'].due, 'a missed word comes back sooner');
+  // sentence cards: e07 wrong, e09 hinted (Hard), e12 right (Good, graduated)
+  assert.equal(cards['x:lesson-001:e07'].st, CARD_STATE.learning);
+  assert.ok(cards['x:lesson-001:e07'].due < cards['x:lesson-001:e12'].due);
+  assert.ok(cards['x:lesson-001:e09'].due <= cards['x:lesson-001:e12'].due, 'Hard comes back no later than Good');
+  assert.equal(cards['x:lesson-001:e12'].st, CARD_STATE.review);
 });
 
 test('commit: "I already know this" words enter with a long first interval', () => {
@@ -212,9 +218,9 @@ test('commit: "I already know this" words enter with a long first interval', () 
   commitLesson(data, content, NOW);
   const cards = data.srs.decks.main.cards;
   const week = 6 * 86400000;
-  assert.ok(cards['w:main:meaning_ur_en'].due - NOW > week, 'known word is due in more than a week');
-  assert.ok(cards['w:aap:meaning_en_ur'].due - NOW > week);
-  assert.ok(cards['w:thiik:meaning_ur_en'].due - NOW < week, 'a practised word is not');
+  assert.ok(cards['w:main:main'].due - NOW > week, 'known word is due in more than a week');
+  assert.ok(cards['w:aap:main'].due - NOW > week);
+  assert.ok(cards['w:thiik:main'].due < cards['w:main:main'].due, 'a practised word comes back sooner');
 });
 
 test('commit: stats, streak and pace are updated', () => {
@@ -281,9 +287,11 @@ test('commit: grades only name cards of this lesson', () => {
   const run = playThrough();
   const grades = lessonGrades(run, lesson, content);
   assert.ok(Object.keys(grades).every((id) => id.startsWith('w:') || id.startsWith('x:lesson-001:')));
-  assert.equal(grades['x:lesson-001:e03'], GRADE.again);
-  assert.equal(grades['x:lesson-001:e05'], GRADE.hard);
-  assert.equal(grades['w:main:meaning_ur_en'], undefined, 'known words are not rated');
+  assert.equal(grades['x:lesson-001:e03'], undefined, 'an exercise with no card gets no rating');
+  assert.deepEqual(grades['w:aur:main'], [GRADE.again]);
+  assert.deepEqual(grades['w:thiik:main'], [GRADE.good, GRADE.good]);
+  assert.deepEqual(grades['x:lesson-001:e07'], [GRADE.good, GRADE.good]);
+  assert.equal(grades['w:main:main'], undefined, 'known words are not rated');
 });
 
 // ---------------------------------------------------------------- Today

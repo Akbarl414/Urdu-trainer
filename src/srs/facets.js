@@ -6,20 +6,20 @@
 //   s:l:<letterId>:<facet>        script deck (Phase 7); the `s:` prefix is reserved
 //   s:w:<wordId>:<facet>
 
+import { isIrregularPerfective } from '../lang/verbs.js';
+
+// One main card per word (PLAN D28). Its format rotates (format.js); a noun's gender is asked inside it.
+// Irregular verbs also get a perfective card. takes_ne is practised in sentence cards.
 const FACETS_BY_POS = {
-  noun: ['meaning_ur_en', 'meaning_en_ur', 'gender'],
-  verb: ['meaning_ur_en', 'meaning_en_ur', 'perfective', 'takes_ne'],
-  adjective: ['meaning_ur_en', 'meaning_en_ur'],
-  // D17: minor parts of speech get both meaning facets.
-  adverb: ['meaning_ur_en', 'meaning_en_ur'],
-  pronoun: ['meaning_ur_en', 'meaning_en_ur'],
-  postposition: ['meaning_ur_en', 'meaning_en_ur'],
-  other: ['meaning_ur_en', 'meaning_en_ur'],
-  phrase: ['meaning_ur_en', 'situation_to_phrase'],
+  verb: ['main', 'perfective'],
 };
+const DEFAULT_FACETS = ['main'];
+
+/** Facets of the earlier design. Stored cards with these ids are kept but retired (storage v5). */
+export const LEGACY_FACETS = Object.freeze(['meaning_ur_en', 'meaning_en_ur', 'situation_to_phrase', 'gender', 'takes_ne']);
 
 /** Facets that test grammar the learner may not have reached stay dormant until a lesson unlocks the feature. */
-export const FACET_FEATURE = Object.freeze({ gender: 'gender', perfective: 'perfective', takes_ne: 'ne' });
+export const FACET_FEATURE = Object.freeze({ perfective: 'perfective' });
 
 export const wordCardId = (wordId, facet) => `w:${wordId}:${facet}`;
 export const exerciseCardId = (lessonId, exerciseId) => `x:${lessonId}:${exerciseId}`;
@@ -64,15 +64,13 @@ export function unlockedFeatures(completedLessonIds, content) {
 }
 
 function hasFacetData(word, facet) {
-  if (facet === 'gender') return word.gender === 'm' || word.gender === 'f';
-  if (facet === 'perfective') return !!word.perfective;
-  if (facet === 'takes_ne') return typeof word.takes_ne === 'boolean';
+  if (facet === 'perfective') return isIrregularPerfective(word);
   return true;
 }
 
 /** All facets this word has, unlocked or not. */
 export function allFacets(word) {
-  return (FACETS_BY_POS[word.pos] ?? FACETS_BY_POS.other).filter((f) => hasFacetData(word, f));
+  return (FACETS_BY_POS[word.pos] ?? DEFAULT_FACETS).filter((f) => hasFacetData(word, f));
 }
 
 /** Facets of this word that are live given the unlocked features. */

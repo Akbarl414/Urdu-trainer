@@ -7,6 +7,8 @@
 import { unlockedFeatures, facetsFor, wordCardId, exerciseCardId } from './facets.js';
 import { newCard, review, alreadyKnow } from './fsrs.js';
 
+const STEP_GAP_MS = 60 * 1000; // a second lesson rating counts as a later learning step
+
 const mainCards = (data) => data.srs.decks.main.cards;
 const completedLessonIds = (data) => Object.keys(data.progress.lessons);
 
@@ -32,8 +34,9 @@ export function wantedCards(data, content) {
       if (!isLive(word)) continue;
       for (const facet of facetsFor(word, features)) wanted.push({ id: wordCardId(wordId, facet), facet, wordId });
     }
+    // Only the exercises flagged as sentence cards are reviewed (PLAN D28); the others stay in the lesson and practice replay.
     for (const ex of lesson.exercises ?? []) {
-      if (isLive(ex)) wanted.push({ id: exerciseCardId(lessonId, ex.id), facet: 'default' });
+      if (isLive(ex) && ex.sentence_card) wanted.push({ id: exerciseCardId(lessonId, ex.id), facet: 'default' });
     }
   }
   return wanted;
@@ -44,8 +47,9 @@ export function wantedCards(data, content) {
  * @param {any} data  the storage blob (mutated)
  * @param {any} content  content index
  * @param {number} now
- * @param {{ grades?: Record<string, number>, known?: Iterable<string> }} [opts]
- *   grades: first rating per NEW card id (what happened in the lesson; Good if practised correctly, Again if missed)
+ * @param {{ grades?: Record<string, number|number[]>, known?: Iterable<string> }} [opts]
+ *   grades: rating(s) per NEW card id (what happened in the lesson): a number, or several numbers for lesson checks
+ *   that count as successive learning steps
  *   known:  word ids marked "I already know this" in the lesson → their NEW cards enter with a long first interval
  * @returns {string[]} ids of the cards created
  */
@@ -57,7 +61,11 @@ export function syncDeck(data, content, now, { grades = {}, known = [] } = {}) {
     if (cards[id]) continue;
     let card = newCard(now);
     if (wordId && knownSet.has(wordId)) card = alreadyKnow(card, facet, now, id);
-    else if (grades[id]) card = review(card, facet, grades[id], now, id);
+    else if (grades[id]) {
+      [grades[id]].flat().forEach((g, i) => {
+        card = review(card, facet, g, now + i * STEP_GAP_MS, id);
+      });
+    }
     cards[id] = card;
     created.push(id);
   }

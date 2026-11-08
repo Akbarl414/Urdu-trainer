@@ -101,6 +101,4 @@ test('word recognition options contain the meaning once, plus distractors from t
 test('word production: phrases are prompted by situation, other words by meaning', () => {
   assert.match(W.productionPrompt(content.getWord('assalaam-o-alaikum')).text, /partner's family home/);
   assert.equal(W.productionPrompt(content.getWord('main')).text, 'I');
-  assert.deepEqual(W.checkFacets(content.getWord('main')), { recog: 'meaning_ur_en', prod: 'meaning_en_ur' });
-  assert.deepEqual(W.checkFacets(content.getWord('kyaa-haal-hai')), { recog: 'meaning_ur_en', prod: 'situation_to_phrase' });
 });

@@ -46,7 +46,7 @@ export function mountSummary(ctx) {
       h('h2', {}, 'Lesson complete'),
       h('p', {}, ...prose(lesson.can_do.replace(/^You can /, 'Now you can '))),
       h('div', { class: 'stats' }, stat(`${right}/${results.length}`, 'exercises right'), stat(newWords, 'new words'), stat(run.knownWordIds.length, 'already known'), stat(`~${mins}`, 'minutes')),
-      h('p', { class: 'muted small' }, 'Finishing adds this lesson’s words, phrases and exercises to your reviews.'),
+      h('p', { class: 'muted small' }, 'Finishing adds this lesson’s words, phrases and a few key sentences to your reviews.'),
     ),
   );
   ctx.setActions(finishBtn);

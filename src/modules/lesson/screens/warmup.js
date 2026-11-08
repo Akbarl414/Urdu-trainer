@@ -1,12 +1,12 @@
 // Step 1: warm-up. Due review cards, exactly as in the Review screen (real reviews, written as they are graded).
 import { h } from '../../../ui/dom.js';
 import { reviewCard } from '../../review/cardView.js';
-import { describeCard } from '../../../srs/cardFace.js';
+import { isReviewable } from '../../../srs/cardFace.js';
 import { recordWarmup } from '../../../lesson/machine.js';
 
 export function mountWarmup(ctx) {
   const id = ctx.run.plan.warmup[ctx.run.index];
-  if (!describeCard(id, ctx.content)) return ctx.complete((run) => run); // content changed since the plan: nothing to show
+  if (!isReviewable(id, ctx.content)) return ctx.complete((run) => run); // content changed since the plan: nothing to show
   const holder = h('div', { class: 'warmup' });
   ctx.body.append(h('p', { class: 'muted small center' }, 'Warm-up: a quick review of what is due.'), holder);
   reviewCard({

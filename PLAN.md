@@ -105,17 +105,18 @@ Rule for imports: `modules/` and `ui/` may import from `db/`, `srs/`, `lesson/`,
 
 `localStorage.clear()` is banned. The validator/test suite greps `src/` for `localStorage.clear`, `caches.delete(` outside `sw.js`, and raw key strings outside `keys.js`, and fails if it finds any. "Erase all progress" iterates over `localStorage` keys and removes only those that start with `urdu-trainer:`. A test seeds foreign keys such as `german-app-data-v1` and asserts that they survive.
 
-### 3.2 Blob shape (v4; v3 plus `settings.themeMode` and a new meaning for `theme`, v2 plus `settings.learnerGender`, v1 plus `settings.answerMode`)
+### 3.2 Blob shape (v5; v4 plus `settings.memoryTarget` and the card fields `f`, `retired`, `gc`; v3 plus `settings.themeMode` and a new meaning for `theme`, v2 plus `settings.learnerGender`, v1 plus `settings.answerMode`)
 
 ```js
 {
-  version: 4,
+  version: 5,
   meta: { createdAt, lastExportAt, lastOpenedAt, lastSeenBuild },
   settings: {
     answerMode: 'type',              // v2: 'speak' | 'type' | null, the remembered Speak/Type toggle; 'type' is the default since v4
     learnerGender: null,             // v3 (D23): 'm' | 'f' | null (not asked yet), picks the learner's own lines
     showScript: false, audio: true, speechRate: 0.9, voiceURI: null,
-    dailyReviewCap: 60, theme: 'truck-art', themeMode: 'system', dayRolloverHour: 4, // v4 (D27): theme = look, themeMode = 'system' | 'light' | 'dark'
+    dailyReviewCap: 35, memoryTarget: 'relaxed', // v5 (D28, D29); 'relaxed' | 'balanced' | 'strong'
+    theme: 'truck-art', themeMode: 'system', dayRolloverHour: 4, // v4 (D27): theme = look, themeMode = 'system' | 'light' | 'dark'
    
     noVoiceNoteSeen: false,
     // script track (§13), inert until Phase 7
@@ -147,7 +148,7 @@ Rule for imports: `modules/` and `ui/` may import from `db/`, `srs/`, `lesson/`,
 ```
 
 **CompactCard** (`srs/fsrs.js` is the only module that knows how this maps to ts-fsrs's `Card`):
-`{ due, s, d, st, r, l, lr, sd, ls, weak? }` stores due (epoch ms), stability, difficulty, state (0 New, 1 Learning, 2 Review, 3 Relearning), reps, lapses, last review (ms), scheduled days, learning step, and an optional game "weak" timestamp. Short keys matter here. A full deck holds about 7,000 cards, roughly 0.6 MB compact versus about 1.8 MB verbose, and localStorage is capped at about 5 MB per origin, **which is shared with the German app**. The script deck adds at most ~80 letter cards plus 5 word cards per practice day (a few hundred in practice), which is small next to the main deck.
+`{ due, s, d, st, r, l, lr, sd, ls, weak?, f?, retired?, gc? }` stores due (epoch ms), stability, difficulty, state (0 New, 1 Learning, 2 Review, 3 Relearning), reps, lapses, last review (ms), scheduled days, learning step, an optional game "weak" timestamp, the format last shown (`f`), `retired: true` (stored, never shown, v5), and the study day of the last game credit (`gc`, D30). Short keys matter here. A full deck holds about 7,000 cards, roughly 0.6 MB compact versus about 1.8 MB verbose, and localStorage is capped at about 5 MB per origin, **which is shared with the German app**. The script deck adds at most ~80 letter cards plus 5 word cards per practice day (a few hundred in practice), which is small next to the main deck.
 
 ### 3.3 Migrations
 These work as in the reference: `MIGRATIONS[n]` upgrades n → n+1, entries are never removed or renumbered, and the additive merge runs afterwards. Additions:
@@ -221,31 +222,40 @@ These work as in the reference: `MIGRATIONS[n]` upgrades n → n+1, entries are 
 - `s:l:<letterId>:<facet>` and `s:w:<wordId>:<facet>` for the script deck (§13.3). They live in `srs.decks.script`, never in `srs.decks.main`. The `s:` prefix is reserved from Phase 1.
 - `facets.js` builds and parses these. The format never changes; if it ever has to, a migration rewrites the keys.
 
-### 5.2 Facets
+### 5.2 Cards (D28; replaces the facet table)
 
-| pos | Facets | Unlocked by feature |
+| Item | Cards | Notes |
 |---|---|---|
-| noun | `meaning_ur_en`, `meaning_en_ur`, `gender` | `gender` → lesson 11 |
-| verb | `meaning_ur_en`, `meaning_en_ur`, `perfective`, `takes_ne` | `perfective` → lesson 101; `ne` → lesson 116 (after exceptions are taught) |
-| adjective | `meaning_ur_en`, `meaning_en_ur` | — |
-| adverb, pronoun, postposition, other | `meaning_ur_en`, `meaning_en_ur` (D17) | — |
-| phrase | `meaning_ur_en`, `situation_to_phrase` | — |
-| exercise | `default` | — |
+| word | `w:<id>:main` | One card; its format rotates by stability (below). A noun answers gender inside this card once `gender` is unlocked (lesson 11); `mf` nouns skip the tap. |
+| irregular verb | `w:<id>:main`, `w:<id>:perfective` | The perfective card unlocks with `perfective` (lesson 101), and only for verbs whose perfective can't be predicted from the stem (`src/lang/verbs.js`). |
+| phrase | `w:<id>:main` | Rotates between a meaning format and a situation format. |
+| exercise | `x:<lesson>:<ex>` | Only exercises with `"sentence_card": true` (2–3 a lesson, validator-enforced; never `listen`). The others stay in the lesson and in practice replay. `takes_ne` has no card: `ne` is practised through sentence cards tagged `ne` (validator warning from the `ne` lesson on). |
 
-`deck.syncDeck(now)` is idempotent. It walks the completed lessons and unlocked features and creates any missing card. When `perfective` unlocks, every verb already learned gets its `perfective` card the same day. Existing cards are never touched. It runs at lesson commit and once at boot, which catches content added in a new build.
+**Format rotation** (`src/srs/format.js`), by stability in days; the last format shown is kept as `f`, and a format is never repeated twice in a row:
+
+| Stage | Stability | Word | Phrase |
+|---|---|---|---|
+| new | under 4 | multiple choice | meaning choice ↔ situation choice |
+| learning | 4–14 | tiles | situation tiles ↔ meaning choice |
+| known | 14–45 | typed recall | situation typed ↔ listening |
+| strong | 45+ | listening ↔ in-sentence recall | situation typed ↔ listening |
+
+Without a voice, listening falls back to in-sentence or typed recall for words and to a read-and-recall card for phrases.
+
+Cards of the earlier design (`meaning_ur_en`, `meaning_en_ur`, `situation_to_phrase`, `gender`, `takes_ne`, unflagged exercises) stay in storage with `retired: true`; see D28.
 
 ### 5.3 Scheduling (ts-fsrs, pinned to the current major version)
-- Two scheduler instances (D16): **production** facets (`meaning_en_ur`, `situation_to_phrase`) use `request_retention: 0.90`; **recognition** and form facets use `0.85`. Production items therefore come back more often, which reflects the goal of speaking. Fuzz is enabled so lessons don't create review clumps.
+- One desired retention for every card, from `settings.memoryTarget`: Relaxed 0.80 (default), Balanced 0.85, Strong 0.90 (D29, replacing D16's two schedulers). A change applies from each card's next review. Fuzz is enabled so lessons don't create review clumps.
 - Uses the current `DefaultScheduler` API pinned to `version: 'FSRS-6'` (its default is FSRS-7, which would change every interval), created once at module load (it is async). The card id seeds fuzz, so cards spread out but each card is stable. The stored CompactCard is independent of the library's own card fields (`toFsrs`/`fromFsrs` in `srs/fsrs.js` translate), so upgrading the library never touches stored data. Verified against the previous classic-API build: identical results on 45 of 50 comparison points; the 5 differences are cards with stability under a day, where the classic API gave Good and Easy the same interval and this one separates them by a day.
 - Buttons show the `preview()` due time of each grade, formatted like `10m · 1d · 3d · 9d`.
-- **Lesson items on commit**: a new word's cards start New and get one rating from what happened in the lesson (practised correctly → Good, missed → Again). They first come back later the same day or the next day. **"I already know this"** cards get Easy applied twice, about 1 minute apart internally. That gives a first interval of roughly 1–3 weeks, and the facets keep their own memory state.
-- **Exercise cards** get their rating from the lesson attempt (correct → Good, hint → Hard, wrong → Again).
+- **Lesson items on commit** (D28): the lesson's two word checks act as the main card's learning steps. Both right → Good twice, so the card graduates and first returns on another day (about 8 days at Relaxed, 4 at Balanced, 2 at Strong). Anything missed → Again, and it comes back the same day. **"I already know this"** cards get Easy applied twice, about 1 minute apart internally, giving a first interval of weeks (about 6 at Relaxed).
+- **Sentence cards** get their rating from the lesson attempt (correct → Good twice, hint → Hard, wrong → Again).
 
 ### 5.4 Daily queue (`queue.js`)
 1. Candidates: all non-retired cards with `due ≤ end of study day`, excluding the New state (every card is born from a lesson, so the deck has no "new card" stream).
 2. Priority: Learning/Relearning cards first. Then sort by lowest current retrievability, multiplied by 1.25 for production facets and by 1.2 for weak-flagged cards.
 3. **Cap**: take at most `dailyReviewCap − reviewsDoneToday`. The rest stays due. Because the most-forgotten cards go first and FSRS reschedules from the actual review date, a backlog drains over several days instead of arriving in one session. Today shows an honest line: "182 due · about 3 days to catch up at 60/day".
-4. **Sibling spacing**: no two adjacent cards share an item key (word id or lesson id). The queue greedily interleaves. If spacing is impossible in a short session, the later sibling moves to the end.
+4. **Interleaving** (D28): no two adjacent cards share an item key (word id or lesson id); cards from the same lesson are spread apart; young cards alternate with old ones. Where that is impossible in a short session, the later sibling moves to the end.
 
 ### 5.5 Answer checking (`lang/normalise.js`)
 - `exact(a, b)`: trim, collapse whitespace, strip punctuation; then compare byte for byte (case matters because `T ≠ t`).
@@ -255,7 +265,14 @@ These work as in the reference: `MIGRATIONS[n]` upgrades n → n+1, entries are 
 - `normalise.test.js` covers every row of the romanization table and a list of near misses that must **not** pass (`laRkaa` vs `laRkii`, `gayaa` vs `gaye`, `kaa` vs `kii`). Gender and agreement endings are what the lenient match must never blur. Vowel-length collapse could merge `kaa` and `ka`, but no *wrong ending* collapses into a right one, since `aa/ii/e` stay distinct after folding.
 
 ### 5.6 Games → SRS
-A wrong answer in a game sets `card.weak = now`. If the card is in Review state with `due` more than 1 day away, `due` moves to tomorrow. Games never call `scheduler.repeat` and never push `due` later. The next real review clears `weak`.
+A wrong answer in a game sets `card.weak = now`. If the card is in Review state with `due` more than 1 day away, `due` moves to tomorrow. The next real review clears `weak`.
+
+A correct answer counts as a Good review only when all three guards pass (D30, `src/srs/gameCredit.js`, which every game must call):
+1. **Recall formats only**: typed, speed recall from memory, or listening. Picking from options (2-, 3- or 4-option multiple choice, matching) never earns credit.
+2. **Review state only**, and only when the card is due or within 20% of its interval from being due.
+3. **At most one game credit per card per study day**, recorded on the card as `gc`.
+
+A correct answer that fails a guard changes nothing.
 
 ---
 
@@ -268,13 +285,13 @@ Input: lesson, due queue, `pace` averages, today's counts. Output: a `LessonPlan
 budget        = 900 s
 fixed         = grammarScreens*30 + newWords*wordSec + dialogueLines*12 + 30 (summary)
 practiceCount = clamp(lesson.exercises.length, 8, 12)
-warmupSlots   = floor((budget - fixed - practiceCount*exerciseSec) / reviewSec)
+warmupSlots   = floor((budget - fixed - practiceCount*exerciseSec) / reviewSec)   // time available; the warm-up itself is at most 6 cards (D28)
 if warmupSlots < 0: practiceCount = max(8, practiceCount + floor(warmupSlots*reviewSec/exerciseSec)); warmupSlots = 0
-warmup        = queue.take(min(warmupSlots, capRemaining))
+warmup        = pickVaried(queue, min(6, warmupSlots, capRemaining))                // different lessons, different formats
 ```
 Mode (D7):
 - **normal**: the plan above.
-- **review-heavy**: chosen when `due > 2 × warmupSlots`. Warm-up rises to about 8 minutes and practice drops to 8 items. The lesson still happens.
+- **review-heavy**: chosen when `due > 2 × warmupSlots`. Practice drops to 8 items and the warm-up stays at 6 cards; the rest wait in Review. The lesson still happens.
 - **catch-up day**: chosen when `due > dailyReviewCap × 2`. Today offers "15-minute review session" as the big button, with a secondary "Do lesson N anyway". The user never has to make the call: the default is chosen for them, and they can still override it.
 
 `pace` updates after every item (exponential moving average), so after a week the estimates match this learner's speed.
@@ -314,16 +331,18 @@ Lessons unlock strictly in curriculum order: lesson N+1 opens when lesson N has 
 
 ## 8. Games
 
+**SRS credit (D30):** games may count as reviews only through `earnsGameCredit()` and its three guards (§5.6). As the table stands, every game below picks from options or matches pairs, so none of them earns credit. Listen & pick needs a recall variant (hear it, answer from memory), and the games phase needs at least one typed or speed-recall round; otherwise the games reduce no reviews.
+
 Shared pool (`modules/games/pool.js`): items from completed lessons only, never retired ones. Weight = `(1 − R) × 3 + weak bonus 2 + recent bonus` (recent means introduced in the last 7 study days, bonus 1.5). Sampled without replacement. Games need a minimum pool and show "Unlocks after lesson N" until they have it.
 
 | Game | Pool | Round | Feedback → SRS |
 |---|---|---|---|
-| **Match pairs** | words and phrases (`meaning_*` cards) | 6 pairs, 45 s timer, tap roman ↔ English; mismatches flash | wrong pair → weak on both items' `meaning_ur_en` |
-| **Gender sort** | nouns with `gender` unlocked | 10 nouns, tap/swipe ♂ / ♀; the reveal shows the plural | `gender` facet |
+| **Match pairs** | words and phrases (`main` cards) | 6 pairs, 45 s timer, tap roman ↔ English; mismatches flash | wrong pair → weak on both items' `main` card |
+| **Gender sort** | nouns with `gender` unlocked | 10 nouns, tap/swipe ♂ / ♀; the reveal shows the plural | noun's `main` card |
 | **Sentence builder** | `reorder` exercises (any `answerOrders` accepted) | 5 sentences, tiles, English shown | that exercise card |
-| **Listen & pick** | words and phrases; **hidden without an Urdu voice or `audio` file** | 8 items, hear `ur`, pick from 4 English options | `meaning_ur_en` |
-| **Agreement snap** | (a) `choose-form` exercises tagged `agreement`; (b) generated phrases from rule-based fields only: variable adjective + learned noun (`acchaa laRkaa / acchii laRkii / acche laRke` from `gender`, `marked`, `plural`), and after `perfective` unlocks, noun + intransitive perfective (`laRkii gayii`) | 10 items, 3 forms each, fast | exercise card, or the noun's `gender` facet |
-| **Ne or no ne?** | unlocks with feature `ne`; authored `game_items` of type `ne` from Units 12+, plus `ne`-tagged exercises | two taps: "needs ne?" then pick the verb form | exercise card / verb's `takes_ne` |
+| **Listen & pick** | words and phrases; **hidden without an Urdu voice or `audio` file** | 8 items, hear `ur`, pick from 4 English options | `main` card |
+| **Agreement snap** | (a) `choose-form` exercises tagged `agreement`; (b) generated phrases from rule-based fields only: variable adjective + learned noun (`acchaa laRkaa / acchii laRkii / acche laRke` from `gender`, `marked`, `plural`), and after `perfective` unlocks, noun + intransitive perfective (`laRkii gayii`) | 10 items, 3 forms each, fast | exercise card, or the noun's `main` card |
+| **Ne or no ne?** | unlocks with feature `ne`; authored `game_items` of type `ne` from Units 12+, plus `ne`-tagged exercises | two taps: "needs ne?" then pick the verb form | exercise card |
 
 Generated phrases come only from fields the validator has checked. Games never compose free Urdu sentences. Picking from four English meanings uses distractors from the same pos and unit band.
 
@@ -381,7 +400,7 @@ D1–D4 and the curriculum/romanization changes were decided by you. The rest us
 | D13 | Phrases | In `vocab.json` as `pos: "phrase"`, counted in the unit's 80. |
 | D14 | Script toggle and inputs | Inputs stay roman; script is shown read-only under prompts and answers. |
 | D15 | Snapshots | 3 rolling daily snapshots in localStorage; on quota pressure the oldest snapshot is dropped first, never the main key. Revisit IndexedDB only if storage gets tight. |
-| D16 | Production weighting | Desired retention 0.90 for production facets vs 0.85 for recognition and form facets, plus a 1.25× priority boost. |
+| D16 | Production weighting | Desired retention 0.90 for production facets vs 0.85 for recognition and form facets, plus a 1.25× priority boost. *Retention superseded by D29; the priority boost stays and now applies to `main` cards.* |
 | D17 | Minor parts of speech | Adverbs, pronouns, postpositions and `other` get both `meaning_ur_en` and `meaning_en_ur`. |
 | D18 | Script track (added after Phase 0) | Optional track in Learn, built as Phase 7 (§13). Separate script deck, not in daily reviews unless a setting is on. Storage slots exist from v1 so no migration is needed. |
 | D13 | Audio fallback (decided after the Phase 1 voice test) | Voice test on the main iPhone (iOS 18.7): **no Urdu voice; one Hindi voice, hi-IN "Lekha"**. So: Urdu voice if present (speaks `ur`) → otherwise a runtime Roman Urdu → Devanagari converter read by a Hindi voice → pre-recorded `audio` files always win when present. No new content fields. `#/debug/voices` has a type-in box (Roman Urdu → Devanagari → hear it) so the quality can be judged on the phone. Built as a Phase 1 fix-up; lesson audio comes in Phase 3. Fallback quality is unproven until judged on the device; if it is poor, pre-generated audio (D2) is the next step. |
@@ -394,6 +413,50 @@ D1–D4 and the curriculum/romanization changes were decided by you. The rest us
 | D25 | Lessons 2–5 and practice replay (Phase 3c) | **Practice replay:** a completed lesson can be replayed from Today (“Practise a finished lesson”, `#/practice/<lessonId>`) until the Library takes it over (Phase 5). The replay run lives in memory only (`src/lesson/practice.js`): no warm-up, every exercise, no `progress.run`, no commit, no cards created or rescheduled, no stats or streak, so it can't disturb a real lesson in progress. This replaces §6.2's “exercise results act like game results”: practice never marks cards weak. Only the Speak/Type and script toggles (settings, not progress) are remembered. **D21 finished:** `src/srs/seedCleanup.js` and its boot call are deleted (it has run on the phone); the validator still reserves the `seed-` prefix. **Validator:** an `oblique_pl` after a long `-uu` may end in ؤں (`abbuu` → ابوؤں). **Phone spellings** added for lesson 5 (`nhi`, `pta nhi`, `g` for `jii`, `tayyar`; ROMANIZATION.md §7). **Content:** no first-person sentence in lessons 2–5 uses a gendered form (`Thiik`, `taiyaar`, `student`, `doctor` never change), so none needs `learner_f`; lesson 7 is the first that will. No stored shape changed. |
 | D26 | Phase 3c decisions | **Rare plurals:** nouns may carry `plural_rare: true` when `plural` / `oblique_pl` are grammatical but rarely said. The forms stay listed (the validator still checks them, and coverage counts them), but they never become plural cards, game items or plural reveals. All app code reads plurals only through `nounPlural()` in `src/lang/nounForms.js`, which returns null for them (and for mass nouns); the Gender card's plural reveal already uses it, and Phase 4 games must too. Applied to `ammii` and `abbuu` (lesson 004); no other noun in lessons 1–5 qualifies. **Invariable loanwords:** nouns may carry `invariable: true` (loanwords only) when they never take Urdu endings: same form for singular, plural and oblique, so `plural` / `oblique_pl` are left out and `nounPlural()` returns the roman for both. The validator rejects it on non-loanwords and alongside `plural`, `oblique_pl`, `marked`, `mass`, `plural_only` or `plural_rare`. `aunty` (f) and `uncle` (m) are planned as invariable loanwords for lesson 006 (CURRICULUM.md). **Spelling:** `tayyaar` (تیار) is the main spelling, with the doubled consonant; `taiyaar`, `taiyar` and `tyar` are accepted as close enough (`tayyar` folds to it anyway). The word keeps its shipped id `taiyaar` (ids never change), which the validator notes as a warning. **Kept as written:** `saahab`, اسٹوڈنٹ (with سٹوڈنٹ as `ur_alt`), elders calling girls `beTaa`, `jii` after family titles only, `g` for `jii`. **Open, to check with family:** `paRosii` for anyone (and Aisha's `ham paRosii haiN`), and introducing a wife as `merii biiwii haiN`. No stored data changed shape. |
 | D27 | Themes (Phase 4a) | Supersedes D10 (grey/teal). **Three looks x light/dark = six variants**, chosen with `settings.theme` (`'truck-art' \| 'jewel' \| 'neon'`, default `truck-art`) and `settings.themeMode` (`'system' \| 'light' \| 'dark'`); `src/ui/theme.js` turns them into `data-theme` / `data-mode` on `<html>` (and the address-bar colour), and "Auto" follows the phone live. **A theme is a token set, never a fork of the components:** `src/ui/styles/tokens.css` (colours, fonts, radii, border widths, shadows, motion, bar fill, background pattern; one block per variant), plus `themes.css` for small decorative flourishes scoped as `[data-theme='x'] …` descendants (Truck Art diamond rows, thick borders, striped bars; Jewel gold rules, faint tile pattern, gold milestones; Neon Pop skewed bars, hard shadows, pop-in animations). Components only use tokens (`--radius`, `--border-w`, `--shadow-btn`, `--font-head`, `--bar-fill`, `--dur`/`--ease`, …). Because decorative rules are descendant selectors, two looks must never be nested; `#/debug/themes` therefore drops the root theme and gives each side-by-side panel its own. **Fonts:** headings only, latin subset, variable woff2, self-hosted in `public/fonts/` with their OFL texts and precached into `urdu-trainer-fonts-v1`: Baloo 2 (Truck Art), Playfair Display (Jewel), Space Grotesk (Neon Pop). Body text stays on the system font for phone readability. **Contrast:** `tests/theme-contrast.test.js` parses `tokens.css` and fails the build if any text pairing (including tinted backgrounds, links, filled buttons, feedback colours) drops under WCAG AA 4.5:1, or a meaningful border / focus ring under 3:1, in any of the six variants. `deco-*` colours are decorative only. `prefers-reduced-motion` zeroes the motion tokens and animations. **Stored data:** `STORAGE_VERSION` 4, `MIGRATIONS[3]`, `tests/fixtures/storage-v4.json`. The old `theme` value (`system`/`light`/`dark`) moves into `themeMode` (a device that chose dark stays dark) and `theme` becomes `truck-art`; a saved look, mode or answer mode is never overwritten. **Answer mode default:** `answerMode` null becomes `'type'` in the same migration, and new installs start on `'type'`; a saved `'speak'` is kept. **UI:** a prominent "Choose a look" card on Today (three swatches drawn in their own colours, Auto / Light / Dark) until Settings (Phase 5) takes it over; the recovery screen uses the default look and follows the phone's light/dark setting because storage is blocked there. |
+
+| D28 | Card redesign (Phase 4b) | Warm-up reviews dragged, and 5–10 cards per word gave each other away. **One main card per word**, with rotating formats, gender inside the card, a separate perfective only for irregular verbs, and 2–3 flagged sentence cards per lesson (§5.2). **Migration (`STORAGE_VERSION` 5, `MIGRATIONS[4]`, `tests/fixtures/storage-v5.json`):** no card is deleted. `w:X:main` copies X's production card whole (the recognition card if production was never reviewed; an existing main card is never overwritten). Old word cards and unflagged exercise cards in lessons 1–5 get `retired: true`: stored, frozen, never shown. The flagged list is frozen inside the migration, so later content can't change it. A regular verb's stored `perfective` card can't be marked by the migration (it has no content to consult), so it is simply never shown; none exist yet because `perfective` unlocks at lesson 101. **Lesson commit:** the two lesson checks count as learning steps (§5.3). **Warm-up** at most 6 cards, chosen for variety; review-heavy mode no longer lengthens it. **Grading:** a right word with the wrong gender suggests Hard. **Daily cap:** default 35; a device still on the old default of 60 moves to 35, and any other value is left alone. `npm run simulate-load` compares the options; the final numbers are in D29. |
+| D29 | Memory target (Phase 4b) | Replaces D16's two retention targets. `settings.memoryTarget` (`'relaxed' \| 'balanced' \| 'strong'`, default `relaxed`) sets one desired retention for every card: 0.80, 0.85 or 0.90. Added in `MIGRATIONS[4]`; a saved value is kept. Control on Today until Settings (Phase 5) takes it over. Chosen after simulating 180 days of one lesson a day: Relaxed, games counting (with the D30 guards), cap 35 as a safety net. Results below. |
+| D30 | Games and reviews (Phase 4b) | **Replaces the earlier "games never push intervals further out" rule** (BRIEF §5.4, PLAN §5.6). A correct game answer counts as a Good review from the moment games are built, subject to three guards in `src/srs/gameCredit.js`: recall formats only (typed, speed recall from memory, listening; never option-picking); Review-state cards only, due or within 20% of their interval from being due; at most one credit per card per study day (`gc`). Wrong answers still mark a card weak. The games spec in §8 carries the same guards. |
+
+### Final load simulation (D29)
+
+`npm run simulate-load`, seeded, default settings. Games assume 2 rounds a day of 8 recall-format items, played after the day's reviews, with credit only as D30 allows. Until games exist, the "before games exist" row applies.
+
+```
+180 days, one lesson a day: 8 new words + 2–3 sentence cards. Average of 5 simulated learners.
+Reviews = cards that count towards the cap (first answer of each card that day). Days 30/90/180 are 7-day averages.
+
+NO CAP: what the schedule asks for
+
+Scenario                          Avg/day  Peak  Day 30  Day 90  Day 180  +repeats  Game credits  Answered right  Recall day 180
+--------------------------------  -------  ----  ------  ------  -------  --------  ------------  --------------  --------------
+Relaxed 0.80 + games (chosen)          27    49      18      29       37        39           1.6             86%             91%
+Relaxed 0.80, before games exist       29    55      18      31       41        41           0.0             85%             90%
+Balanced 0.85 + games                  32    57      21      35       44        43           1.3             90%             92%
+Strong 0.90 + games                    43    70      31      45       59        53           1.4             93%             95%
+
+CAP 35: what you would actually do
+
+Scenario                          Avg/day  Day 30  Day 90  Day 180  Days at cap  Most waiting  Waiting day 180  Recall day 180
+--------------------------------  -------  ------  ------  -------  -----------  ------------  ---------------  --------------
+Relaxed 0.80 + games (chosen)          26      18      28       35           69            77               71             90%
+Relaxed 0.80, before games exist       27      18      29       35           84           198              196             90%
+Balanced 0.85 + games                  30      21      34       35          101           262              260             92%
+Strong 0.90 + games                    32      31      35       35          133           610              609             93%
+
+NO CAP, a learner who recalls 8% less than the model expects
+
+Scenario                          Avg/day  Peak  Day 30  Day 90  Day 180  +repeats  Game credits  Answered right  Recall day 180
+--------------------------------  -------  ----  ------  ------  -------  --------  ------------  --------------  --------------
+Relaxed 0.80 + games (chosen)          36    67      21      37       53        53           1.4             79%             90%
+Relaxed 0.80, before games exist       37    68      20      39       58        56           0.0             79%             90%
+Balanced 0.85 + games                  45    81      26      47       66        63           1.3             83%             92%
+Strong 0.90 + games                    64   115      38      67       98        84           1.4             86%             95%
+
+Cards at day 180: about 1914. "+repeats" counts every card shown per day, including same-day repeats after a miss.
+```
+
+**Reading it:** at Relaxed with games the load is 27 a day on average, 37 by day 180. The D30 guards limit games to about 1.6 credited reviews a day, so games cut the load by 2 a day on average (27 vs 29). At cap 35 about 70 reviews are waiting by day 180. A learner recalling 8% worse than the model reaches 53 a day by day 180.
 
 ---
 

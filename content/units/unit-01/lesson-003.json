@@ -102,6 +102,7 @@
     },
     {
       "id": "e06",
+      "sentence_card": true,
       "type": "reorder",
       "sentence": { "roman": "aaj maiN Thiik huuN.", "ur": "آج میں ٹھیک ہوں۔", "en": "I'm fine today." },
       "tokens": ["aaj", "maiN", "Thiik", "huuN"],
@@ -123,6 +124,7 @@
     },
     {
       "id": "e08",
+      "sentence_card": true,
       "type": "transform",
       "from": { "roman": "bacchaa Thiik hai.", "ur": "بچہ ٹھیک ہے۔", "en": "The child is fine." },
       "instruction": "Talk about all the children: make it plural.",
@@ -165,6 +167,7 @@
     },
     {
       "id": "e12",
+      "sentence_card": true,
       "type": "translate",
       "en": "I'm fine now, thank God.",
       "answers": [

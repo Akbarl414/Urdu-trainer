@@ -74,6 +74,7 @@
     },
     {
       "id": "e03",
+      "sentence_card": true,
       "type": "reorder",
       "sentence": { "roman": "wo Thiik nahiiN hai.", "ur": "وہ ٹھیک نہیں ہے۔", "en": "He isn't well." },
       "tokens": ["wo", "Thiik", "nahiiN", "hai"],
@@ -83,6 +84,7 @@
     },
     {
       "id": "e04",
+      "sentence_card": true,
       "type": "transform",
       "from": { "roman": "aap tayyaar haiN.", "ur": "آپ تیار ہیں۔", "en": "You're ready." },
       "instruction": "Make it a clear yes/no question with `kyaa`.",
@@ -169,6 +171,7 @@
     },
     {
       "id": "e12",
+      "sentence_card": true,
       "type": "translate",
       "en": "No, I'm not a doctor. I'm a student.",
       "answers": [

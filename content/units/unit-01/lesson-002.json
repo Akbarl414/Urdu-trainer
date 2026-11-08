@@ -110,6 +110,7 @@
     },
     {
       "id": "e06",
+      "sentence_card": true,
       "type": "reorder",
       "sentence": { "roman": "jii, maiN Thiik huuN.", "ur": "جی، میں ٹھیک ہوں۔", "en": "Yes, I'm fine. (politely)" },
       "tokens": ["jii", "maiN", "Thiik", "huuN"],
@@ -119,6 +120,7 @@
     },
     {
       "id": "e07",
+      "sentence_card": true,
       "type": "transform",
       "from": { "roman": "aap Thiik haiN?", "ur": "آپ ٹھیک ہیں؟", "en": "Are you all right?" },
       "instruction": "Ask a friend instead: use `tum`.",
@@ -176,6 +178,7 @@
     },
     {
       "id": "e12",
+      "sentence_card": true,
       "type": "translate",
       "en": "Fine, thank God. How are you? (to your partner's younger brother)",
       "answers": [

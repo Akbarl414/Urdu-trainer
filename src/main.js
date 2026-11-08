@@ -9,6 +9,7 @@ import { showBanner, hideBanner } from './ui/banner.js';
 import { registerServiceWorker } from './pwa.js';
 import { getContent } from './db/contentLoader.js';
 import { syncDeck } from './srs/deck.js';
+import { configureMemoryTarget } from './srs/fsrs.js';
 import { configureAudio, initAudio } from './audio/tts.js';
 import { loanwordTokens } from './lesson/loanwords.js';
 import { applyScriptSetting } from './ui/scriptToggle.js';
@@ -28,6 +29,7 @@ function boot() {
     return;
   }
 
+  configureMemoryTarget(() => store.data.settings.memoryTarget);
   applyTheme();
   applyScriptSetting();
   configureAudio({ getSettings: () => store.data.settings, loanwords: loanwordTokens(getContent()) });

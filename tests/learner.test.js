@@ -39,7 +39,7 @@ test('items without a variant pass through untouched', () => {
 });
 
 test('review cards show the learner their own form; the card id is the same', () => {
-  const source = { getWord: () => undefined, getExercise: (l, e) => (l === 'lesson-007' && e === 'e01' ? ex : undefined) };
+  const source = { getWord: () => undefined, getExercise: (l, e) => (l === 'lesson-007' && e === 'e01' ? { ...ex, sentence_card: true } : undefined) };
   assert.deepEqual(describeCard('x:lesson-007:e01', source, { learnerGender: 'f' }).answers, ['acchii']);
   assert.deepEqual(describeCard('x:lesson-007:e01', source, { learnerGender: 'm' }).answers, ['acchaa']);
   assert.deepEqual(describeCard('x:lesson-007:e01', source).answers, ['acchaa'], 'default: base form');

@@ -8,9 +8,10 @@ import { seededShuffle } from './exercises.js';
  * @param {any} word
  * @param {any[]} pool  candidate words for distractors, nearest first (the lesson's other words, then the rest)
  * @param {number} [count] options in total
+ * @param {string} [seed]  option order; the review card passes one that changes between reviews
  * @returns {{ options: string[], answerIndex: number }}
  */
-export function recognitionOptions(word, pool, count = 4) {
+export function recognitionOptions(word, pool, count = 4, seed = `recog:${word.id}`) {
   const taken = new Set([word.meaning_en]);
   const samePos = pool.filter((w) => w.id !== word.id && w.pos === word.pos);
   const others = pool.filter((w) => w.id !== word.id && w.pos !== word.pos);
@@ -21,7 +22,7 @@ export function recognitionOptions(word, pool, count = 4) {
     taken.add(w.meaning_en);
     distractors.push(w.meaning_en);
   }
-  const options = seededShuffle([word.meaning_en, ...distractors], `recog:${word.id}`);
+  const options = seededShuffle([word.meaning_en, ...distractors], seed);
   return { options, answerIndex: options.indexOf(word.meaning_en) };
 }
 
@@ -33,8 +34,3 @@ export function productionPrompt(word) {
 
 /** Roman answers accepted for a word's production check. */
 export const productionAnswers = (word) => [word.roman];
-
-/** The card facets a word's checks rate (recognition → meaning_ur_en, production → meaning_en_ur / situation_to_phrase). */
-export function checkFacets(word) {
-  return { recog: 'meaning_ur_en', prod: word.pos === 'phrase' ? 'situation_to_phrase' : 'meaning_en_ur' };
-}

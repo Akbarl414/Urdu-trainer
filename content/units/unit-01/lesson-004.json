@@ -50,6 +50,7 @@
   "exercises": [
     {
       "id": "e01",
+      "sentence_card": true,
       "type": "choose-form",
       "sentence": { "roman": "ye ___ behen hai.", "ur": "یہ ___ بہن ہے۔", "en": "This is my sister." },
       "options": [
@@ -108,6 +109,7 @@
     },
     {
       "id": "e06",
+      "sentence_card": true,
       "type": "reorder",
       "sentence": { "roman": "ye mere abbuu haiN.", "ur": "یہ میرے ابو ہیں۔", "en": "This is my dad." },
       "tokens": ["ye", "mere", "abbuu", "haiN"],
@@ -157,6 +159,7 @@
     },
     {
       "id": "e11",
+      "sentence_card": true,
       "type": "translate",
       "en": "This is my mum, and this is my dad.",
       "answers": [

@@ -18,7 +18,7 @@
 import { DATA_KEY, SNAPSHOTS_KEY, recoveryKey, isRecoveryKey, isOwnKey } from './keys.js';
 import { studyDay } from './day.js';
 
-export const STORAGE_VERSION = 4;
+export const STORAGE_VERSION = 5;
 export const BACKUP_FORMAT = 'urdu-trainer-backup';
 
 const DAILY_SNAPSHOTS_KEPT = 3; // D15
@@ -57,7 +57,67 @@ export const MIGRATIONS = {
       },
     };
   },
+  // v4 → v5 (Phase 4b, PLAN D28): one main card per word. See migrateCardsToV5 for exactly what it does.
+  // Also: `dailyReviewCap` moves from the old default of 60 to 35 (a cap anyone actually chose is left alone), and
+  // the new `settings.memoryTarget` ('relaxed' | 'balanced' | 'strong', PLAN D29) starts at 'relaxed'.
+  4: (data) => ({
+    ...data,
+    settings: { ...(data.settings || {}), dailyReviewCap: data.settings?.dailyReviewCap === 60 ? 35 : data.settings?.dailyReviewCap, memoryTarget: data.settings?.memoryTarget ?? 'relaxed' },
+    srs: migrateCardsToV5(data.srs),
+  }),
 };
+
+// The exercises flagged `sentence_card` when v5 shipped, frozen here on purpose: a migration must give the same result
+// forever, whatever later content says. Lessons not listed had no cards when v5 shipped and are left alone.
+const V5_SENTENCE_CARDS = Object.freeze({
+  'lesson-001': ['e07', 'e09', 'e12'],
+  'lesson-002': ['e06', 'e07', 'e12'],
+  'lesson-003': ['e06', 'e08', 'e12'],
+  'lesson-004': ['e01', 'e06', 'e11'],
+  'lesson-005': ['e03', 'e04', 'e12'],
+});
+
+/**
+ * v5: no card is ever deleted.
+ *   w:X:main          created from X's production card (FSRS state carried over whole). If that was never
+ *                     reviewed but the recognition card was, the recognition card is used instead.
+ *                     An existing w:X:main is never overwritten.
+ *   w:X:meaning_*, w:X:situation_to_phrase, w:X:gender, w:X:takes_ne
+ *                     marked retired: stored, frozen, never shown.
+ *   x:lesson:eNN      kept as it is when the exercise is a sentence card; otherwise marked retired.
+ * Everything else (perfective cards, the script deck) is untouched.
+ */
+function migrateCardsToV5(srs) {
+  const main = srs?.decks?.main?.cards;
+  if (!isPlainObject(main)) return srs;
+  const cards = { ...main };
+  const WORD_ID = /^w:(.+):([a-z_]+)$/;
+  const EX_ID = /^x:([^:]+):([^:]+)$/;
+
+  const words = new Set();
+  for (const id of Object.keys(main)) {
+    const m = WORD_ID.exec(id);
+    if (m && ['meaning_ur_en', 'meaning_en_ur', 'situation_to_phrase', 'gender', 'takes_ne'].includes(m[2])) words.add(m[1]);
+  }
+  for (const wordId of words) {
+    const at = (facet) => main[`w:${wordId}:${facet}`];
+    const production = at('meaning_en_ur') ?? at('situation_to_phrase');
+    const recognition = at('meaning_ur_en');
+    const source = production && !(production.st === 0 && recognition && recognition.st !== 0) ? production : recognition;
+    const mainId = `w:${wordId}:main`;
+    if (source && !cards[mainId]) cards[mainId] = { ...source };
+    for (const facet of ['meaning_ur_en', 'meaning_en_ur', 'situation_to_phrase', 'gender', 'takes_ne']) {
+      if (at(facet)) cards[`w:${wordId}:${facet}`] = { ...at(facet), retired: true };
+    }
+  }
+  for (const [id, card] of Object.entries(main)) {
+    const m = EX_ID.exec(id);
+    if (!m) continue;
+    const kept = V5_SENTENCE_CARDS[m[1]];
+    if (kept && !kept.includes(m[2])) cards[id] = { ...card, retired: true };
+  }
+  return { ...srs, decks: { ...srs.decks, main: { ...srs.decks.main, cards } } };
+}
 
 export class StorageReadOnlyError extends Error {
   constructor(message) {
@@ -87,7 +147,8 @@ export function defaultData(now = Date.now()) {
       audio: true,
       speechRate: 0.9,
       voiceURI: null,
-      dailyReviewCap: 60,
+      dailyReviewCap: 35, // 60 until v5; set from npm run simulate-load (PLAN D28)
+      memoryTarget: 'relaxed', // 'relaxed' | 'balanced' | 'strong': desired retention for every card (v5, D29)
       theme: 'truck-art', // the look: 'truck-art' | 'jewel' | 'neon' (v4; before v4 this held the colour mode)
       themeMode: 'system', // 'system' | 'light' | 'dark' (v4)
       dayRolloverHour: 4,

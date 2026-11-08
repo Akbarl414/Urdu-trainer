@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { buildContentIndex } from '../src/db/contentIndex.js';
 import { defaultData } from '../src/db/storage.js';
 import { makeBundle } from './helpers/contentFixture.js';
-import { parseCardId, wordCardId, exerciseCardId, itemKey, facetOf, facetsFor, dormantFacets, unlockedFeatures, allFacets } from '../src/srs/facets.js';
+import { parseCardId, wordCardId, exerciseCardId, itemKey, facetOf, facetsFor, dormantFacets, unlockedFeatures, allFacets, LEGACY_FACETS } from '../src/srs/facets.js';
 import { syncDeck, wantedCards, markWordKnown } from '../src/srs/deck.js';
 import { CARD_STATE, GRADE } from '../src/srs/fsrs.js';
 
@@ -38,32 +38,30 @@ test('card ids build and parse both ways, and the script prefix is reserved', ()
   assert.equal(facetOf('x:lesson-001:e03'), 'default');
 });
 
-test('siblings share an item key: facets of one word, exercises of one lesson', () => {
-  assert.equal(itemKey('w:larkaa:gender'), itemKey('w:larkaa:meaning_en_ur'));
-  assert.notEqual(itemKey('w:larkaa:gender'), itemKey('w:larkii:gender'));
+test('siblings share an item key: cards of one word, exercises of one lesson', () => {
+  assert.equal(itemKey('w:jaanaa:main'), itemKey('w:jaanaa:perfective'));
+  assert.notEqual(itemKey('w:larkaa:main'), itemKey('w:larkii:main'));
   assert.equal(itemKey('x:lesson-001:e01'), itemKey('x:lesson-001:e02'));
 });
 
-test('facet table per part of speech (PLAN §5.2, D17)', () => {
+test('one main card per word; irregular verbs add a perfective card (PLAN D28)', () => {
   const c = makeContent();
   const all = new Set(['gender', 'perfective', 'ne']);
-  assert.deepEqual(facetsFor(c.getWord('larkaa'), all), ['meaning_ur_en', 'meaning_en_ur', 'gender']);
-  assert.deepEqual(facetsFor(c.getWord('jaanaa'), all), ['meaning_ur_en', 'meaning_en_ur', 'perfective', 'takes_ne']);
-  assert.deepEqual(facetsFor(c.getWord('acchaa'), all), ['meaning_ur_en', 'meaning_en_ur']);
-  assert.deepEqual(facetsFor(c.getWord('shukriyaa'), all), ['meaning_ur_en', 'situation_to_phrase']);
-  assert.deepEqual(allFacets({ pos: 'postposition' }), ['meaning_ur_en', 'meaning_en_ur']);
-  assert.deepEqual(allFacets({ pos: 'pronoun' }), ['meaning_ur_en', 'meaning_en_ur']);
+  assert.deepEqual(facetsFor(c.getWord('larkaa'), all), ['main']);
+  assert.deepEqual(facetsFor(c.getWord('jaanaa'), all), ['main', 'perfective'], 'jaanaa → gayaa is irregular');
+  assert.deepEqual(facetsFor(c.getWord('acchaa'), all), ['main']);
+  assert.deepEqual(facetsFor(c.getWord('shukriyaa'), all), ['main']);
+  assert.deepEqual(allFacets({ pos: 'postposition' }), ['main']);
+  const regular = { pos: 'verb', stem: { roman: 'khaa' }, perfective: { m_sg: { roman: 'khaayaa' } } };
+  assert.deepEqual(allFacets(regular), ['main'], 'a regular perfective has no card of its own');
+  assert.equal(LEGACY_FACETS.includes('gender'), true);
 });
 
-test('facets that test grammar the learner has not reached stay dormant', () => {
+test('the perfective card waits for its lesson', () => {
   const c = makeContent();
-  const none = new Set();
-  assert.deepEqual(facetsFor(c.getWord('larkaa'), none), ['meaning_ur_en', 'meaning_en_ur']);
-  assert.deepEqual(dormantFacets(c.getWord('larkaa'), none), ['gender']);
-  assert.deepEqual(facetsFor(c.getWord('jaanaa'), new Set(['perfective'])), ['meaning_ur_en', 'meaning_en_ur', 'perfective']);
-  assert.deepEqual(dormantFacets(c.getWord('jaanaa'), new Set(['perfective'])), ['takes_ne']);
-  // a noun missing its gender data has no gender facet at all
-  assert.deepEqual(allFacets({ pos: 'noun' }), ['meaning_ur_en', 'meaning_en_ur']);
+  assert.deepEqual(facetsFor(c.getWord('jaanaa'), new Set()), ['main']);
+  assert.deepEqual(dormantFacets(c.getWord('jaanaa'), new Set()), ['perfective']);
+  assert.deepEqual(facetsFor(c.getWord('jaanaa'), new Set(['perfective'])), ['main', 'perfective']);
 });
 
 test('features come from the `unlocks` of completed lessons only', () => {
@@ -80,37 +78,34 @@ test('nothing is created before a lesson is completed', () => {
   assert.equal(Object.keys(d.srs.decks.main.cards).length, 0);
 });
 
-test('completing a lesson creates a card per live facet and one per exercise; gender stays dormant', () => {
+test('completing a lesson creates a main card per word and a card per flagged exercise', () => {
   const c = makeContent({ unlocks: { lesson1: [] }, extraLesson: false });
   const d = completed('lesson-001');
   const created = syncDeck(d, c, NOW);
   const cards = d.srs.decks.main.cards;
   assert.equal(created.length, Object.keys(cards).length);
-  assert.ok(cards['w:larkaa:meaning_en_ur']);
-  assert.ok(!cards['w:larkaa:gender'], 'gender is dormant');
-  assert.ok(!cards['w:jaanaa:perfective']);
-  assert.ok(cards['x:lesson-001:e01']);
-  assert.ok(cards['w:shukriyaa:situation_to_phrase']);
+  assert.ok(cards['w:larkaa:main']);
+  assert.ok(!cards['w:larkaa:gender'], 'gender is asked inside the main card');
+  assert.ok(!cards['w:jaanaa:perfective'], 'perfective is still locked');
+  assert.ok(cards['x:lesson-001:e01'], 'a flagged exercise');
+  assert.ok(!cards['x:lesson-001:e03'], 'an unflagged exercise has no card');
+  assert.ok(cards['w:shukriyaa:main']);
   for (const card of Object.values(cards)) {
     assert.equal(card.st, CARD_STATE.new);
     assert.equal(card.due, NOW);
   }
 });
 
-test('unlocking a feature creates the dormant cards the same day, without touching existing cards', () => {
-  const c = makeContent({ unlocks: { lesson1: [], lesson2: ['gender'] } });
+test('unlocking the past tense creates the irregular perfectives the same day, without touching existing cards', () => {
+  const c = makeContent({ unlocks: { lesson1: [], lesson2: ['perfective'] } });
   const d = completed('lesson-001');
   syncDeck(d, c, NOW);
-  // study one card so we can see it is untouched
-  const id = 'w:larkaa:meaning_ur_en';
+  const id = 'w:larkaa:main';
   d.srs.decks.main.cards[id] = { ...d.srs.decks.main.cards[id], st: CARD_STATE.review, s: 12.5, r: 4, due: NOW + 9 * DAY };
   const before = JSON.stringify(d.srs.decks.main.cards[id]);
-
   d.progress.lessons['lesson-002'] = { firstCompletedAt: 'x', lastCompletedAt: 'x', timesCompleted: 1, knownWordIds: [] };
   const created = syncDeck(d, c, NOW + DAY);
-  assert.ok(created.includes('w:larkaa:gender'));
-  assert.ok(created.includes('w:larkii:gender'));
-  assert.ok(created.includes('w:kitaab:gender'));
+  assert.ok(created.includes('w:jaanaa:perfective'));
   assert.ok(!created.includes(id));
   assert.equal(JSON.stringify(d.srs.decks.main.cards[id]), before);
 });
@@ -130,11 +125,11 @@ test('retired words and exercises get no new cards, but keep the ones they have'
   c.getWord('acchaa').retired = true;
   c.getLesson('lesson-001').exercises[0].retired = true;
   const d = completed('lesson-001');
-  d.srs.decks.main.cards['w:acchaa:meaning_ur_en'] = { due: NOW, s: 3, d: 5, st: 2, r: 3, l: 0, lr: NOW - DAY, sd: 3, ls: 0 };
+  d.srs.decks.main.cards['w:acchaa:main'] = { due: NOW, s: 3, d: 5, st: 2, r: 3, l: 0, lr: NOW - DAY, sd: 3, ls: 0 };
   syncDeck(d, c, NOW);
   const cards = d.srs.decks.main.cards;
-  assert.ok(cards['w:acchaa:meaning_ur_en'], 'existing card kept');
-  assert.ok(!cards['w:acchaa:meaning_en_ur']);
+  assert.ok(cards['w:acchaa:main'], 'existing card kept');
+  assert.ok(!cards['w:jaanaa:perfective']);
   assert.ok(!cards['x:lesson-001:e01']);
   assert.ok(cards['x:lesson-001:e02']);
 });
@@ -145,29 +140,28 @@ test('progress for a lesson this build does not have is left alone', () => {
   assert.doesNotThrow(() => syncDeck(d, c, NOW));
 });
 
-test('lesson results seed the new cards: Good practised, Again missed', () => {
+test('lesson results seed the new cards; several ratings count as successive learning steps', () => {
   const c = makeContent({ extraLesson: false });
   const d = completed('lesson-001');
-  syncDeck(d, c, NOW, { grades: { 'w:larkaa:meaning_ur_en': GRADE.good, 'w:larkaa:meaning_en_ur': GRADE.again } });
+  syncDeck(d, c, NOW, { grades: { 'w:larkaa:main': [GRADE.good, GRADE.good], 'w:larkii:main': [GRADE.again], 'x:lesson-001:e01': GRADE.good } });
   const cards = d.srs.decks.main.cards;
-  assert.equal(cards['w:larkaa:meaning_ur_en'].r, 1);
-  assert.equal(cards['w:larkaa:meaning_ur_en'].st, CARD_STATE.learning);
-  assert.equal(cards['w:larkaa:meaning_en_ur'].r, 1);
-  assert.ok(cards['w:larkaa:meaning_en_ur'].due < cards['w:larkaa:meaning_ur_en'].due);
-  assert.equal(cards['w:larkii:meaning_ur_en'].r, 0, 'no result → still New');
+  assert.equal(cards['w:larkaa:main'].st, CARD_STATE.review, 'both checks right: graduated');
+  assert.ok(cards['w:larkaa:main'].due - NOW >= DAY, 'first comes back another day');
+  assert.equal(cards['w:larkii:main'].st, CARD_STATE.learning);
+  assert.ok(cards['w:larkii:main'].due < NOW + DAY, 'a miss comes back soon');
+  assert.equal(cards['x:lesson-001:e01'].r, 1, 'a single number still works');
+  assert.equal(cards['w:kitaab:main'].r, 0, 'no result → still New');
 });
 
-test('"I already know this": the word\'s cards enter in Review with a long first interval', () => {
+test('"I already know this": the word\'s card enters in Review with a long first interval', () => {
   const c = makeContent({ extraLesson: false });
   const d = completed('lesson-001');
   syncDeck(d, c, NOW, { known: ['larkaa'] });
   const cards = d.srs.decks.main.cards;
-  for (const f of ['meaning_ur_en', 'meaning_en_ur']) {
-    const k = cards[`w:larkaa:${f}`];
-    assert.equal(k.st, CARD_STATE.review);
-    assert.ok(k.due - NOW >= 7 * DAY, `${f}: ${(k.due - NOW) / DAY} days`);
-  }
-  assert.equal(cards['w:larkii:meaning_ur_en'].st, CARD_STATE.new, 'other words are normal');
+  const k = cards['w:larkaa:main'];
+  assert.equal(k.st, CARD_STATE.review);
+  assert.ok(k.due - NOW >= 7 * DAY, `${(k.due - NOW) / DAY} days`);
+  assert.equal(cards['w:larkii:main'].st, CARD_STATE.new, 'other words are normal');
 });
 
 test('markWordKnown upgrades missing or New cards and leaves reviewed ones alone', () => {
@@ -175,11 +169,11 @@ test('markWordKnown upgrades missing or New cards and leaves reviewed ones alone
   const d = completed('lesson-001');
   syncDeck(d, c, NOW);
   const reviewed = { due: NOW + 3 * DAY, s: 4, d: 5, st: 2, r: 3, l: 1, lr: NOW - DAY, sd: 3, ls: 0 };
-  d.srs.decks.main.cards['w:larkaa:meaning_en_ur'] = reviewed;
-  const changed = markWordKnown(d, c, 'larkaa', NOW);
-  assert.deepEqual(changed, ['w:larkaa:meaning_ur_en']);
-  assert.deepEqual(d.srs.decks.main.cards['w:larkaa:meaning_en_ur'], reviewed);
-  assert.equal(d.srs.decks.main.cards['w:larkaa:meaning_ur_en'].st, CARD_STATE.review);
+  d.srs.decks.main.cards['w:larkii:main'] = reviewed;
+  assert.deepEqual(markWordKnown(d, c, 'larkii', NOW), []);
+  assert.deepEqual(d.srs.decks.main.cards['w:larkii:main'], reviewed);
+  assert.deepEqual(markWordKnown(d, c, 'larkaa', NOW), ['w:larkaa:main']);
+  assert.equal(d.srs.decks.main.cards['w:larkaa:main'].st, CARD_STATE.review);
   assert.deepEqual(markWordKnown(d, c, 'no-such-word', NOW), []);
 });
 

@@ -4,7 +4,7 @@ import { h } from '../../ui/dom.js';
 import { reviewCard } from './cardView.js';
 import { store } from '../../db/storage.js';
 import { getContent } from '../../db/contentLoader.js';
-import { describeCard } from '../../srs/cardFace.js';
+import { isReviewable as canShow, lessonOfCard } from '../../srs/cardFace.js';
 import { buildQueue, dueInPriorityOrder, studyDayEnd } from '../../srs/queue.js';
 import { createSession, nextCard, releaseWaiting, afterGrade, remaining } from '../../srs/session.js';
 import { formatInterval } from '../../srs/fsrs.js';
@@ -16,9 +16,9 @@ export function render(container) {
   const source = getContent();
   const now0 = Date.now();
   const rolloverHour = data.settings.dayRolloverHour;
-  const isReviewable = (id) => describeCard(id, source) !== null;
+  const isReviewable = (id) => canShow(id, source);
 
-  const plan = buildQueue({ cards, now: now0, rolloverHour, cap: data.settings.dailyReviewCap, doneToday: reviewsDoneToday(data, now0), isReviewable });
+  const plan = buildQueue({ cards, now: now0, rolloverHour, cap: data.settings.dailyReviewCap, doneToday: reviewsDoneToday(data, now0), isReviewable, lessonOf: (id) => lessonOfCard(id, source) });
   const session = createSession(plan.queue);
   let timer = null;
   const stopTimer = () => {

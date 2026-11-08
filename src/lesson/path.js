@@ -4,8 +4,8 @@
 
 import { studyDay, previousDay } from '../db/day.js';
 import { runProblem, progressLine } from './machine.js';
-import { buildQueue } from '../srs/queue.js';
-import { describeCard } from '../srs/cardFace.js';
+import { buildQueue, pickVaried } from '../srs/queue.js';
+import { isReviewable, lessonOfCard, describeCard, faceOptions } from '../srs/cardFace.js';
 import { reviewsDoneToday } from '../srs/stats.js';
 
 /** Lessons unlock strictly in curriculum order: the next one is the first not yet completed. */
@@ -79,6 +79,18 @@ export function todayQueue(data, content, now) {
     rolloverHour: data.settings.dayRolloverHour,
     cap: data.settings.dailyReviewCap,
     doneToday: reviewsDoneToday(data, now),
-    isReviewable: (id) => describeCard(id, content) !== null,
+    isReviewable: (id) => isReviewable(id, content),
+    lessonOf: (id) => lessonOfCard(id, content),
   });
+}
+
+/** Chooses the warm-up: at most a handful of cards from different lessons in different formats (PLAN D28). */
+export function warmupPicker(data, content) {
+  const cards = data.srs.decks.main.cards;
+  const opts = faceOptions(data, content);
+  const formatOf = (id) => {
+    const face = describeCard(id, content, { ...opts, card: cards[id] });
+    return face?.format ?? face?.exercise?.type ?? null;
+  };
+  return (queue, n) => pickVaried(queue, n, { lessonOf: (id) => lessonOfCard(id, content), formatOf });
 }

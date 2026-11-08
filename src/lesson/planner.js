@@ -6,14 +6,15 @@
 // practiceCount = clamp(exercises, 8, 12)
 // warmupSlots   = floor((budget - fixed - practiceCount*exerciseSec) / reviewSec)
 // if warmupSlots < 0: shrink practice (never below 8), warm-up 0
+// The warm-up is at most WARMUP_MAX cards, chosen for variety (PLAN D28): reviews belong in the Review tab.
 //
 // Modes (D7):
 //   normal        the plan above
-//   review-heavy  due > 2 × warmupSlots: warm-up grows to about 8 minutes, practice drops to 8
+//   review-heavy  due > 2 × warmupSlots: practice drops to 8 so there is time for reviews afterwards
 //   catch-up      due > 2 × daily cap: Today leads with a review session; if the learner does the lesson anyway it is planned like review-heavy
 
 export const BUDGET_SEC = 900;
-export const HEAVY_WARMUP_SEC = 480;
+export const WARMUP_MAX = 6;
 export const SUMMARY_SEC = 30;
 export const GRAMMAR_SCREEN_SEC = 30;
 export const DIALOGUE_LINE_SEC = 12;
@@ -33,10 +34,11 @@ const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
  * @param {number} [o.dailyReviewCap]
  * @param {{ reviewSec?: number, wordSec?: number, exerciseSec?: number }} [o.pace]  moving averages from stats.pace
  * @param {boolean} [o.canListen]  false drops `listen` exercises (no usable voice)
+ * @param {(queue: string[], n: number) => string[]} [o.pickWarmup]  chooses the warm-up cards (default: the first n)
  * @returns {{ mode: 'normal'|'review-heavy'|'catch-up', budgetSec: number, estimateSec: number, warmup: string[], exerciseIds: string[],
  *   warmupSlots: number, dropped: string[] }}
  */
-export function planLesson({ lesson, dueQueue = [], dueTotal = dueQueue.length, capRemaining = Infinity, dailyReviewCap = 60, pace = {}, canListen = true }) {
+export function planLesson({ lesson, dueQueue = [], dueTotal = dueQueue.length, capRemaining = Infinity, dailyReviewCap = 35, pace = {}, canListen = true, pickWarmup = (q, n) => q.slice(0, n) }) {
   const p = { ...DEFAULT_PACE, ...pace };
   const live = (lesson.exercises ?? []).filter((e) => !e.retired);
   const playable = live.filter((e) => canListen || e.type !== 'listen');
@@ -56,13 +58,10 @@ export function planLesson({ lesson, dueQueue = [], dueTotal = dueQueue.length, 
   let mode = 'normal';
   if (dueTotal > dailyReviewCap * 2) mode = 'catch-up';
   else if (dueTotal > 0 && dueTotal > 2 * warmupSlots) mode = 'review-heavy';
-  if (mode !== 'normal') {
-    practiceCount = Math.min(practiceCount, Math.min(playable.length, PRACTICE_MIN));
-    warmupSlots = Math.max(warmupSlots, Math.floor(HEAVY_WARMUP_SEC / p.reviewSec));
-  }
+  if (mode !== 'normal') practiceCount = Math.min(practiceCount, Math.min(playable.length, PRACTICE_MIN));
 
-  const take = Math.max(0, Math.min(warmupSlots, capRemaining, dueQueue.length));
-  const warmup = dueQueue.slice(0, take);
+  const take = Math.max(0, Math.min(WARMUP_MAX, Math.max(warmupSlots, 0), capRemaining, dueQueue.length));
+  const warmup = pickWarmup(dueQueue, take);
   const exerciseIds = playable.slice(0, practiceCount).map((e) => e.id);
   const estimateSec = Math.round(fixed + warmup.length * p.reviewSec + exerciseIds.length * p.exerciseSec);
 

@@ -11,6 +11,7 @@
     "validate": "node scripts/validate-content.js",
     "check-coverage": "node scripts/check-coverage.js",
     "lock-ids": "node scripts/lock-ids.js",
+    "simulate-load": "node scripts/simulate-load.js",
     "test": "node --test tests/*.test.js",
     "build": "npm run validate && vite build",
     "preview": "vite preview",

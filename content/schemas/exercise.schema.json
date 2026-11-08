@@ -41,6 +41,10 @@
         "retired": {
           "type": "boolean"
         },
+        "sentence_card": {
+          "type": "boolean",
+          "description": "True for the 2-3 exercises per lesson that become review cards (PLAN D28). The others stay in the lesson and in practice replay only."
+        },
         "sentence": {
           "$ref": "common.schema.json#/definitions/triple",
           "description": "Roman and ur both contain the blank ___. `en` is REQUIRED: the full English translation."
@@ -106,6 +110,10 @@
         "retired": {
           "type": "boolean"
         },
+        "sentence_card": {
+          "type": "boolean",
+          "description": "True for the 2-3 exercises per lesson that become review cards (PLAN D28). The others stay in the lesson and in practice replay only."
+        },
         "prompt": {
           "type": "string",
           "minLength": 1,
@@ -170,6 +178,10 @@
         "retired": {
           "type": "boolean"
         },
+        "sentence_card": {
+          "type": "boolean",
+          "description": "True for the 2-3 exercises per lesson that become review cards (PLAN D28). The others stay in the lesson and in practice replay only."
+        },
         "sentence": {
           "$ref": "common.schema.json#/definitions/triple",
           "description": "Contains the blank ___."
@@ -229,6 +241,10 @@
         },
         "retired": {
           "type": "boolean"
+        },
+        "sentence_card": {
+          "type": "boolean",
+          "description": "True for the 2-3 exercises per lesson that become review cards (PLAN D28). The others stay in the lesson and in practice replay only."
         },
         "sentence": {
           "$ref": "common.schema.json#/definitions/triple",
@@ -299,6 +315,10 @@
         "retired": {
           "type": "boolean"
         },
+        "sentence_card": {
+          "type": "boolean",
+          "description": "True for the 2-3 exercises per lesson that become review cards (PLAN D28). The others stay in the lesson and in practice replay only."
+        },
         "sentence": {
           "$ref": "common.schema.json#/definitions/triple",
           "description": "The sentence containing one mistake."
@@ -363,6 +383,10 @@
         "retired": {
           "type": "boolean"
         },
+        "sentence_card": {
+          "type": "boolean",
+          "description": "True for the 2-3 exercises per lesson that become review cards (PLAN D28). The others stay in the lesson and in practice replay only."
+        },
         "en": {
           "type": "string",
           "minLength": 1
@@ -422,6 +446,10 @@
         "retired": {
           "type": "boolean"
         },
+        "sentence_card": {
+          "type": "boolean",
+          "description": "True for the 2-3 exercises per lesson that become review cards (PLAN D28). The others stay in the lesson and in practice replay only."
+        },
         "from": {
           "$ref": "common.schema.json#/definitions/triple"
         },
@@ -480,6 +508,10 @@
         },
         "retired": {
           "type": "boolean"
+        },
+        "sentence_card": {
+          "type": "boolean",
+          "description": "True for the 2-3 exercises per lesson that become review cards (PLAN D28). The others stay in the lesson and in practice replay only."
         },
         "audio_text": {
           "$ref": "common.schema.json#/definitions/triple"

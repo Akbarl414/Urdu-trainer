@@ -128,6 +128,7 @@
     },
     {
       "id": "e07",
+      "sentence_card": true,
       "type": "reorder",
       "sentence": { "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too." },
       "tokens": ["maiN", "bhii", "Thiik", "huuN"],
@@ -149,6 +150,7 @@
     },
     {
       "id": "e09",
+      "sentence_card": true,
       "type": "choose-form",
       "sentence": { "roman": "aap ___ haiN?", "ur": "آپ ___ ہیں؟", "en": "How are you? (asking your partner's mother)" },
       "options": [
@@ -184,6 +186,7 @@
     },
     {
       "id": "e12",
+      "sentence_card": true,
       "type": "translate",
       "en": "I'm fine, thank God. And you?",
       "answers": [

@@ -14,6 +14,11 @@ import { voiceRoute, onAudioChange, isAudioReady } from '../../audio/tts.js';
 let askLater = false; // "Not now" lasts until the app is reopened (memory only; nothing is stored)
 
 const GENDER_LABEL = { m: 'man’s', f: 'woman’s' };
+const MEMORY_NOTE = {
+  relaxed: 'Fewest reviews. You will remember about 80% of cards when they come back.',
+  balanced: 'More reviews. You will remember about 85% of cards when they come back.',
+  strong: 'Most reviews. You will remember about 90% of cards when they come back.',
+};
 
 function genderCard({ onAnswer, onLater, current }) {
   return h(
@@ -64,6 +69,7 @@ export function render(container) {
       gender,
       primaryCard(t, queue, now, cap),
       themeSwitcher(),
+      memoryCard(),
       reviewCard(t, queue, cap),
       practiceCard(),
       h(
@@ -78,6 +84,21 @@ export function render(container) {
       ].filter(Boolean),
     );
     drawVoiceNote();
+  }
+
+  /** Memory target (PLAN D29), here until Settings (Phase 5) takes it over. */
+  function memoryCard() {
+    const current = data.settings.memoryTarget;
+    const seg = (value, label) =>
+      h('button', { class: `seg${current === value ? ' on' : ''}`, type: 'button', 'aria-pressed': current === value ? 'true' : 'false', onclick: () => (store.updateSettings({ memoryTarget: value }), draw()) }, label);
+    return h(
+      'section',
+      { class: 'card' },
+      h('h2', {}, 'Memory target'),
+      h('div', { class: 'segmented', role: 'group', 'aria-label': 'Memory target' }, seg('relaxed', 'Relaxed'), seg('balanced', 'Balanced'), seg('strong', 'Strong')),
+      h('p', { class: 'muted small' }, MEMORY_NOTE[current] ?? MEMORY_NOTE.relaxed),
+      h('p', { class: 'muted small' }, 'Applies from each card’s next review.'),
+    );
   }
 
   function answer(g) {
@@ -116,7 +137,7 @@ export function render(container) {
           h('p', { class: 'lesson-title' }, '✓ Today’s lesson is done'),
           h('p', { class: 'muted' }, `Lesson ${t.lesson.order}: ${t.lesson.title} is scheduled for tomorrow.`),
           h('a', { class: 'btn btn-secondary', href: '#/lesson/extra' }, 'Do one more lesson'),
-          h('p', { class: 'muted small' }, 'Each lesson adds about 30 reviews over the next week, so they will pile up faster.'),
+          h('p', { class: 'muted small' }, 'Each lesson adds about 20 reviews over the next week, so they will pile up faster.'),
         );
       case 'all-done':
         return h('section', { class: 'card primary' }, h('p', { class: 'lesson-title' }, 'You’ve finished every lesson so far'), h('p', { class: 'muted' }, 'New lessons arrive as content is added. Reviews keep what you’ve learned fresh.'));
@@ -127,7 +148,7 @@ export function render(container) {
           { class: 'card primary' },
           ...lessonLine(t.lesson),
           h('p', { class: 'muted small' }, `About ${Math.max(5, Math.round(plan.estimateSec / 60))} minutes`),
-          plan.mode !== 'normal' ? h('p', { class: 'small' }, `${queue.dueTotal} reviews are due, so this lesson starts with a longer review.`) : null,
+          plan.mode !== 'normal' ? h('p', { class: 'small' }, `${queue.dueTotal} reviews are due, so this lesson is shorter. Do them in Review afterwards.`) : null,
           h('a', { class: 'btn btn-big', href: '#/lesson' }, 'Start today’s lesson'),
         );
       }

@@ -1,5 +1,5 @@
 // Lesson completion (PLAN §6.2). ONE atomic step: the lesson is marked complete, every item it introduced joins the
-// deck (words, phrases and exercises, with the ratings earned in the lesson), its grammar unlocks switch on, stats are
+// deck (a main card per word and phrase, plus its sentence cards, with the ratings earned in the lesson), its grammar unlocks switch on, stats are
 // updated and the run is cleared. The work happens on a copy of the data; the live blob only changes once everything
 // succeeded, and the caller then persists it with a single store.save().
 //
@@ -12,7 +12,6 @@ import { GRADE } from '../srs/fsrs.js';
 import { dayStats, touchStreak } from '../srs/stats.js';
 import { studyDay } from '../db/day.js';
 import { gradeForResult } from './exercises.js';
-import { checkFacets } from './wordChecks.js';
 
 const PACE_WEIGHT = 0.1;
 const SEC_MIN = 3;
@@ -22,8 +21,10 @@ const clone = (v) => JSON.parse(JSON.stringify(v));
 const ema = (old, sample) => Math.round(((1 - PACE_WEIGHT) * old + PACE_WEIGHT * Math.min(SEC_MAX, Math.max(SEC_MIN, sample))) * 10) / 10;
 
 /**
- * The first rating of each NEW card, from what happened in the lesson.
- * @returns {Record<string, number>}
+ * The rating(s) of each NEW card, from what happened in the lesson (PLAN D28). The lesson's checks already are
+ * the card's learning steps, so a word answered right twice leaves the lesson graduated and first returns in a few days
+ * rather than the same evening. Anything missed comes back soon.
+ * @returns {Record<string, number|number[]>}
  */
 export function lessonGrades(run, lesson, content) {
   const grades = {};
@@ -31,12 +32,15 @@ export function lessonGrades(run, lesson, content) {
     const word = content.getWord(wordId);
     const r = run.wordResults[wordId];
     if (!word || !r || r.known) continue;
-    const { recog, prod } = checkFacets(word);
-    if (typeof r.recog === 'boolean') grades[wordCardId(wordId, recog)] = r.recog ? GRADE.good : GRADE.again;
-    if (typeof r.prod === 'boolean') grades[wordCardId(wordId, prod)] = r.prod ? GRADE.good : GRADE.again;
+    const checks = [r.recog, r.prod].filter((v) => typeof v === 'boolean');
+    if (checks.length === 0) continue;
+    grades[wordCardId(wordId, 'main')] = checks.every(Boolean) ? checks.map(() => GRADE.good) : [GRADE.again];
   }
   for (const [exerciseId, result] of Object.entries(run.exerciseResults)) {
-    grades[exerciseCardId(lesson.id, exerciseId)] = gradeForResult(result);
+    const ex = lesson.exercises.find((e) => e.id === exerciseId);
+    if (!ex?.sentence_card) continue; // the other exercises have no card
+    const g = gradeForResult(result);
+    grades[exerciseCardId(lesson.id, exerciseId)] = g === GRADE.good ? [GRADE.good, GRADE.good] : [g];
   }
   return grades;
 }

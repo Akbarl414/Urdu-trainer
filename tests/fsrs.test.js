@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
-import { createEngine, GRADE, CARD_STATE, RETENTION, formatInterval, markWeak, isProductionFacet } from '../src/srs/fsrs.js';
+import { createEngine, GRADE, CARD_STATE, MEMORY_TARGETS, DEFAULT_MEMORY_TARGET, formatInterval, markWeak, isProductionFacet } from '../src/srs/fsrs.js';
 
 const DAY = 86400000;
 const NOW = Date.parse('2026-11-02T10:00:00Z');
@@ -50,18 +50,22 @@ test('Again on a Review card lapses it into Relearning with a short step', () =>
   assert.ok(c.due - NOW < 30 * 60000);
 });
 
-test('two schedulers: production facets get the shorter intervals (0.90 vs 0.85 retention)', () => {
-  assert.equal(RETENTION.production, 0.9);
-  assert.equal(RETENTION.recognition, 0.85);
-  assert.ok(isProductionFacet('meaning_en_ur') && isProductionFacet('situation_to_phrase'));
-  assert.ok(!isProductionFacet('meaning_ur_en') && !isProductionFacet('gender'));
-  let rec = e.newCard(NOW);
-  let prod = e.newCard(NOW);
-  for (let i = 0; i < 3; i++) {
-    rec = e.review(rec, 'meaning_ur_en', GRADE.good, NOW + i * 10 * DAY);
-    prod = e.review(prod, 'meaning_en_ur', GRADE.good, NOW + i * 10 * DAY);
-  }
-  assert.ok(prod.due < rec.due, 'production comes back sooner');
+test('memory target: one retention for every card; a higher target brings cards back sooner (PLAN D29)', async () => {
+  assert.deepEqual({ ...MEMORY_TARGETS }, { relaxed: 0.8, balanced: 0.85, strong: 0.9 });
+  assert.equal(DEFAULT_MEMORY_TARGET, 'relaxed');
+  assert.ok(isProductionFacet('main'), 'main cards still come first in the daily queue');
+  const dueAt = async (target) => {
+    const en = await createEngine({ fuzz: false, getTarget: () => target });
+    return en.review(en.review(en.newCard(NOW), 'main', GRADE.good, NOW), 'main', GRADE.good, NOW + 60000).due;
+  };
+  const relaxed = await dueAt('relaxed');
+  const balanced = await dueAt('balanced');
+  const strong = await dueAt('strong');
+  assert.ok(strong < balanced && balanced < relaxed, `${strong} ${balanced} ${relaxed}`);
+  assert.equal(await dueAt('nonsense'), relaxed, 'an unknown value means the default');
+  const a = await createEngine({ fuzz: false });
+  const c = a.review(a.newCard(NOW), 'meaning_ur_en', GRADE.good, NOW);
+  assert.equal(a.review(c, 'meaning_ur_en', GRADE.good, NOW + 60000).due, a.review(c, 'main', GRADE.good, NOW + 60000).due, 'the facet makes no difference');
 });
 
 test('retrievability: 0 for New, falls over time, is between 0 and 1', () => {
@@ -72,12 +76,12 @@ test('retrievability: 0 for New, falls over time, is between 0 and 1', () => {
   assert.ok(soon > later && soon <= 1 && later >= 0);
 });
 
-test('"I already know this": first interval of roughly 1-4 weeks, in the Review state', () => {
+test('"I already know this": a first interval of weeks, in the Review state', () => {
   for (const facet of ['meaning_ur_en', 'meaning_en_ur', 'gender']) {
     const k = e.alreadyKnow(e.newCard(NOW), facet, NOW);
     const days = (k.due - NOW) / DAY;
     assert.equal(k.st, CARD_STATE.review, facet);
-    assert.ok(days >= 7 && days <= 30, `${facet}: ${days} days`);
+    assert.ok(days >= 7 && days <= 60, `${facet}: ${days} days`);
     assert.equal(k.r, 2);
   }
   const plain = e.review(e.newCard(NOW), 'meaning_ur_en', GRADE.good, NOW);
@@ -132,8 +136,9 @@ test('stored shape is unchanged: every card the engine returns has exactly the c
   assert.ok(Object.values(e.alreadyKnow(e.newCard(NOW), 'gender', NOW)).every((v) => v === null || Number.isFinite(v)));
 });
 
-test('cards saved by the previous (classic API) build still load and schedule, with the same results', () => {
-  // Captured from the classic fsrs()/repeat() build before the switch (fuzz off, facet meaning_ur_en).
+test('cards saved by the previous (classic API) build still load and schedule, with the same results', async () => {
+  // Captured from the classic fsrs()/repeat() build before the switch (fuzz off, facet meaning_ur_en, retention 0.85).
+  const e = await createEngine({ fuzz: false, retention: 0.85 });
   const learning = { due: 1790158200000, s: 2.3065, d: 2.11810397, st: 1, r: 1, l: 0, lr: 1790157600000, sd: 0, ls: 1 };
   const at = learning.due; // the moment the card came up for review
   assert.deepEqual([1, 2, 3, 4].map((g) => e.preview(learning, 'meaning_ur_en', at)[g].due), [1790158260000, 1790158530000, 1790503800000, 1790849400000]);

@@ -23,13 +23,14 @@ test('nounPlural: an invariable loanword uses its own form for singular, plural 
   assert.deepEqual(nounPlural(aunty), { plural: p('aunty', 'آنٹی'), oblique_pl: p('aunty', 'آنٹی') });
 });
 
-test('course content: ammii and abbuu have rare plurals, so the gender card never reveals them', () => {
+test('course content: ammii and abbuu have rare plurals, so the gender reveal never shows them', () => {
   const content = realContent();
   for (const id of ['ammii', 'abbuu']) {
     const w = content.getWord(id);
     assert.equal(w.plural_rare, true, id);
     assert.equal(nounPlural(w), null, id);
-    assert.ok(!describeCard(`w:${id}:gender`, content).reveal.some((r) => r.label === 'Plural'), id);
+    const face = describeCard(`w:${id}:main`, content, { features: new Set(['gender']) });
+    assert.equal(face.gender.plural, null, id);
   }
-  assert.ok(describeCard('w:behen:gender', content).reveal.some((r) => r.label === 'Plural' && r.roman === 'behneN'), 'ordinary plurals still show');
+  assert.equal(describeCard('w:behen:main', content, { features: new Set(['gender']) }).gender.plural.roman, 'behneN', 'ordinary plurals still show');
 });

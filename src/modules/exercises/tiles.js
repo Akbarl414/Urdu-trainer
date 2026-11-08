@@ -4,8 +4,9 @@ import { h } from '../../ui/dom.js';
 /**
  * @param {string[]} tokens  the tiles, already shuffled
  * @param {(placed: string[]) => void} onCheck
+ * @param {{ partial?: boolean }} [opts]  partial: some tiles are wrong ones, so Check doesn't wait for all of them
  */
-export function tilesView(tokens, onCheck) {
+export function tilesView(tokens, onCheck, { partial = false } = {}) {
   let placed = []; // indexes into tokens, in the order placed
   let locked = false;
   const line = h('div', { class: 'tile-line', 'aria-label': 'Your sentence' });
@@ -19,7 +20,7 @@ export function tilesView(tokens, onCheck) {
   function draw() {
     line.replaceChildren(...(placed.length ? placed.map((i) => tile(i, () => ((placed = placed.filter((p) => p !== i)), draw()))) : [h('span', { class: 'muted small' }, 'Tap the words in order')]));
     bank.replaceChildren(...tokens.map((_, i) => (placed.includes(i) ? h('span', { class: 'tile tile-gap', 'aria-hidden': 'true' }, tokens[i]) : tile(i, () => (placed.push(i), draw())))));
-    check.disabled = placed.length !== tokens.length || locked;
+    check.disabled = (partial ? placed.length === 0 : placed.length !== tokens.length) || locked;
     reset.hidden = placed.length === 0;
   }
   draw();

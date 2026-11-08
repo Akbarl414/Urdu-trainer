@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 process.env.TZ = 'Europe/London';
-const { buildQueue, dueInPriorityOrder, spaceSiblings, insertSpaced, studyDayEnd } = await import('../src/srs/queue.js');
+const { buildQueue, dueInPriorityOrder, spaceSiblings, pickVaried, insertSpaced, studyDayEnd } = await import('../src/srs/queue.js');
 const { createEngine, GRADE, CARD_STATE } = await import('../src/srs/fsrs.js');
 const { createSession, nextCard, afterGrade, releaseWaiting, remaining } = await import('../src/srs/session.js');
 const { recordReview, reviewsDoneToday, touchStreak } = await import('../src/srs/stats.js');
@@ -150,6 +150,44 @@ test('isReviewable filters out cards that cannot be shown', () => {
   const cards = { 'w:a:meaning_ur_en': reviewCard(5, 3), 'w:gone:meaning_ur_en': reviewCard(5, 3) };
   const q = buildQueue({ cards, now: NOW, cap: 60, isReviewable: (id) => !id.includes('gone') });
   assert.deepEqual(q.queue, ['w:a:meaning_ur_en']);
+});
+
+test('retired cards stay stored but never enter the queue', () => {
+  const cards = { 'w:a:main': reviewCard(5, 3), 'w:a:meaning_ur_en': reviewCard(5, 3, { retired: true }) };
+  const q = buildQueue({ cards, now: NOW, cap: 60 });
+  assert.deepEqual(q.queue, ['w:a:main']);
+  assert.equal(q.dueTotal, 1);
+  assert.ok(cards['w:a:meaning_ur_en'], 'still there');
+});
+
+test('interleaving: cards of one lesson are spread apart when there are enough other lessons', () => {
+  const lessonOf = (id) => (id.startsWith('x:') ? id.split(':')[1] : `l${id.split(':')[1][0]}`);
+  const ids = ['a1', 'a2', 'a3', 'a4', 'b1', 'b2', 'c1', 'c2', 'd1'].map((w) => `w:${w}:main`);
+  const out = spaceSiblings(ids, { lessonOf });
+  assert.deepEqual([...out].sort(), [...ids].sort(), 'nothing is lost');
+  for (let i = 1; i < 4; i++) assert.notEqual(lessonOf(out[i]), lessonOf(out[i - 1]), `positions ${i - 1},${i}`);
+});
+
+test('interleaving: young and old cards are mixed', () => {
+  const ids = ['w:y1:main', 'w:y2:main', 'w:o1:main', 'w:o2:main', 'w:y3:main', 'w:o3:main'];
+  const out = spaceSiblings(ids, { isYoung: (id) => id.startsWith('w:y') });
+  for (let i = 1; i < out.length; i++) assert.notEqual(out[i][2], out[i - 1][2], `${out}`);
+});
+
+test('interleaving: exercises of one lesson are not adjacent, and no word repeats back to back', () => {
+  const ids = ['x:lesson-001:e01', 'x:lesson-001:e02', 'w:a:main', 'w:a:perfective', 'w:b:main'];
+  const out = spaceSiblings(ids);
+  for (let i = 1; i < out.length; i++) assert.notEqual(itemKey(out[i]), itemKey(out[i - 1]));
+});
+
+test('the warm-up picker prefers different lessons and different formats', () => {
+  const lessons = { 'w:a:main': 'l1', 'w:b:main': 'l1', 'w:c:main': 'l2', 'w:d:main': 'l3', 'w:e:main': 'l3' };
+  const formats = { 'w:a:main': 'choice', 'w:b:main': 'choice', 'w:c:main': 'choice', 'w:d:main': 'typed', 'w:e:main': 'tiles' };
+  const picked = pickVaried(Object.keys(lessons), 3, { lessonOf: (id) => lessons[id], formatOf: (id) => formats[id] });
+  assert.equal(picked.length, 3);
+  assert.equal(new Set(picked.map((id) => lessons[id])).size, 3, 'three lessons');
+  assert.ok(new Set(picked.map((id) => formats[id])).size >= 2, 'more than one format');
+  assert.deepEqual(pickVaried(['w:a:main'], 6), ['w:a:main'], 'never invents cards');
 });
 
 // ------------------------------------------------------------------ session
