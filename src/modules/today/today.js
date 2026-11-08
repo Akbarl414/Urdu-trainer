@@ -8,6 +8,10 @@ import { getContent } from '../../db/contentLoader.js';
 import { todayState, todayQueue } from '../../lesson/path.js';
 import { practisableLessons } from '../../lesson/practice.js';
 import { planLesson } from '../../lesson/planner.js';
+import { onAudioChange } from '../../audio/tts.js';
+import { gameOfDay } from '../games/gotd.js';
+import { gotdCard } from '../games/gotdCard.js';
+import { bestOf } from '../../games/outcome.js';
 
 let askLater = false; // "Not now" lasts until the app is reopened (memory only; nothing is stored)
 
@@ -50,6 +54,7 @@ export function render(container) {
       h('p', { class: 'progress-line' }, bits.join(' · ')),
       gender,
       primaryCard(t, queue, now, cap),
+      gotdSection(),
       reviewCard(t, queue, cap),
       practiceCard(),
       h(
@@ -115,6 +120,12 @@ export function render(container) {
     }
   }
 
+  /** Today's game of the day, once any game is unlocked (PLAN D37). */
+  function gotdSection() {
+    const g = gameOfDay();
+    return g ? gotdCard(g, { best: bestOf(data, g.game.id) }) : null;
+  }
+
   /** Replay a finished lesson as practice only (no cards, no scheduling, no progress). Until the Library exists (Phase 5). */
   function practiceCard() {
     const done = practisableLessons(data, content);
@@ -136,5 +147,5 @@ export function render(container) {
   }
 
   draw();
-  return () => {};
+  return onAudioChange(draw); // voices load late, and Listen & type needs one to count as unlocked
 }

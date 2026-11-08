@@ -117,3 +117,19 @@ a.game-card:active { transform: translateY(2px); }
 .gbtn.gbtn-pair.is-wrong, .gbtn.gbtn-tile.is-wrong { border-color: var(--game-wrong-ink); }
 [data-theme] .gbtn-pair.is-right, [data-theme] .gbtn-pair.is-wrong { border-color: var(--game-right-ink); }
 [data-theme] .gbtn-pair.is-wrong { border-color: var(--game-wrong-ink); }
+
+/* ---- game of the day (PLAN D37): the same card on the Games tab and on Today ---- */
+.gotd { display: grid; gap: 6px; text-decoration: none; color: var(--ink); border-color: var(--primary); }
+.gotd .game-row { margin: 0; flex-wrap: nowrap; align-items: flex-start; }
+.gotd .game-row h2 { margin: 0; min-width: 0; }
+.gotd p { margin: 0; }
+.gotd .btn { width: 100%; margin-top: 4px; }
+.gotd:active { transform: translateY(2px); }
+.gotd-kicker { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--primary); }
+.gotd-badge { flex: none; margin: 0; white-space: nowrap; }
+.gotd-badge.done { color: var(--game-right-ink); background: var(--game-right); }
+.game-row .gotd-badge { margin-left: auto; }
+[data-theme='truck-art'] .gotd { border-color: var(--deco-2); border-width: 3px; box-shadow: 0 5px 0 var(--deco-2); background-image: repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in srgb, var(--deco-2) 14%, transparent) 14px 28px); }
+[data-theme='truck-art'] .gotd:active { transform: translateY(5px); box-shadow: 0 0 0 var(--deco-2); }
+[data-theme='truck-art'] .gotd-kicker { color: var(--ink); }
+[data-theme='truck-art'] .gotd .btn { box-shadow: 0 4px 0 var(--btn-edge); }

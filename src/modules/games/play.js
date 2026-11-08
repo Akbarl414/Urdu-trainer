@@ -4,6 +4,7 @@ import { store } from '../../db/storage.js';
 import { getContent } from '../../db/contentLoader.js';
 import { availability, gameById } from '../../games/catalog.js';
 import { canSpeak } from '../../audio/tts.js';
+import { gameOfDay, LOCK_MESSAGE } from './gotd.js';
 
 const loaders = {
   'speed-recall': () => import('./speedRecall.js'),
@@ -23,6 +24,11 @@ export async function renderGame(container, id) {
   const a = availability(id, { data: store.data, content: getContent(), now: Date.now(), canListen: canSpeak({ roman: 'x', ur: 'x' }) });
   if (!a.ok) {
     container.append(h('main', { class: 'page' }, h('a', { class: 'back', href: '#/games' }, '‹ Games'), h('h1', {}, game.title), h('section', { class: 'card' }, h('p', {}, lockedNote(a)))));
+    return () => {};
+  }
+  const gotd = gameOfDay();
+  if (gotd?.isLocked(id)) {
+    container.append(h('main', { class: 'page' }, h('a', { class: 'back', href: '#/games' }, '‹ Games'), h('h1', {}, game.title), h('section', { class: 'card game-card locked' }, h('p', {}, LOCK_MESSAGE), h('p', { class: 'muted' }, `Today’s game is ${gotd.game.title}. One full round unlocks the rest.`), h('a', { class: 'btn', href: `#/games/${gotd.game.id}` }, `Play ${gotd.game.title}`))));
     return () => {};
   }
   const mod = await loaders[id]();

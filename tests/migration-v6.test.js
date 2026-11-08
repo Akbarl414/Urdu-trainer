@@ -11,8 +11,8 @@ const dir = join(dirname(fileURLToPath(import.meta.url)), 'fixtures');
 const v5 = JSON.parse(readFileSync(join(dir, 'storage-v5.json'), 'utf8'));
 
 test('v5 days get correct: null (not recorded); counts, cards, lessons, settings and bests are untouched', () => {
-  assert.equal(STORAGE_VERSION, 6);
-  const out = migrate(v5);
+  assert.ok(STORAGE_VERSION >= 6);
+  const out = migrate(v5, { version: 6 }); // this version's step only; v6 → v7 has its own test
   assert.equal(out.version, 6);
   for (const [day, d] of Object.entries(v5.stats.days)) {
     assert.equal(out.stats.days[day].correct, null, day);
@@ -27,7 +27,7 @@ test('v5 days get correct: null (not recorded); counts, cards, lessons, settings
 
 test('a v6 fixture loads unchanged, and an existing correct count is never overwritten', () => {
   const v6 = JSON.parse(readFileSync(join(dir, 'storage-v6.json'), 'utf8'));
-  assert.deepEqual(migrate(v6).stats, v6.stats);
+  assert.deepEqual(migrate(v6, { version: 6 }).stats, { ...v6.stats, gameOfDay: null }, 'only the new v7 slot is added');
   assert.equal(MIGRATIONS[5]({ stats: { days: { a: { reviews: 3, correct: 2 } } } }).stats.days.a.correct, 2);
 });
 
@@ -37,7 +37,7 @@ test('the migration is tolerant of odd shapes and never invents counts', () => {
 });
 
 test('a day from before v6 (correct: null) is never half-counted; new days count right answers', () => {
-  const data = migrate(v5);
+  const data = migrate(v5, { version: 6 });
   const old = Object.keys(v5.stats.days)[0];
   const t = Date.parse(`${old}T12:00:00`);
   recordReview(data, { now: t, previousState: 2, correct: true });

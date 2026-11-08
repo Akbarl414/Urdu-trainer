@@ -18,7 +18,7 @@
 import { DATA_KEY, SNAPSHOTS_KEY, recoveryKey, isRecoveryKey, isOwnKey } from './keys.js';
 import { studyDay } from './day.js';
 
-export const STORAGE_VERSION = 6;
+export const STORAGE_VERSION = 7;
 export const BACKUP_FORMAT = 'urdu-trainer-backup';
 
 const DAILY_SNAPSHOTS_KEPT = 3; // D15
@@ -75,6 +75,9 @@ export const MIGRATIONS = {
     for (const [day, d] of Object.entries(days)) out[day] = isPlainObject(d) ? { ...d, correct: d.correct === undefined ? null : d.correct } : d;
     return { ...data, stats: { ...data.stats, days: out } };
   },
+  // v6 → v7 (PLAN D37): `stats.gameOfDay` ({ day, id, done } or null) remembers today's game of the day. Nothing existed before, so it
+  // starts as null ("not chosen yet"); a value already there is never overwritten. Nothing else changes.
+  6: (data) => (isPlainObject(data.stats) ? { ...data, stats: { ...data.stats, gameOfDay: data.stats.gameOfDay ?? null } } : data),
 };
 
 // The exercises flagged `sentence_card` when v5 shipped, frozen here on purpose: a migration must give the same result
@@ -190,6 +193,7 @@ export function defaultData(now = Date.now()) {
       lastStudyDay: null,
       days: {}, // 'YYYY-MM-DD' -> { reviews, correct (v6; null on older days), newWords, lessons, games, seconds, scriptReviews, scriptLessons }
       pace: { reviewSec: 10, wordSec: 20, exerciseSec: 20, scriptReviewSec: 8 },
+      gameOfDay: null, // v7 (D37): { day, id, done } for today's game of the day, or null before the first pick
       gameBests: {}, // gameId -> { best, bestAccuracy, bestDay, rounds, last: { score, correct, total, day } } (v6 writes it; before that the slot was empty)
     },
     flags: [], // "Report a mistake": { id, createdAt, target: { kind, id, field }, note, build }

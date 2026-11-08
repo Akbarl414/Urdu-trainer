@@ -14,6 +14,7 @@ import { earnsGameCredit } from '../srs/gameCredit.js';
 import { review, markWeak, GRADE } from '../srs/fsrs.js';
 import { facetOf } from '../srs/facets.js';
 import { dayStats, recordReview, touchStreak } from '../srs/stats.js';
+import { markRoundDone } from './gameOfDay.js';
 
 /**
  * @param {any} data  the storage blob (mutated)
@@ -53,6 +54,7 @@ export function recordRound(data, { gameId, score, correct, total, now }) {
   const day = studyDay(now, data.settings.dayRolloverHour);
   dayStats(data, day).games += 1;
   touchStreak(data, day); // any completed round counts towards the streak (D35)
+  markRoundDone(data, day, gameId); // a full round of today's game of the day unlocks the others (D37)
   const prev = bestOf(data, gameId);
   const previousBest = prev && typeof prev.best === 'number' ? prev.best : null;
   const accuracy = total > 0 ? correct / total : 0;
