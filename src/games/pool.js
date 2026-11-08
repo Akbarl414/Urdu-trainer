@@ -9,6 +9,8 @@
 import { retrievability, CARD_STATE } from '../srs/fsrs.js';
 import { wordCardId, exerciseCardId } from '../srs/facets.js';
 import { forLearner } from '../lesson/learner.js';
+import { practiceAsExercise, practiceAsWord, practiceTiles } from './practice.js';
+import { tokens } from '../lang/normalise.js';
 
 const DAY_MS = 86400000;
 export const RECENT_DAYS = 7;
@@ -76,6 +78,43 @@ export function sentencePool(data, content, now) {
       if (card?.retired) continue;
       const r = card ? (card.st === CARD_STATE.new ? NEUTRAL_R : retrievability(card, 'default', now)) : NO_CARD_R;
       out.push({ id: `${lesson.id}:${raw.id}`, lessonId: lesson.id, exercise, cardId: card ? cardId : null, card, recent, weight: weightOf({ r, weak: !!card?.weak, recent }) });
+    }
+    for (const { sentence, key } of practiceOf(lesson, gender)) {
+      const n = practiceTiles(sentence.roman).length;
+      if (n < SENTENCE_MIN_TOKENS || n > SENTENCE_MAX_TOKENS) continue;
+      out.push({ id: key, lessonId: lesson.id, exercise: practiceAsExercise(sentence), cardId: null, card: null, recent, practice: true, weight: weightOf({ r: NO_CARD_R, weak: false, recent }) });
+    }
+  }
+  return out;
+}
+
+/** A lesson's live practice sentences, in the learner's gender (D23). */
+function* practiceOf(lesson, gender) {
+  for (const raw of lesson.practice_sentences ?? []) {
+    if (!raw.retired) yield { sentence: forLearner(raw, gender), key: `${lesson.id}:${raw.id}` };
+  }
+}
+
+/** Below a due word, level with a word that isn't due: Listen & type earns SRS credit, and practice sentences must not crowd that out. */
+const PRACTICE_LISTEN_R = 0.9;
+/** Listen & type hears the short practice sentences only, like the words (≤5 tokens). */
+const LISTEN_MAX_TOKENS = 5;
+
+/**
+ * Short practice sentences of completed lessons, shaped like wordPool items for Listen & type. Never a card (`cardId` null).
+ * @returns {{ id: string, cardId: null, word: any, card: null, weight: number, recent: boolean, practice: true, loanwords: Set<string> }[]}
+ */
+export function listenPracticePool(data, content, now) {
+  const done = completedIds(data);
+  const gender = data.settings.learnerGender;
+  const loanwords = new Set(content.words.filter((w) => w.loanword).flatMap((w) => [w.roman, ...(w.forms ?? [])]).flatMap((s) => tokens(s)).map((t) => t.toLowerCase()));
+  const out = [];
+  for (const lesson of content.lessons) {
+    if (lesson.retired || !done.has(lesson.id)) continue;
+    const recent = isRecentLesson(data, lesson.id, now);
+    for (const { sentence, key } of practiceOf(lesson, gender)) {
+      if (tokens(sentence.roman).length > LISTEN_MAX_TOKENS) continue;
+      out.push({ id: key, cardId: null, word: practiceAsWord(sentence), card: null, recent, practice: true, loanwords, weight: weightOf({ r: PRACTICE_LISTEN_R, weak: false, recent }) });
     }
   }
   return out;

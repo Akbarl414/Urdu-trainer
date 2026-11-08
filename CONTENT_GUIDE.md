@@ -2,6 +2,10 @@
 
 Working notes for writing lessons. The full guide comes in Phase 6 (BRIEF §11). The rules in `CLAUDE.md` and `PLAN.md` apply throughout.
 
+## Practice sentences (PLAN D36)
+
+Each lesson can list 6–8 `practice_sentences` for Sentence sprint and Listen & type. Keep them short (3–8 tiles, ideally 5 or fewer so Listen & type can use them), and use only Urdu taught up to and including that lesson. They never become SRS cards. List every other natural word order in `alt_orders`; a valid order missing from the list would be marked wrong. Add `learner_f` when the learner speaks about themselves with a gendered word. Don't repeat another practice sentence or a reorder exercise exactly: the validator rejects it.
+
 ## Distractor rule (PLAN D33)
 
 Every wrong option must be **unambiguously wrong**. That means one of:

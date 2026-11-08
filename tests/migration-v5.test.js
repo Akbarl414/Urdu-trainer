@@ -16,6 +16,8 @@ const fixtures = () => readdirSync(fixtureDir).filter((f) => /^storage-v\d+\.jso
 
 const NOW = Date.parse('2026-11-08T10:00:00Z');
 const DAY = 86400000;
+/** A v4 device could only have finished the lessons that existed then (1–5). */
+const v4Lessons = (content) => content.lessons.filter((l) => l.order <= 5);
 const card = (due, s, st = 2, extra = {}) => ({ due, s, d: 5, st, r: 3, l: 1, lr: due - s * DAY, sd: s, ls: 0, ...extra });
 
 /** A blob as a phone that finished lessons 1–5 would have it under v4: every word's facets and every exercise. */
@@ -24,7 +26,7 @@ function phoneV4() {
   const cards = {};
   const lessons = {};
   let n = 0;
-  for (const l of content.lessons) {
+  for (const l of v4Lessons(content)) {
     lessons[l.id] = { firstCompletedAt: 'x', lastCompletedAt: 'x', timesCompleted: 1, knownWordIds: [] };
     for (const id of l.new_vocab) {
       const w = content.getWord(id);
@@ -55,8 +57,9 @@ test('a real device: each word gets a main card carrying its production card’s
   const out = migrate(before);
   const cards = out.srs.decks.main.cards;
   const content = realContent();
-  assert.equal(Object.keys(cards).length, Object.keys(before.srs.decks.main.cards).length + content.words.length);
-  for (const w of content.words) {
+  const v4Words = v4Lessons(content).flatMap((l) => l.new_vocab).map((id) => content.getWord(id));
+  assert.equal(Object.keys(cards).length, Object.keys(before.srs.decks.main.cards).length + v4Words.length);
+  for (const w of v4Words) {
     const prod = before.srs.decks.main.cards[`w:${w.id}:${w.pos === 'phrase' ? 'situation_to_phrase' : 'meaning_en_ur'}`];
     assert.deepEqual(cards[`w:${w.id}:main`], prod, w.id);
     assert.equal(cards[`w:${w.id}:meaning_ur_en`].retired, true, w.id);
@@ -68,7 +71,7 @@ test('a real device: flagged exercises keep their cards untouched, the others ar
   const before = phoneV4();
   const cards = migrate(before).srs.decks.main.cards;
   let kept = 0;
-  for (const l of realContent().lessons) {
+  for (const l of v4Lessons(realContent())) {
     for (const e of l.exercises) {
       const id = `x:${l.id}:${e.id}`;
       if (e.sentence_card) {
@@ -85,7 +88,7 @@ test('after migrating, the queue shows only main cards and sentence cards', () =
   const content = realContent();
   const cards = data.srs.decks.main.cards;
   const due = dueInPriorityOrder(cards, NOW + 400 * DAY, { isReviewable: (id) => isReviewable(id, content) });
-  assert.equal(due.length, content.words.length + 15);
+  assert.equal(due.length, v4Lessons(content).flatMap((l) => l.new_vocab).length + 15);
   for (const id of due) assert.ok(/:main$/.test(id) || id.startsWith('x:'), id);
   const q = buildQueue({ cards, now: NOW + 400 * DAY, cap: 35, isReviewable: (id) => isReviewable(id, content), lessonOf: (id) => lessonOfCard(id, content) });
   assert.equal(q.queue.length, 35);

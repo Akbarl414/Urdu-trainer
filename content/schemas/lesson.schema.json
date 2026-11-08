@@ -444,6 +444,48 @@
         }
       }
     },
+    "practice_sentences": {
+      "type": "array",
+      "description": "6-8 short sentences for games only (PLAN D36): Sentence sprint and Listen & type. They use only Urdu taught up to and including this lesson, are never SRS cards, and their ids are locked like any other.",
+      "minItems": 6,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["id", "roman", "ur", "en"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^p\\d{2}$" },
+          "roman": { "type": "string", "minLength": 1 },
+          "ur": { "type": "string", "minLength": 1 },
+          "en": { "type": "string", "minLength": 1 },
+          "audio": { "$ref": "common.schema.json#/definitions/audioPath" },
+          "alt_orders": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "array", "minItems": 2, "items": { "type": "string", "minLength": 1 } },
+            "description": "Other valid word orders, as tiles. The roman's own order is always accepted. Each must be a permutation of the roman's tiles."
+          },
+          "learner_f": {
+            "type": "object",
+            "required": ["roman", "ur"],
+            "additionalProperties": false,
+            "properties": {
+              "roman": { "type": "string", "minLength": 1 },
+              "ur": { "type": "string", "minLength": 1 },
+              "en": { "type": "string", "minLength": 1 },
+              "alt_orders": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "type": "array", "minItems": 2, "items": { "type": "string", "minLength": 1 } }
+              },
+              "audio": { "$ref": "common.schema.json#/definitions/audioPath" }
+            },
+            "description": "The woman's version when the learner speaks about themselves with a gendered word (D23). Replaces the base fields."
+          },
+          "retired": { "type": "boolean" }
+        }
+      }
+    },
     "game_items": {
       "type": "array",
       "description": "Optional authored items for games (e.g. \"Ne or no ne?\", from Unit 12). Tightened in Phase 4.",

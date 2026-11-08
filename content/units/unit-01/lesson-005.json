@@ -200,5 +200,15 @@
       { "speaker": "imraan", "roman": "aaishaa bhii tayyaar nahiiN hai.", "ur": "عائشہ بھی تیار نہیں ہے۔", "en": "Aisha isn't ready either.", "check": {"question": "What does he say about Aisha?", "options": ["She isn't ready either", "She is ready", "She is already at the fair"], "answerIndex": 0} },
       { "speaker": "aaishaa", "roman": "maiN tayyaar huuN!", "ur": "میں تیار ہوں!", "en": "I'm ready!", "check": {"question": "What does Aisha call out?", "options": ["I'm ready!", "I'm not ready!", "No idea!"], "answerIndex": 0} }
     ]
-  }
+  },
+  "practice_sentences": [
+    {"id": "p01", "roman": "kyaa aap doctor haiN?", "ur": "کیا آپ ڈاکٹر ہیں؟", "en": "Are you a doctor?"},
+    {"id": "p02", "roman": "jii nahiiN, maiN student huuN.", "ur": "جی نہیں، میں اسٹوڈنٹ ہوں۔", "en": "No, I'm a student."},
+    {"id": "p03", "roman": "haaN, ham tayyaar haiN.", "ur": "ہاں، ہم تیار ہیں۔", "en": "Yes, we're ready."},
+    {"id": "p04", "roman": "bilaal tayyaar nahiiN hai.", "ur": "بلال تیار نہیں ہے۔", "en": "Bilal isn't ready."},
+    {"id": "p05", "roman": "ammii tayyaar haiN?", "ur": "امی تیار ہیں؟", "en": "Is Mum ready?"},
+    {"id": "p06", "roman": "shaayad wo doctor hai.", "ur": "شاید وہ ڈاکٹر ہے۔", "en": "Maybe she's a doctor.", "alt_orders": [["wo", "shaayad", "doctor", "hai"]]},
+    {"id": "p07", "roman": "kyaa tum bhii tayyaar ho?", "ur": "کیا تم بھی تیار ہو؟", "en": "Are you ready too?"},
+    {"id": "p08", "roman": "jii haaN, zaruur!", "ur": "جی ہاں، ضرور!", "en": "Yes, of course!"}
+  ]
 }

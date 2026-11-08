@@ -211,5 +211,15 @@
       { "speaker": "you", "roman": "jii, alhamdulillaah.", "ur": "جی، الحمد للہ۔", "en": "Yes, thank God." },
       { "speaker": "grandma", "roman": "zain, tuu Thiik hai, beTaa?", "ur": "زین، تو ٹھیک ہے، بیٹا؟", "en": "Zain, are you all right, sweetheart?", "check": {"question": "Who is she talking to now?", "options": ["Zain, the little boy", "You", "Bilaal"], "answerIndex": 0} }
     ]
-  }
+  },
+  "practice_sentences": [
+    {"id": "p01", "roman": "tum Thiik ho?", "ur": "تم ٹھیک ہو؟", "en": "Are you all right?"},
+    {"id": "p02", "roman": "jii, aap Thiik haiN?", "ur": "جی، آپ ٹھیک ہیں؟", "en": "Are you well?"},
+    {"id": "p03", "roman": "tum kaise ho, beTaa?", "ur": "تم کیسے ہو، بیٹا؟", "en": "How are you, son?", "alt_orders": [["beTaa", "tum", "kaise", "ho"]]},
+    {"id": "p04", "roman": "tum kaisii ho, beTii?", "ur": "تم کیسی ہو، بیٹی؟", "en": "How are you, dear? (to a girl)", "alt_orders": [["beTii", "tum", "kaisii", "ho"]]},
+    {"id": "p05", "roman": "maiN bhii Thiik huuN, beTaa.", "ur": "میں بھی ٹھیک ہوں، بیٹا۔", "en": "I'm fine too, dear.", "alt_orders": [["beTaa", "maiN", "bhii", "Thiik", "huuN"]]},
+    {"id": "p06", "roman": "zain, tuu Thiik hai?", "ur": "زین، تو ٹھیک ہے؟", "en": "Zain, are you all right?"},
+    {"id": "p07", "roman": "aur tum kaise ho?", "ur": "اور تم کیسے ہو؟", "en": "And how are you? (to a boy or man)"},
+    {"id": "p08", "roman": "bacche Thiik haiN?", "ur": "بچے ٹھیک ہیں؟", "en": "Are the children all right?"}
+  ]
 }

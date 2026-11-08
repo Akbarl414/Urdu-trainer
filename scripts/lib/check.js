@@ -3,6 +3,7 @@
 // tests can feed it hand-made content.
 
 import { checkRoman, checkUrdu, checkLoanwordRoman, containsBlank } from '../../src/lang/romanization.js';
+import { practiceTiles, PRACTICE_MIN_TILES, PRACTICE_MAX_TILES } from '../../src/games/practice.js';
 
 const LESSON_NUM = /^lesson-(\d{3})$/;
 const UNIT_NUM = /^unit-(\d{2})$/;
@@ -35,6 +36,7 @@ export function collectIds({ units = [], vocabs = [], lessons = [] }) {
     ids.add(`lesson:${data.id}`);
     for (const e of data.exercises || []) if (e?.id) ids.add(`exercise:${data.id}/${e.id}`);
     for (const g of data.game_items || []) if (g?.id) ids.add(`game-item:${data.id}/${g.id}`);
+    for (const p of data.practice_sentences || []) if (p?.id) ids.add(`practice:${data.id}/${p.id}`);
   }
   return ids;
 }
@@ -349,7 +351,9 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
   const neOrders = lessons.filter((l) => (l.data.unlocks || []).includes('ne')).map((l) => l.data.order);
   const neFrom = neOrders.length ? Math.min(...neOrders) : null;
   const introducedCount = new Map();
-  for (const l of lessons) {
+  const practiceSeen = new Map(); // tile key -> where it first appeared
+  const reorderKeys = new Set(lessons.flatMap((l) => l.data.exercises.filter((e) => e.type === 'reorder').map((e) => practiceTiles(e.sentence.roman).join(' '))));
+  for (const l of [...lessons].sort((a, b) => a.data.order - b.data.order)) {
     const d = l.data;
     const n = d.new_vocab.length;
     if (d.review ? n > 4 : n < 6) err(l, d.review ? `review lessons introduce at most 4 new items (has ${n})` : `lessons introduce 6–10 new items (has ${n})`);
@@ -381,13 +385,45 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
       gids.add(g.id);
     });
     checkDialogue(l, d.dialogue);
-    checkTree(l, { grammar: d.grammar, dialogue: d.dialogue, exercises: d.exercises, game_items: d.game_items }, '', d.order);
+    checkPractice(l, d);
+    checkTree(l, { grammar: d.grammar, dialogue: d.dialogue, exercises: d.exercises, game_items: d.game_items, practice_sentences: d.practice_sentences }, '', d.order);
   }
   for (const [wid, byLessons] of introducedCount) {
     if (byLessons.length > 1) errors.push(`word "${wid}" is introduced by more than one lesson: ${byLessons.join(', ')}`);
   }
   for (const [wid, { vocab }] of wordById) {
     if (!introducedCount.has(wid)) err(vocab, `word "${wid}" is not listed in any lesson's new_vocab (every word is introduced exactly once)`);
+  }
+
+  // Practice sentences (PLAN D36): game material only. Variety is the point, so an exact repeat is an error.
+  function checkPractice(l, d) {
+    const key = (roman) => practiceTiles(roman).join(' ');
+    const ids = new Set();
+    (d.practice_sentences || []).forEach((p, i) => {
+      const path = `practice_sentences[${i}] (${p.id})`;
+      if (ids.has(p.id)) err(l, `${path}: duplicate id`);
+      ids.add(p.id);
+      const k = key(p.roman);
+      const elsewhere = practiceSeen.get(k);
+      if (elsewhere) err(l, `${path} ("${p.roman}") repeats ${elsewhere}`);
+      else practiceSeen.set(k, `${d.id}/${p.id}`);
+      if (reorderKeys.has(k)) err(l, `${path} ("${p.roman}") repeats a reorder exercise`);
+      const tilesOk = (roman, orders, where) => {
+        const tiles = practiceTiles(roman);
+        if (tiles.length < PRACTICE_MIN_TILES || tiles.length > PRACTICE_MAX_TILES) err(l, `${where} has ${tiles.length} tiles; practice sentences have ${PRACTICE_MIN_TILES}-${PRACTICE_MAX_TILES}`);
+        const want = [...tiles].sort().join('\u0000');
+        (orders || []).forEach((order, n) => {
+          if ([...order].sort().join('\u0000') !== want) err(l, `${where}.alt_orders[${n}] is not a permutation of the tiles of "${roman}"`);
+        });
+      };
+      tilesOk(p.roman, p.alt_orders, path);
+      if (p.learner_f) {
+        if (p.learner_f.roman === p.roman) warnings.push(`${label(l)}: ${path}.learner_f.roman is the same as the base`);
+        tilesOk(p.learner_f.roman, p.learner_f.alt_orders ?? p.alt_orders, `${path} (woman's version)`);
+      } else if (gendered(p.roman)) {
+        warnings.push(`${label(l)}: ${path} has the learner speaking about themselves with a form that may change for a woman ("${gendered(p.roman)}"). Add learner_f if a woman says it differently.`);
+      }
+    });
   }
 
   function checkExercise(l, e, path) {

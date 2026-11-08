@@ -11,7 +11,7 @@
 
 import { tokens } from '../../src/lang/normalise.js';
 
-const ROMAN_KEYS = new Set(['roman', 'answer', 'altAnswers', 'tokens', 'answerOrders', 'forms']);
+const ROMAN_KEYS = new Set(['roman', 'answer', 'altAnswers', 'tokens', 'answerOrders', 'forms', 'alt_orders']);
 const LESSON_NUM = /^lesson-(\d{3})$/;
 const lessonNumber = (id) => Number(LESSON_NUM.exec(id)?.[1] ?? NaN);
 const isBlank = (t) => /^_+$/.test(t);
@@ -56,7 +56,7 @@ export function checkCoverage({ vocabs = [], lessons = [] }, allowlist = {}) {
     for (const [lid, list] of Object.entries(allowlist.from_lesson ?? {})) if (lessonNumber(lid) <= n) list.forEach((t) => known.add(t));
 
     const seen = new Map();
-    collect({ grammar: lesson.grammar, exercises: lesson.exercises, dialogue: lesson.dialogue }, '', seen);
+    collect({ grammar: lesson.grammar, exercises: lesson.exercises, dialogue: lesson.dialogue, practice_sentences: lesson.practice_sentences }, '', seen);
     for (const w of words) if (w.introduced_in === lesson.id) collect(w.example, `vocab ${w.id}.example`, seen);
 
     const unknown = [...seen].filter(([t]) => !known.has(t)).map(([token, where]) => ({ token, where }));

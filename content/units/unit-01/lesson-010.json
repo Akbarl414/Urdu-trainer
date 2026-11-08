@@ -1,0 +1,217 @@
+{
+  "id": "lesson-010",
+  "unit": "unit-01",
+  "order": 10,
+  "title": "Review: Unit 1",
+  "can_do": "You can hold a two-minute greeting conversation.",
+  "context": "family",
+  "review": true,
+  "grammar": [
+    {
+      "heading": "`honaa`: all of it",
+      "body": "You now have the whole present of `honaa` (\"to be\"). The verb goes last, and it depends on who you're talking about. `haiN` also shows respect for one elder.",
+      "table": {
+        "headers": ["Who", "Example"],
+        "rows": [
+          ["`maiN`", { "roman": "maiN landan se huuN.", "ur": "میں لندن سے ہوں۔", "en": "I'm from London." }],
+          ["`tum`", { "roman": "tum tayyaar ho?", "ur": "تم تیار ہو؟", "en": "Are you ready?" }],
+          ["`aap`", { "roman": "aap kahaaN se haiN?", "ur": "آپ کہاں سے ہیں؟", "en": "Where are you from?" }],
+          ["`ye`, `wo` (one person)", { "roman": "wo student hai.", "ur": "وہ اسٹوڈنٹ ہے۔", "en": "He's a student. / She's a student." }],
+          ["`ham`, elders", { "roman": "ham paRosii haiN.", "ur": "ہم پڑوسی ہیں۔", "en": "We're neighbours." }]
+        ]
+      }
+    },
+    {
+      "heading": "Showing respect",
+      "body": "With elders and people you don't know, use `aap` and `haiN`, and add `jii` where it fits. Elders you don't call by name are `aunty` and `uncle`. `maaf kiijiye`, `baiThiye` and `aaiye` are the polite forms to use with them.",
+      "examples": [
+        { "roman": "assalaam-o-alaikum, aunty jii!", "ur": "السلام علیکم، آنٹی جی!", "en": "Hello, Aunty!" },
+        { "roman": "ye mere abbuu haiN.", "ur": "یہ میرے ابو ہیں۔", "en": "This is my dad." },
+        { "roman": "jii, shukriyaa.", "ur": "جی، شکریہ۔", "en": "Yes, thank you." }
+      ]
+    },
+    {
+      "heading": "What changes, and what doesn't",
+      "body": "Words like `meraa`, `aapkaa` and `thakaa` agree with the person or thing they describe: `-aa` for a man, `-ii` for a woman, `-e` for a group or a respected man. Most describing words, like `xush`, `Thiik` and `mazedaar`, never change. `kyaa` at the start makes a yes/no question, and question words stay in the middle.",
+      "examples": [
+        { "roman": "meraa bhaaii thakaa hai.", "ur": "میرا بھائی تھکا ہے۔", "en": "My brother is tired." },
+        { "roman": "merii behen thakii hai.", "ur": "میری بہن تھکی ہے۔", "en": "My sister is tired." },
+        { "roman": "kyaa aunty xush haiN?", "ur": "کیا آنٹی خوش ہیں؟", "en": "Is Aunty happy?" }
+      ]
+    }
+  ],
+  "new_vocab": ["phir-aaiyegaa"],
+  "exercises": [
+    {
+      "id": "e01",
+      "type": "multiple-choice",
+      "prompt": "You're visiting your partner's parents, and their father opens the door. You greet first. What do you say?",
+      "options": [
+        { "roman": "assalaam-o-alaikum! aap kaise haiN?", "ur": "السلام علیکم! آپ کیسے ہیں؟", "en": "Hello! How are you?" },
+        { "roman": "wa-alaikum-assalaam! aap kaise haiN?", "ur": "وعلیکم السلام! آپ کیسے ہیں؟", "en": "That's the reply, and he hasn't greeted you yet." },
+        { "roman": "xudaa haafiz! aap kaise haiN?", "ur": "خدا حافظ! آپ کیسے ہیں؟", "en": "Goodbye! But you've only just arrived." }
+      ],
+      "answerIndex": 0,
+      "explanation": "The person arriving says `assalaam-o-alaikum` first, and `kaise` is right for a man.",
+      "tags": ["phrases", "respect"]
+    },
+    {
+      "id": "e02",
+      "type": "fill-blank",
+      "sentence": { "roman": "ye merii ammii ___.", "ur": "یہ میری امی ___۔", "en": "This is my mum." },
+      "answer": "haiN",
+      "answer_ur": "ہیں",
+      "altAnswers": ["hai"],
+      "explanation": "`haiN` is the respectful choice for your mum. `hai` is common within the family, and also correct.",
+      "tags": ["honaa", "respect"]
+    },
+    {
+      "id": "e03",
+      "type": "choose-form",
+      "sentence": { "roman": "ham paRosii ___.", "ur": "ہم پڑوسی ___۔", "en": "We're neighbours." },
+      "options": [
+        { "roman": "haiN", "ur": "ہیں" },
+        { "roman": "huuN", "ur": "ہوں" },
+        { "roman": "ho", "ur": "ہو" }
+      ],
+      "answerIndex": 0,
+      "explanation": "`ham` always takes `haiN`.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e04",
+      "type": "fill-blank",
+      "sentence": { "roman": "maiN bahut ___ huuN.", "ur": "میں بہت ___ ہوں۔", "en": "I'm very tired." },
+      "answer": "thakaa",
+      "answer_ur": "تھکا",
+      "explanation": "A man says `thakaa`. A woman says `thakii`.",
+      "tags": ["agreement-chunk"],
+      "learner_f": {
+        "answer": "thakii",
+        "answer_ur": "تھکی"
+      }
+    },
+    {
+      "id": "e05",
+      "sentence_card": true,
+      "type": "reorder",
+      "sentence": { "roman": "aapkaa ghar bahut xuubsuurat hai.", "ur": "آپ کا گھر بہت خوبصورت ہے۔", "en": "Your house is very beautiful." },
+      "tokens": ["aapkaa", "ghar", "bahut", "xuubsuurat", "hai"],
+      "answerOrders": [["aapkaa", "ghar", "bahut", "xuubsuurat", "hai"]],
+      "explanation": "Possessor first, then `bahut` before the describing word, then the verb.",
+      "tags": ["word-order"]
+    },
+    {
+      "id": "e06",
+      "type": "reorder",
+      "sentence": { "roman": "wo merii ammii haiN.", "ur": "وہ میری امی ہیں۔", "en": "That's my mum." },
+      "tokens": ["wo", "merii", "ammii", "haiN"],
+      "answerOrders": [["wo", "merii", "ammii", "haiN"]],
+      "explanation": "`merii` goes with your mum, and the respectful `haiN` comes last.",
+      "tags": ["word-order", "respect"]
+    },
+    {
+      "id": "e07",
+      "type": "multiple-choice",
+      "prompt": "You've just met your partner's young cousin at a family party, and you'd like to ask their name. What do you say?",
+      "options": [
+        { "roman": "tumhaaraa naam kyaa hai?", "ur": "تمہارا نام کیا ہے؟", "en": "What's your name?" },
+        { "roman": "aapkaa naam kyaa hai?", "ur": "آپ کا نام کیا ہے؟", "en": "What's your name? Also fine, a little more formal." },
+        { "roman": "tumhaaraa naam kahaaN hai?", "ur": "تمہارا نام کہاں ہے؟", "en": "Where is your name?" },
+        { "roman": "tum kaise ho?", "ur": "تم کیسے ہو؟", "en": "How are you?" }
+      ],
+      "answerIndex": 0,
+      "acceptIndexes": [1],
+      "explanation": "`tumhaaraa` suits someone young. `aapkaa` is polite and fine too, especially with a teenager you've just met.",
+      "tags": ["question-words", "respect"]
+    },
+    {
+      "id": "e08",
+      "type": "error-spot",
+      "sentence": { "roman": "aap kahaaN se ho?", "ur": "آپ کہاں سے ہو؟", "en": "Where are you from?" },
+      "answer": "aap kahaaN se haiN?",
+      "answer_ur": "آپ کہاں سے ہیں؟",
+      "altAnswers": ["tum kahaaN se ho?"],
+      "explanation": "`aap` takes `haiN`, and `ho` only goes with `tum`. Keep them matched.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e09",
+      "type": "listen",
+      "audio_text": { "roman": "maaf kiijiye, maiN bahut masruuf huuN.", "ur": "معاف کیجیے، میں بہت مصروف ہوں۔", "en": "Sorry, I'm very busy." },
+      "options": ["Sorry, I'm very busy.", "Thank you, I'm very happy.", "Sorry, I'm very tired.", "Excuse me, where are you from?"],
+      "answerIndex": 0,
+      "explanation": "`maaf kiijiye` is \"sorry\", and `masruuf` is \"busy\".",
+      "tags": ["phrases"]
+    },
+    {
+      "id": "e10",
+      "sentence_card": true,
+      "type": "transform",
+      "from": { "roman": "wo masruuf hai.", "ur": "وہ مصروف ہے۔", "en": "He's busy." },
+      "instruction": "Make it a clear yes/no question.",
+      "answers": [{ "roman": "kyaa wo masruuf hai?", "ur": "کیا وہ مصروف ہے؟" }],
+      "explanation": "Put `kyaa` at the start. Nothing else moves.",
+      "tags": ["questions"]
+    },
+    {
+      "id": "e11",
+      "type": "multiple-choice",
+      "prompt": "Your friend's dad arrives at the party. You greet him first. What do you say?",
+      "options": [
+        { "roman": "assalaam-o-alaikum, uncle!", "ur": "السلام علیکم، انکل!", "en": "Hello, Uncle!" },
+        { "roman": "assalaam-o-alaikum, aunty!", "ur": "السلام علیکم، آنٹی!", "en": "Hello, Aunty! But he's a man." },
+        { "roman": "phir milenge, uncle!", "ur": "پھر ملیں گے، انکل!", "en": "See you again, Uncle! But you've only just met him." }
+      ],
+      "answerIndex": 0,
+      "explanation": "Your friend's dad is `uncle`, related to you or not.",
+      "tags": ["respect"]
+    },
+    {
+      "id": "e12",
+      "sentence_card": true,
+      "type": "translate",
+      "en": "Thank you, Aunty. Goodbye, see you again!",
+      "answers": [
+        { "roman": "shukriyaa, aunty. xudaa haafiz, phir milenge!", "ur": "شکریہ، آنٹی۔ خدا حافظ، پھر ملیں گے!" },
+        { "roman": "shukriyaa, aunty. allaah haafiz, phir milenge!", "ur": "شکریہ، آنٹی۔ اللہ حافظ، پھر ملیں گے!" },
+        { "roman": "aunty, shukriyaa. xudaa haafiz, phir milenge!", "ur": "آنٹی، شکریہ۔ خدا حافظ، پھر ملیں گے!" },
+        { "roman": "aunty, shukriyaa. allaah haafiz, phir milenge!", "ur": "آنٹی، شکریہ۔ اللہ حافظ، پھر ملیں گے!" }
+      ],
+      "self_grade": true,
+      "explanation": "`aunty` can go at either end, and `allaah haafiz` means the same as `xudaa haafiz`.",
+      "tags": ["phrases"]
+    }
+  ],
+  "dialogue": {
+    "setting": "You're visiting your partner's parents at home for the first time. You call them `aunty` and `uncle`. You're the one arriving, and the younger one, so you greet first.",
+    "speakers": [
+      { "id": "you", "en": "You", "learner": true },
+      { "id": "aunty", "en": "Your partner's mum", "gender": "f" },
+      { "id": "uncle", "en": "Your partner's dad", "gender": "m" }
+    ],
+    "lines": [
+      { "speaker": "you", "roman": "assalaam-o-alaikum, aunty! aap kaisii haiN?", "ur": "السلام علیکم، آنٹی! آپ کیسی ہیں؟", "en": "Hello, Aunty! How are you?", "options": [{ "roman": "assalaam-o-alaikum, uncle! aap kaisii haiN?", "ur": "السلام علیکم، انکل! آپ کیسی ہیں؟", "en": "Hello, Uncle! But she's a woman, so she's aunty." }, { "roman": "wa-alaikum-assalaam, aunty! aap kaisii haiN?", "ur": "وعلیکم السلام، آنٹی! آپ کیسی ہیں؟", "en": "That's the reply, and she hasn't greeted you yet." }] },
+      { "speaker": "aunty", "roman": "wa-alaikum-assalaam, beTaa! alhamdulillaah, Thiik huuN. aaiye, andar aaiye.", "ur": "وعلیکم السلام، بیٹا! الحمد للہ، ٹھیک ہوں۔ آئیے، اندر آئیے۔", "en": "And peace be upon you, dear! Fine, thank God. Come in, come in.", "check": { "question": "What does she invite you to do?", "options": ["Come in", "Sit down", "Have some tea"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "assalaam-o-alaikum, uncle! aap kaise haiN?", "ur": "السلام علیکم، انکل! آپ کیسے ہیں؟", "en": "Hello, Uncle! How are you?" },
+      { "speaker": "uncle", "roman": "wa-alaikum-assalaam! Thiik huuN, shukriyaa. baiThiye. aap kahaaN se haiN?", "ur": "وعلیکم السلام! ٹھیک ہوں، شکریہ۔ بیٹھیے۔ آپ کہاں سے ہیں؟", "en": "And peace be upon you! Fine, thank you. Sit down. Where are you from?", "check": { "question": "What does he ask you?", "options": ["Where you're from", "What your name is", "Whether you're tired"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "maiN bradford se huuN.", "ur": "میں بریڈفورڈ سے ہوں۔", "en": "I'm from Bradford." },
+      { "speaker": "aunty", "roman": "maiN laahaur se huuN. chaae lenge?", "ur": "میں لاہور سے ہوں۔ چائے لیں گے؟", "en": "I'm from Lahore. Will you have some tea?", "check": { "question": "Where is she from, and what does she offer?", "options": ["Lahore; tea", "Lahore; water", "Bradford; tea"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "jii, shukriyaa, aunty.", "ur": "جی، شکریہ، آنٹی۔", "en": "Yes, thank you, Aunty.", "options": [{ "roman": "jii, zaruur. shukriyaa, aunty.", "ur": "جی، ضرور۔ شکریہ، آنٹی۔", "en": "Yes, of course, thank you, Aunty. Also fine, and a bit warmer.", "accept": true }, { "roman": "maaf kiijiye, aunty!", "ur": "معاف کیجیے، آنٹی!", "en": "Sorry, Aunty! But nothing has gone wrong." }, { "roman": "xudaa haafiz, aunty!", "ur": "خدا حافظ، آنٹی!", "en": "Goodbye, Aunty! But you've only just sat down." }] },
+      { "speaker": "uncle", "roman": "aur chaae lenge?", "ur": "اور چائے لیں گے؟", "en": "Will you have more tea?", "check": { "question": "A while later, what is Uncle asking?", "options": ["Whether you'd like more tea", "Whether you'd like water", "Whether the tea is hot"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "bas, shukriyaa. aapkaa ghar bahut xuubsuurat hai.", "ur": "بس، شکریہ۔ آپ کا گھر بہت خوبصورت ہے۔", "en": "That's enough, thank you. Your house is very beautiful.", "options": [{ "roman": "jii nahiiN, shukriyaa. aapkaa ghar bahut xuubsuurat hai.", "ur": "جی نہیں، شکریہ۔ آپ کا گھر بہت خوبصورت ہے۔", "en": "No, thank you. Your house is very beautiful. Also fine.", "accept": true }, { "roman": "aur chaae lenge? aapkaa ghar bahut xuubsuurat hai.", "ur": "اور چائے لیں گے؟ آپ کا گھر بہت خوبصورت ہے۔", "en": "That's what he has just asked you." }] },
+      { "speaker": "aunty", "roman": "shukriyaa, beTaa. phir aaiyegaa!", "ur": "شکریہ، بیٹا۔ پھر آئیے گا!", "en": "Thank you, dear. Do come again!", "check": { "question": "What does Aunty say as you leave?", "options": ["Do come again", "Have some more tea", "Take care on the road"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "zaruur, inshaallaah! xudaa haafiz!", "ur": "ضرور، ان شاء اللہ! خدا حافظ!", "en": "Of course, God willing! Goodbye!", "options": [{ "roman": "zaruur, inshaallaah! allaah haafiz!", "ur": "ضرور، ان شاء اللہ! اللہ حافظ!", "en": "Of course, God willing! Goodbye! Also fine: it means the same.", "accept": true }, { "roman": "zaruur, inshaallaah! kyaa haal hai?", "ur": "ضرور، ان شاء اللہ! کیا حال ہے؟", "en": "How are you? But you're leaving." }] }
+    ]
+  },
+  "practice_sentences": [
+    {"id": "p01", "roman": "phir aaiyegaa, beTaa.", "ur": "پھر آئیے گا، بیٹا۔", "en": "Do come again, dear.", "alt_orders": [["beTaa", "phir", "aaiyegaa"]]},
+    {"id": "p02", "roman": "shukriyaa, phir aaiyegaa.", "ur": "شکریہ، پھر آئیے گا۔", "en": "Thank you, do come again."},
+    {"id": "p03", "roman": "tumhaaraa ghar kahaaN hai?", "ur": "تمہارا گھر کہاں ہے؟", "en": "Where's your house? (to a friend)"},
+    {"id": "p04", "roman": "aap kahaaN se haiN, uncle?", "ur": "آپ کہاں سے ہیں، انکل؟", "en": "Where are you from, Uncle?", "alt_orders": [["uncle", "aap", "kahaaN", "se", "haiN"]]},
+    {"id": "p05", "roman": "wo merii behen nahiiN hai.", "ur": "وہ میری بہن نہیں ہے۔", "en": "She isn't my sister."},
+    {"id": "p06", "roman": "kyaa aap bahut thake haiN?", "ur": "کیا آپ بہت تھکے ہیں؟", "en": "Are you very tired? (to a man)"},
+    {"id": "p07", "roman": "mere dost laahaur se haiN.", "ur": "میرے دوست لاہور سے ہیں۔", "en": "My friends are from Lahore."},
+    {"id": "p08", "roman": "maiN bhii bahut xush huuN.", "ur": "میں بھی بہت خوش ہوں۔", "en": "I'm very happy too."}
+  ]
+}

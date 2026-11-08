@@ -39,6 +39,29 @@ const PHONE_PHRASES = [
   { canonical: 'jii', variants: ['g'] },
   // tayyaar (D26): tayyar / tayar / tayaar already fold to it; these don't.
   { canonical: 'tayyaar', variants: ['taiyaar', 'taiyar', 'tyar'] },
+  // Lessons 6-10. Only spellings the letter rules can't reach.
+  { canonical: 'aapkaa', variants: ['aap ka'] },
+  { canonical: 'aapkii', variants: ['aap ki'] },
+  { canonical: 'aapke', variants: ['aap ke'] },
+  { canonical: 'tumhaaraa', variants: ['tumara'] },
+  { canonical: 'kyaa', variants: ['kia'] },
+  { canonical: 'xush', variants: ['khush', 'kush'] },
+  { canonical: 'bahut', variants: ['bohat', 'bohot', 'bht', 'buhat'] },
+  { canonical: 'pareshaan', variants: ['preshan'] },
+  { canonical: 'shukriyaa', variants: ['shukria', 'shukrya', 'shukriyah'] },
+  { canonical: 'maaf kiijiye', variants: ['maaf kijie', 'maf kijie', 'maaf kijye'] },
+  { canonical: 'koii baat nahiiN', variants: ['koi baat nhi', 'koi baat nai', 'koi bat nhi', 'koi bat nai'] },
+  { canonical: 'xudaa haafiz', variants: ['khuda hafiz', 'khudahafiz', 'kuda hafiz'] },
+  { canonical: 'allaah haafiz', variants: ['allahafiz', 'alla hafiz'] },
+  { canonical: 'phir milenge', variants: ['fir milenge', 'phr milenge', 'phir milen ge', 'fir milen ge', 'phir milain ge', 'fir milain ge', 'phir milein ge', 'fir milein ge'] },
+  { canonical: 'inshaallaah', variants: ['insha allah', 'insha alla', 'inshalla'] },
+  { canonical: 'apnaa xayaal rakhiye', variants: ['apna khayal rakhiye', 'apna khyal rakhiye', 'apna khayal rakhye'] },
+  { canonical: 'aaiye', variants: ['aie', 'aayiye', 'ayie'] },
+  { canonical: 'baiThiye', variants: ['bethiye', 'baithye', 'bethye', 'bethie', 'baithie'] },
+  { canonical: 'chaae', variants: ['chai', 'chaye', 'chay'] },
+  { canonical: 'lenge', variants: ['len ge', 'lain ge', 'lainge', 'lengay', 'lain gay'] },
+  { canonical: 'xuubsuurat', variants: ['khoobsurat', 'khubsurat', 'khoobsoorat', 'khubsoorat'] },
+  { canonical: 'phir aaiyegaa', variants: ['fir aiyega', 'phir aayiega', 'phir aiye ga', 'fir aiye ga'] },
 ];
 
 /** Lowercase-free tokenisation shared by every comparison: hyphen = space, punctuation removed. */

@@ -785,6 +785,654 @@
       "introduced_in": "lesson-005",
       "notes": "Never changes, like `Thiik`: a man, a woman and a group are all `tayyaar`. Also written `taiyaar`; typing either is fine.",
       "variable": false
+    },
+    {
+      "id": "naam",
+      "pos": "noun",
+      "roman": "naam",
+      "ur": "نام",
+      "meaning_en": "name",
+      "example": {
+        "roman": "meraa naam sanaa hai.",
+        "ur": "میرا نام ثنا ہے۔",
+        "en": "My name is Sana."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-006",
+      "notes": "Masculine, whoever's name it is. So a woman says `meraa naam` too, never `merii naam`.",
+      "gender": "m",
+      "marked": false,
+      "plural": {
+        "roman": "naam",
+        "ur": "نام"
+      },
+      "oblique_pl": {
+        "roman": "naamoN",
+        "ur": "ناموں"
+      }
+    },
+    {
+      "id": "kahaan",
+      "pos": "adverb",
+      "roman": "kahaaN",
+      "ur": "کہاں",
+      "meaning_en": "where?",
+      "example": {
+        "roman": "aap kahaaN se haiN?",
+        "ur": "آپ کہاں سے ہیں؟",
+        "en": "Where are you from?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-006",
+      "notes": "Sits where the place would go in the answer, not at the front. With `se` after it, `kahaaN se` means \"from where\"."
+    },
+    {
+      "id": "aapkaa",
+      "pos": "pronoun",
+      "roman": "aapkaa",
+      "ur": "آپ کا",
+      "meaning_en": "your (polite)",
+      "example": {
+        "roman": "aapkaa naam kyaa hai?",
+        "ur": "آپ کا نام کیا ہے؟",
+        "en": "What's your name?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-006",
+      "notes": "The `aap` version of \"your\". Like `meraa`, it matches the thing that's owned: `aapkaa naam`, but `aapkii ammii`. Written as two words in Urdu script. On a phone most people type `aap ka`, and that's accepted.",
+      "variable": true,
+      "agreement": {
+        "m_sg": {
+          "roman": "aapkaa",
+          "ur": "آپ کا"
+        },
+        "f": {
+          "roman": "aapkii",
+          "ur": "آپ کی"
+        },
+        "m_pl": {
+          "roman": "aapke",
+          "ur": "آپ کے"
+        }
+      }
+    },
+    {
+      "id": "tumhaaraa",
+      "pos": "pronoun",
+      "roman": "tumhaaraa",
+      "ur": "تمہارا",
+      "meaning_en": "your (to a friend or child)",
+      "example": {
+        "roman": "tumhaaraa naam kyaa hai?",
+        "ur": "تمہارا نام کیا ہے؟",
+        "en": "What's your name?"
+      },
+      "register": "informal",
+      "introduced_in": "lesson-006",
+      "notes": "The `tum` version of \"your\". It matches the thing that's owned, like `meraa` and `aapkaa`: `tumhaaraa naam`, but `tumhaarii ammii`. Elders will often use it to you.",
+      "variable": true,
+      "agreement": {
+        "m_sg": {
+          "roman": "tumhaaraa",
+          "ur": "تمہارا"
+        },
+        "f": {
+          "roman": "tumhaarii",
+          "ur": "تمہاری"
+        },
+        "m_pl": {
+          "roman": "tumhaare",
+          "ur": "تمہارے"
+        }
+      }
+    },
+    {
+      "id": "aapkaa-naam-kyaa-hai",
+      "pos": "phrase",
+      "roman": "aapkaa naam kyaa hai?",
+      "ur": "آپ کا نام کیا ہے؟",
+      "meaning_en": "what's your name? (polite)",
+      "literal": "your name what is?",
+      "situation": "You're chatting to someone new at the community centre, and you'd like to know what to call them.",
+      "example": {
+        "roman": "assalaam-o-alaikum! aapkaa naam kyaa hai?",
+        "ur": "السلام علیکم! آپ کا نام کیا ہے؟",
+        "en": "Hello! What's your name?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-006",
+      "notes": "To a friend or a child: `tumhaaraa naam kyaa hai?` Word order is relaxed in speech, so you'll also hear `kyaa naam hai aapkaa?`"
+    },
+    {
+      "id": "aap-kahaan-se-hain",
+      "pos": "phrase",
+      "roman": "aap kahaaN se haiN?",
+      "ur": "آپ کہاں سے ہیں؟",
+      "meaning_en": "where are you from? (polite)",
+      "literal": "you where from are?",
+      "situation": "You've just met someone at a wedding, and you'd like to know which part of the world they come from.",
+      "example": {
+        "roman": "aap kahaaN se haiN? maiN landan se huuN.",
+        "ur": "آپ کہاں سے ہیں؟ میں لندن سے ہوں۔",
+        "en": "Where are you from? I'm from London."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-006",
+      "notes": "To a friend or a child: `tum kahaaN se ho?`"
+    },
+    {
+      "id": "aunty",
+      "pos": "noun",
+      "roman": "aunty",
+      "ur": "آنٹی",
+      "meaning_en": "aunty (a polite name for an older woman)",
+      "loanword": true,
+      "example": {
+        "roman": "assalaam-o-alaikum, aunty!",
+        "ur": "السلام علیکم، آنٹی!",
+        "en": "Hello, Aunty!"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-006",
+      "notes": "You don't call an older woman by her first name, so your friends' mums, older neighbours and women at the community centre are all `aunty`, related to you or not. `aunty jii` adds extra respect. It takes the respectful `haiN`, like any elder, and never changes its form.",
+      "gender": "f",
+      "marked": false,
+      "invariable": true
+    },
+    {
+      "id": "uncle",
+      "pos": "noun",
+      "roman": "uncle",
+      "ur": "انکل",
+      "meaning_en": "uncle (a polite name for an older man)",
+      "loanword": true,
+      "example": {
+        "roman": "uncle, aap kaise haiN?",
+        "ur": "انکل، آپ کیسے ہیں؟",
+        "en": "Uncle, how are you?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-006",
+      "notes": "The same idea as `aunty`, for older men you don't call by name, related to you or not. `uncle jii` adds extra respect. `uncle log` is a casual way of saying \"the uncles\", meaning the older men as a group. It takes the respectful `haiN` and never changes its form.",
+      "gender": "m",
+      "marked": false,
+      "invariable": true
+    },
+    {
+      "id": "xush",
+      "pos": "adjective",
+      "roman": "xush",
+      "ur": "خوش",
+      "meaning_en": "happy",
+      "example": {
+        "roman": "ammii bahut xush haiN.",
+        "ur": "امی بہت خوش ہیں۔",
+        "en": "Mum is very happy."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-007",
+      "notes": "Never changes: a man, a woman and a group are all `xush`. The `x` is the throaty sound at the end of Scottish \"loch\". On a phone most people type `khush`, and that's accepted.",
+      "variable": false
+    },
+    {
+      "id": "udaas",
+      "pos": "adjective",
+      "roman": "udaas",
+      "ur": "اداس",
+      "meaning_en": "sad",
+      "example": {
+        "roman": "zain udaas hai.",
+        "ur": "زین اداس ہے۔",
+        "en": "Zain is sad."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-007",
+      "notes": "Never changes for a man, a woman or a group.",
+      "variable": false
+    },
+    {
+      "id": "biimaar",
+      "pos": "adjective",
+      "roman": "biimaar",
+      "ur": "بیمار",
+      "meaning_en": "ill, sick",
+      "example": {
+        "roman": "abbuu biimaar haiN.",
+        "ur": "ابو بیمار ہیں۔",
+        "en": "Dad is ill."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-007",
+      "notes": "Never changes for a man, a woman or a group.",
+      "variable": false
+    },
+    {
+      "id": "pareshaan",
+      "pos": "adjective",
+      "roman": "pareshaan",
+      "ur": "پریشان",
+      "meaning_en": "worried, stressed",
+      "example": {
+        "roman": "kyaa aap pareshaan haiN?",
+        "ur": "کیا آپ پریشان ہیں؟",
+        "en": "Are you worried?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-007",
+      "notes": "Covers worried, upset and stressed out. Never changes for a man, a woman or a group.",
+      "variable": false
+    },
+    {
+      "id": "masruuf",
+      "pos": "adjective",
+      "roman": "masruuf",
+      "ur": "مصروف",
+      "meaning_en": "busy",
+      "example": {
+        "roman": "aaj maiN bahut masruuf huuN.",
+        "ur": "آج میں بہت مصروف ہوں۔",
+        "en": "I'm very busy today."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-007",
+      "notes": "Never changes for a man, a woman or a group.",
+      "variable": false
+    },
+    {
+      "id": "thakaa",
+      "pos": "adjective",
+      "roman": "thakaa",
+      "ur": "تھکا",
+      "meaning_en": "tired",
+      "example": {
+        "roman": "bhaaii bahut thakaa hai.",
+        "ur": "بھائی بہت تھکا ہے۔",
+        "en": "My brother is very tired."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-007",
+      "notes": "This one changes with the person: `thakaa` for a man or boy, `thakii` for a woman or girl, and `thake` for a group of men or one man you're being respectful about. You'll also hear the longer `thakaa huaa`, which means the same.",
+      "variable": true,
+      "agreement": {
+        "m_sg": {
+          "roman": "thakaa",
+          "ur": "تھکا"
+        },
+        "f": {
+          "roman": "thakii",
+          "ur": "تھکی"
+        },
+        "m_pl": {
+          "roman": "thake",
+          "ur": "تھکے"
+        }
+      }
+    },
+    {
+      "id": "bahut",
+      "pos": "adverb",
+      "roman": "bahut",
+      "ur": "بہت",
+      "meaning_en": "very; a lot",
+      "example": {
+        "roman": "maiN bahut xush huuN.",
+        "ur": "میں بہت خوش ہوں۔",
+        "en": "I'm very happy."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-007",
+      "notes": "Goes straight before the describing word. Many people say it more like `bohat`, and that spelling is fine when you type it."
+    },
+    {
+      "id": "bilkul",
+      "pos": "adverb",
+      "roman": "bilkul",
+      "ur": "بالکل",
+      "meaning_en": "completely, absolutely",
+      "example": {
+        "roman": "maiN bilkul Thiik huuN.",
+        "ur": "میں بالکل ٹھیک ہوں۔",
+        "en": "I'm absolutely fine."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-007",
+      "notes": "`bilkul Thiik` is a very common way to say \"absolutely fine\". On its own, `bilkul!` means \"absolutely!\""
+    },
+    {
+      "id": "shukriyaa",
+      "pos": "phrase",
+      "roman": "shukriyaa",
+      "ur": "شکریہ",
+      "meaning_en": "thank you",
+      "situation": "Someone at the GP surgery holds the door open for you. What do you say?",
+      "example": {
+        "roman": "bahut shukriyaa, aunty!",
+        "ur": "بہت شکریہ، آنٹی!",
+        "en": "Thank you very much, Aunty!"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-008",
+      "notes": "Works for anyone, at any level of respect. `bahut shukriyaa` is \"thank you very much\". On a phone it's often typed `shukria`.",
+      "hindi_variant": {
+        "roman": "dhanyawaad",
+        "devanagari": "धन्यवाद",
+        "note": "The Hindi word you'll hear in films and on Indian TV. `shukriyaa` is understood everywhere too."
+      }
+    },
+    {
+      "id": "maaf-kiijiye",
+      "pos": "phrase",
+      "roman": "maaf kiijiye",
+      "ur": "معاف کیجیے",
+      "ur_alt": [
+        "معاف کیجئے"
+      ],
+      "meaning_en": "sorry; excuse me",
+      "literal": "please forgive",
+      "situation": "On a crowded bus, you step on an older man's foot. What do you say?",
+      "example": {
+        "roman": "maaf kiijiye, aap kahaaN se haiN?",
+        "ur": "معاف کیجیے، آپ کہاں سے ہیں؟",
+        "en": "Excuse me, where are you from?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-008",
+      "notes": "Use it both for \"I'm sorry\" and for \"excuse me\", to get someone's attention. It's the respectful choice with elders and people you don't know."
+    },
+    {
+      "id": "sorry",
+      "pos": "phrase",
+      "roman": "sorry",
+      "ur": "سوری",
+      "meaning_en": "sorry (relaxed)",
+      "loanword": true,
+      "situation": "You knock a cup over at your friend's flat. Apologise the relaxed way.",
+      "example": {
+        "roman": "sorry, bhaaii!",
+        "ur": "سوری، بھائی!",
+        "en": "Sorry, brother!"
+      },
+      "register": "informal",
+      "introduced_in": "lesson-008",
+      "notes": "British Pakistanis use the English word all the time, even with family. It isn't wrong with elders, but `maaf kiijiye` shows more respect."
+    },
+    {
+      "id": "koii-baat-nahiin",
+      "pos": "phrase",
+      "roman": "koii baat nahiiN",
+      "ur": "کوئی بات نہیں",
+      "meaning_en": "no problem; never mind; you're welcome",
+      "literal": "no matter",
+      "situation": "Your neighbour apologises for parking across your drive for a minute. Put them at ease.",
+      "example": {
+        "roman": "jii, koii baat nahiiN.",
+        "ur": "جی، کوئی بات نہیں۔",
+        "en": "That's all right, no problem."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-008",
+      "notes": "The natural answer to both `maaf kiijiye` and `shukriyaa`."
+    },
+    {
+      "id": "xudaa-haafiz",
+      "pos": "phrase",
+      "roman": "xudaa haafiz",
+      "ur": "خدا حافظ",
+      "meaning_en": "goodbye",
+      "literal": "God protect you",
+      "situation": "You're leaving your friend's house and standing at the door. Say goodbye.",
+      "example": {
+        "roman": "xudaa haafiz, aunty!",
+        "ur": "خدا حافظ، آنٹی!",
+        "en": "Goodbye, Aunty!"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-008",
+      "notes": "Many people say `allaah haafiz` instead; it means the same and you can use either. On a phone most people type `khuda hafiz`, and that's accepted."
+    },
+    {
+      "id": "phir-milenge",
+      "pos": "phrase",
+      "roman": "phir milenge",
+      "ur": "پھر ملیں گے",
+      "meaning_en": "see you again",
+      "literal": "again we will meet",
+      "situation": "A friend is heading off, and you expect to see them again soon. What do you say?",
+      "example": {
+        "roman": "xudaa haafiz, phir milenge!",
+        "ur": "خدا حافظ، پھر ملیں گے!",
+        "en": "Goodbye, see you again!"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-008",
+      "notes": "A friendly goodbye, often with `xudaa haafiz` or `inshaallaah`. It works for anyone."
+    },
+    {
+      "id": "inshaallaah",
+      "pos": "phrase",
+      "roman": "inshaallaah",
+      "ur": "ان شاء اللہ",
+      "ur_alt": [
+        "انشاء اللہ",
+        "انشاءاللہ"
+      ],
+      "meaning_en": "God willing; hopefully",
+      "literal": "if God wills",
+      "situation": "Your aunty says she hopes to see you at Eid next year. You hope so too. What do you say?",
+      "example": {
+        "roman": "phir milenge, inshaallaah.",
+        "ur": "پھر ملیں گے، ان شاء اللہ۔",
+        "en": "See you again, God willing."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-008",
+      "notes": "Said about anything in the future, big or small. On a phone it's usually typed `inshallah`, and that's accepted."
+    },
+    {
+      "id": "apnaa-xayaal-rakhiye",
+      "pos": "phrase",
+      "roman": "apnaa xayaal rakhiye",
+      "ur": "اپنا خیال رکھیے",
+      "ur_alt": [
+        "اپنا خیال رکھئے"
+      ],
+      "meaning_en": "take care of yourself",
+      "literal": "keep your own care",
+      "situation": "Your older neighbour is leaving after a long chat, and you want to wish them well.",
+      "example": {
+        "roman": "xudaa haafiz, apnaa xayaal rakhiye.",
+        "ur": "خدا حافظ، اپنا خیال رکھیے۔",
+        "en": "Goodbye, take care of yourself."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-008",
+      "notes": "Learn it as a chunk for now. The respectful `-iye` ending suits elders and people you don't know well."
+    },
+    {
+      "id": "aaiye",
+      "pos": "phrase",
+      "roman": "aaiye",
+      "ur": "آئیے",
+      "meaning_en": "please come; come in",
+      "forms": [
+        "andar aaiye"
+      ],
+      "situation": "Your aunty arrives at your door and is waiting on the step. Invite her inside.",
+      "example": {
+        "roman": "aaiye, andar aaiye!",
+        "ur": "آئیے، اندر آئیے!",
+        "en": "Come in, please come in!"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-009",
+      "notes": "The polite way to say \"come\". `andar aaiye` is \"come in\" (`andar` is \"inside\"). Hosts often say it twice to sound welcoming. Learn it as a chunk for now."
+    },
+    {
+      "id": "baithiye",
+      "pos": "phrase",
+      "roman": "baiThiye",
+      "ur": "بیٹھیے",
+      "ur_alt": [
+        "بیٹھئے"
+      ],
+      "meaning_en": "please sit down",
+      "situation": "Your guest has come in but is still standing. Invite them to take a seat.",
+      "example": {
+        "roman": "aaiye, baiThiye!",
+        "ur": "آئیے، بیٹھیے!",
+        "en": "Come, sit down!"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-009",
+      "notes": "The polite way to say \"sit down\". Learn it as a chunk for now; you'll see how the `-iye` ending works in a later unit."
+    },
+    {
+      "id": "chaae",
+      "pos": "noun",
+      "roman": "chaae",
+      "ur": "چائے",
+      "meaning_en": "tea",
+      "example": {
+        "roman": "chaae bahut mazedaar hai.",
+        "ur": "چائے بہت مزیدار ہے۔",
+        "en": "The tea is delicious."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-009",
+      "notes": "Feminine, which you can't tell from the sound. You'll practise words like this in Unit 2. On a phone it's usually typed `chai`, and that's accepted.",
+      "gender": "f",
+      "marked": false,
+      "mass": true
+    },
+    {
+      "id": "paanii",
+      "pos": "noun",
+      "roman": "paanii",
+      "ur": "پانی",
+      "meaning_en": "water",
+      "example": {
+        "roman": "paanii lenge?",
+        "ur": "پانی لیں گے؟",
+        "en": "Will you have some water?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-009",
+      "notes": "Masculine, even though it ends in `-ii`. You'll practise words like this in Unit 2.",
+      "gender": "m",
+      "marked": false,
+      "mass": true
+    },
+    {
+      "id": "chaae-lenge",
+      "pos": "phrase",
+      "roman": "chaae lenge?",
+      "ur": "چائے لیں گے؟",
+      "meaning_en": "will you have some tea?",
+      "literal": "tea will take?",
+      "situation": "Your guest has just sat down, and it's time to offer them a hot drink.",
+      "example": {
+        "roman": "baiThiye! chaae lenge?",
+        "ur": "بیٹھیے! چائے لیں گے؟",
+        "en": "Sit down! Will you have some tea?"
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-009",
+      "notes": "The polite form used for an offer, as a chunk for now. Swap the drink to offer something else: `paanii lenge?` You may also hear `chaae lengii?` when the guest is a woman. Unit 9 teaches how this works."
+    },
+    {
+      "id": "bas",
+      "pos": "other",
+      "roman": "bas",
+      "ur": "بس",
+      "meaning_en": "enough; that's all",
+      "example": {
+        "roman": "bas, shukriyaa.",
+        "ur": "بس، شکریہ۔",
+        "en": "That's enough, thank you."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-009",
+      "notes": "`bas, shukriyaa` is the classic way to stop your host refilling your plate. Expect to be offered more at least once anyway!"
+    },
+    {
+      "id": "mazedaar",
+      "pos": "adjective",
+      "roman": "mazedaar",
+      "ur": "مزیدار",
+      "ur_alt": [
+        "مزے دار"
+      ],
+      "meaning_en": "delicious, tasty; fun",
+      "example": {
+        "roman": "chaae bahut mazedaar hai.",
+        "ur": "چائے بہت مزیدار ہے۔",
+        "en": "The tea is delicious."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-009",
+      "notes": "Never changes for a man, a woman or a group, like `xush`. The polite compliment for your host's food and drink.",
+      "variable": false
+    },
+    {
+      "id": "ghar",
+      "pos": "noun",
+      "roman": "ghar",
+      "ur": "گھر",
+      "meaning_en": "house, home",
+      "example": {
+        "roman": "aapkaa ghar bahut xuubsuurat hai.",
+        "ur": "آپ کا گھر بہت خوبصورت ہے۔",
+        "en": "Your house is very beautiful."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-009",
+      "notes": "The `gh` is one breathy sound.",
+      "gender": "m",
+      "marked": false,
+      "plural": {
+        "roman": "ghar",
+        "ur": "گھر"
+      },
+      "oblique_pl": {
+        "roman": "gharoN",
+        "ur": "گھروں"
+      }
+    },
+    {
+      "id": "xuubsuurat",
+      "pos": "adjective",
+      "roman": "xuubsuurat",
+      "ur": "خوبصورت",
+      "ur_alt": [
+        "خوب صورت"
+      ],
+      "meaning_en": "beautiful",
+      "example": {
+        "roman": "aapkaa ghar bahut xuubsuurat hai.",
+        "ur": "آپ کا گھر بہت خوبصورت ہے۔",
+        "en": "Your house is very beautiful."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-009",
+      "notes": "Never changes for a man, a woman or a group. A compliment about the house always goes down well.",
+      "variable": false
+    },
+    {
+      "id": "phir-aaiyegaa",
+      "pos": "phrase",
+      "roman": "phir aaiyegaa",
+      "ur": "پھر آئیے گا",
+      "meaning_en": "do come again",
+      "literal": "again please come",
+      "situation": "Your guests are at the door, about to go home. Invite them warmly to visit again.",
+      "example": {
+        "roman": "shukriyaa! phir aaiyegaa.",
+        "ur": "شکریہ! پھر آئیے گا۔",
+        "en": "Thank you! Do come again."
+      },
+      "register": "neutral",
+      "introduced_in": "lesson-010",
+      "notes": "What a host says as you leave. `zaruur, inshaallaah` is the natural answer."
     }
   ]
 }

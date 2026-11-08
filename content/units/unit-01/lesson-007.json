@@ -1,0 +1,239 @@
+{
+  "id": "lesson-007",
+  "unit": "unit-01",
+  "order": 7,
+  "title": "Happy, tired, busy",
+  "can_do": "You can say how you and others feel.",
+  "context": "family",
+  "grammar": [
+    {
+      "heading": "Saying how someone feels",
+      "body": "You already know the pattern from `maiN Thiik huuN`. Put a different describing word in the same place, and keep the verb last. `honaa` works as usual: `huuN` with `maiN`, `haiN` for elders.",
+      "examples": [
+        { "roman": "maiN xush huuN.", "ur": "میں خوش ہوں۔", "en": "I'm happy." },
+        { "roman": "wo udaas hai.", "ur": "وہ اداس ہے۔", "en": "He's sad. / She's sad." },
+        { "roman": "abbuu biimaar haiN.", "ur": "ابو بیمار ہیں۔", "en": "Dad is ill." },
+        { "roman": "ham masruuf haiN.", "ur": "ہم مصروف ہیں۔", "en": "We're busy." }
+      ]
+    },
+    {
+      "heading": "Most describing words never change",
+      "body": "`xush`, `udaas`, `biimaar`, `pareshaan` and `masruuf` stay exactly the same for a man, a woman or a group, just like `Thiik` and `tayyaar`. Only the verb changes.",
+      "examples": [
+        { "roman": "bhaaii pareshaan hai.", "ur": "بھائی پریشان ہے۔", "en": "My brother is worried." },
+        { "roman": "behen pareshaan hai.", "ur": "بہن پریشان ہے۔", "en": "My sister is worried." },
+        { "roman": "bacche pareshaan haiN.", "ur": "بچے پریشان ہیں۔", "en": "The children are worried." }
+      ]
+    },
+    {
+      "heading": "`thakaa` does change",
+      "body": "Describing words that end in `-aa` agree with the person, like `meraa`, `merii` and `mere`. So \"tired\" depends on who's tired. When you talk about yourself, a man says `thakaa` and a woman says `thakii`. For one man you're being respectful about, use `thake`.",
+      "table": {
+        "headers": ["A man or boy", "A woman or girl"],
+        "rows": [
+          [{ "roman": "maiN thakaa huuN.", "ur": "میں تھکا ہوں۔", "en": "I'm tired. (a man)" }, { "roman": "maiN thakii huuN.", "ur": "میں تھکی ہوں۔", "en": "I'm tired. (a woman)" }],
+          [{ "roman": "bhaaii thakaa hai.", "ur": "بھائی تھکا ہے۔", "en": "My brother is tired." }, { "roman": "behen thakii hai.", "ur": "بہن تھکی ہے۔", "en": "My sister is tired." }],
+          [{ "roman": "abbuu thake haiN.", "ur": "ابو تھکے ہیں۔", "en": "Dad is tired." }, { "roman": "ammii thakii haiN.", "ur": "امی تھکی ہیں۔", "en": "Mum is tired." }]
+        ]
+      }
+    },
+    {
+      "heading": "Very, not, and asking",
+      "body": "`bahut` (\"very\") goes straight before the describing word. `bilkul` means \"completely\", and you'll often hear `bilkul Thiik`. `nahiiN` still goes right before the verb, and `kyaa` at the start still makes a yes/no question.",
+      "examples": [
+        { "roman": "maiN bahut xush huuN.", "ur": "میں بہت خوش ہوں۔", "en": "I'm very happy." },
+        { "roman": "ammii bilkul Thiik haiN.", "ur": "امی بالکل ٹھیک ہیں۔", "en": "Mum is absolutely fine." },
+        { "roman": "maiN pareshaan nahiiN huuN.", "ur": "میں پریشان نہیں ہوں۔", "en": "I'm not worried." },
+        { "roman": "kyaa aap biimaar haiN?", "ur": "کیا آپ بیمار ہیں؟", "en": "Are you ill?" }
+      ]
+    }
+  ],
+  "new_vocab": ["xush", "udaas", "biimaar", "pareshaan", "masruuf", "thakaa", "bahut", "bilkul"],
+  "exercises": [
+    {
+      "id": "e01",
+      "type": "multiple-choice",
+      "prompt": "You've had a long day at work, and your sister asks how you are. Which says \"I'm tired\"?",
+      "options": [
+        { "roman": "maiN thakaa huuN.", "ur": "میں تھکا ہوں۔", "en": "I'm tired." },
+        { "roman": "maiN thakii huuN.", "ur": "میں تھکی ہوں۔", "en": "This is how a woman says it." },
+        { "roman": "maiN xush huuN.", "ur": "میں خوش ہوں۔", "en": "I'm happy." }
+      ],
+      "answerIndex": 0,
+      "explanation": "A man says `thakaa`. A woman says `thakii`.",
+      "tags": ["agreement-chunk"],
+      "learner_f": {
+        "options": [
+          { "roman": "maiN thakii huuN.", "ur": "میں تھکی ہوں۔", "en": "I'm tired." },
+          { "roman": "maiN thakaa huuN.", "ur": "میں تھکا ہوں۔", "en": "This is how a man says it." },
+          { "roman": "maiN xush huuN.", "ur": "میں خوش ہوں۔", "en": "I'm happy." }
+        ]
+      }
+    },
+    {
+      "id": "e02",
+      "type": "fill-blank",
+      "sentence": { "roman": "maiN bahut ___ huuN.", "ur": "میں بہت ___ ہوں۔", "en": "I'm very happy." },
+      "answer": "xush",
+      "answer_ur": "خوش",
+      "explanation": "`xush` never changes, so a man and a woman both say this.",
+      "tags": ["describing-words"]
+    },
+    {
+      "id": "e03",
+      "type": "choose-form",
+      "sentence": { "roman": "ammii ___ haiN.", "ur": "امی ___ ہیں۔", "en": "Mum is tired." },
+      "options": [
+        { "roman": "thakii", "ur": "تھکی" },
+        { "roman": "thakaa", "ur": "تھکا" },
+        { "roman": "thake", "ur": "تھکے" }
+      ],
+      "answerIndex": 0,
+      "explanation": "Mum is a woman, so it's `thakii`. The respectful `haiN` doesn't change that.",
+      "tags": ["agreement-chunk"]
+    },
+    {
+      "id": "e04",
+      "type": "choose-form",
+      "sentence": { "roman": "abbuu ___ haiN.", "ur": "ابو ___ ہیں۔", "en": "Dad is tired." },
+      "options": [
+        { "roman": "thake", "ur": "تھکے" },
+        { "roman": "thakaa", "ur": "تھکا" },
+        { "roman": "thakii", "ur": "تھکی" }
+      ],
+      "answerIndex": 0,
+      "hint": "The verb is the respectful `haiN`, and Dad is a man.",
+      "explanation": "With the respectful `haiN`, a man takes `thake`. You'd only use `thakaa` with `hai`: `abbuu thakaa hai`.",
+      "tags": ["agreement-chunk", "respect"]
+    },
+    {
+      "id": "e05",
+      "sentence_card": true,
+      "type": "reorder",
+      "sentence": { "roman": "maiN bahut thakaa huuN.", "ur": "میں بہت تھکا ہوں۔", "en": "I'm very tired." },
+      "tokens": ["maiN", "bahut", "thakaa", "huuN"],
+      "answerOrders": [["maiN", "bahut", "thakaa", "huuN"]],
+      "explanation": "`bahut` goes straight before the describing word, and the verb comes last.",
+      "tags": ["word-order", "describing-words"],
+      "learner_f": {
+        "sentence": { "roman": "maiN bahut thakii huuN.", "ur": "میں بہت تھکی ہوں۔", "en": "I'm very tired." },
+        "tokens": ["maiN", "bahut", "thakii", "huuN"],
+        "answerOrders": [["maiN", "bahut", "thakii", "huuN"]]
+      }
+    },
+    {
+      "id": "e06",
+      "type": "reorder",
+      "sentence": { "roman": "wo bahut masruuf hai.", "ur": "وہ بہت مصروف ہے۔", "en": "He's very busy." },
+      "tokens": ["wo", "bahut", "masruuf", "hai"],
+      "answerOrders": [["wo", "bahut", "masruuf", "hai"]],
+      "explanation": "`wo` could be \"he\" or \"she\": `masruuf` stays the same either way.",
+      "tags": ["word-order", "describing-words"]
+    },
+    {
+      "id": "e07",
+      "sentence_card": true,
+      "type": "transform",
+      "from": { "roman": "maiN thakaa huuN.", "ur": "میں تھکا ہوں۔", "en": "I'm tired." },
+      "instruction": "Make it negative: you're not tired.",
+      "answers": [
+        { "roman": "maiN thakaa nahiiN huuN.", "ur": "میں تھکا نہیں ہوں۔" },
+        { "roman": "maiN thakaa nahiiN.", "ur": "میں تھکا نہیں۔" }
+      ],
+      "explanation": "`nahiiN` goes straight before `huuN`, and `huuN` can be dropped after it.",
+      "tags": ["negation"],
+      "learner_f": {
+        "from": { "roman": "maiN thakii huuN.", "ur": "میں تھکی ہوں۔", "en": "I'm tired." },
+        "answers": [
+          { "roman": "maiN thakii nahiiN huuN.", "ur": "میں تھکی نہیں ہوں۔" },
+          { "roman": "maiN thakii nahiiN.", "ur": "میں تھکی نہیں۔" }
+        ]
+      }
+    },
+    {
+      "id": "e08",
+      "type": "error-spot",
+      "sentence": { "roman": "merii behen bahut thakaa hai.", "ur": "میری بہن بہت تھکا ہے۔", "en": "My sister is very tired." },
+      "answer": "merii behen bahut thakii hai.",
+      "answer_ur": "میری بہن بہت تھکی ہے۔",
+      "explanation": "A sister is a woman, so `thakaa` has to become `thakii`.",
+      "tags": ["agreement-chunk"]
+    },
+    {
+      "id": "e09",
+      "type": "multiple-choice",
+      "prompt": "Which of these words changes depending on whether a man or a woman is speaking?",
+      "options": [
+        { "roman": "thakaa", "ur": "تھکا", "en": "tired" },
+        { "roman": "xush", "ur": "خوش", "en": "happy, and it never changes" },
+        { "roman": "udaas", "ur": "اداس", "en": "sad, and it never changes" },
+        { "roman": "masruuf", "ur": "مصروف", "en": "busy, and it never changes" }
+      ],
+      "answerIndex": 0,
+      "explanation": "Words ending in `-aa` like `thakaa` change: `thakaa`, `thakii`, `thake`. The others always stay the same.",
+      "tags": ["describing-words"]
+    },
+    {
+      "id": "e10",
+      "type": "listen",
+      "audio_text": { "roman": "abbuu biimaar haiN.", "ur": "ابو بیمار ہیں۔", "en": "Dad is ill." },
+      "options": ["Dad is ill.", "Dad is busy.", "Mum is ill.", "Dad is happy."],
+      "answerIndex": 0,
+      "explanation": "`biimaar` is \"ill\", and `abbuu` is \"Dad\".",
+      "tags": ["describing-words"]
+    },
+    {
+      "id": "e11",
+      "type": "multiple-choice",
+      "prompt": "Aunty looks worn out after cooking for everyone. How do you ask if she's tired?",
+      "options": [
+        { "roman": "kyaa aap thakii haiN?", "ur": "کیا آپ تھکی ہیں؟", "en": "Are you tired?" },
+        { "roman": "kyaa aap thake haiN?", "ur": "کیا آپ تھکے ہیں؟", "en": "This form is for a man." },
+        { "roman": "kyaa aap biimaar haiN?", "ur": "کیا آپ بیمار ہیں؟", "en": "Are you ill?" }
+      ],
+      "answerIndex": 0,
+      "explanation": "Aunty is a woman, so it's `thakii`, even with the respectful `aap` and `haiN`.",
+      "tags": ["agreement-chunk", "respect"]
+    },
+    {
+      "id": "e12",
+      "sentence_card": true,
+      "type": "translate",
+      "en": "Mum is happy. Dad is tired.",
+      "answers": [
+        { "roman": "ammii xush haiN. abbuu thake haiN.", "ur": "امی خوش ہیں۔ ابو تھکے ہیں۔" },
+        { "roman": "ammii xush hai. abbuu thakaa hai.", "ur": "امی خوش ہے۔ ابو تھکا ہے۔" }
+      ],
+      "self_grade": true,
+      "explanation": "`xush` never changes. `thakaa` does: with the respectful `haiN`, Dad takes `thake`. The plain `hai` and `thakaa` are fine too, within the family, but `haiN` is more respectful.",
+      "tags": ["agreement-chunk", "respect"]
+    }
+  ],
+  "dialogue": {
+    "setting": "Sunday evening. Your mum phones to see how you are. You've had a long week.",
+    "speakers": [
+      { "id": "you", "en": "You", "learner": true },
+      { "id": "ammii", "en": "Mum", "gender": "f" }
+    ],
+    "lines": [
+      { "speaker": "ammii", "roman": "assalaam-o-alaikum, beTaa! kyaa haal hai?", "ur": "السلام علیکم، بیٹا! کیا حال ہے؟", "en": "Hello, dear! How are you?", "check": { "question": "What does Mum ask?", "options": ["How you are", "Where you are", "What you're doing"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "wa-alaikum-assalaam, ammii! Thiik huuN. aap kaisii haiN?", "ur": "وعلیکم السلام، امی! ٹھیک ہوں۔ آپ کیسی ہیں؟", "en": "Hello, Mum! I'm fine. How are you?" },
+      { "speaker": "ammii", "roman": "maiN Thiik huuN. aaj tum bahut masruuf ho?", "ur": "میں ٹھیک ہوں۔ آج تم بہت مصروف ہو؟", "en": "I'm fine. Are you very busy today?", "check": { "question": "What does Mum want to know?", "options": ["Whether you're very busy today", "Whether you're ill today", "Whether you're happy today"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "jii, maiN bahut thakaa huuN.", "ur": "جی، میں بہت تھکا ہوں۔", "en": "Yes, I'm very tired.", "options": [{ "roman": "jii, maiN bahut thakii huuN.", "ur": "جی، میں بہت تھکی ہوں۔", "en": "This is how a woman says it. A man says thakaa." }, { "roman": "jii, aap bahut thakii haiN.", "ur": "جی، آپ بہت تھکی ہیں۔", "en": "Yes, you're very tired. But she asked about you." }], "learner_f": { "roman": "jii, maiN bahut thakii huuN.", "ur": "جی، میں بہت تھکی ہوں۔", "options": [{ "roman": "jii, maiN bahut thakaa huuN.", "ur": "جی، میں بہت تھکا ہوں۔", "en": "This is how a man says it. A woman says thakii." }, { "roman": "jii, aap bahut thakii haiN.", "ur": "جی، آپ بہت تھکی ہیں۔", "en": "Yes, you're very tired. But she asked about you." }] } },
+      { "speaker": "ammii", "roman": "abbuu biimaar haiN. maiN pareshaan huuN.", "ur": "ابو بیمار ہیں۔ میں پریشان ہوں۔", "en": "Dad is ill. I'm worried.", "check": { "question": "What's the news from home?", "options": ["Dad is ill, and she's worried", "Dad is busy, and she's happy", "Dad is ready, and she's tired"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "kyaa abbuu bahut biimaar haiN?", "ur": "کیا ابو بہت بیمار ہیں؟", "en": "Is Dad very ill?" },
+      { "speaker": "ammii", "roman": "nahiiN, beTaa, bahut biimaar nahiiN haiN. ab Thiik haiN.", "ur": "نہیں، بیٹا، بہت بیمار نہیں ہیں۔ اب ٹھیک ہیں۔", "en": "No, dear, he isn't very ill. He's all right now.", "check": { "question": "How is Dad now?", "options": ["He's all right now", "He's very ill", "He's tired"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "alhamdulillaah! ab maiN xush huuN.", "ur": "الحمد للہ! اب میں خوش ہوں۔", "en": "Thank God! Now I'm happy.", "options": [{ "roman": "alhamdulillaah! ab maiN udaas huuN.", "ur": "الحمد للہ! اب میں اداس ہوں۔", "en": "Now I'm sad? But the news is good." }, { "roman": "alhamdulillaah! ab aap xush huuN.", "ur": "الحمد للہ! اب آپ خوش ہوں۔", "en": "huuN only goes with maiN." }] }
+    ]
+  },
+  "practice_sentences": [
+    {"id": "p01", "roman": "maiN bahut xush huuN.", "ur": "میں بہت خوش ہوں۔", "en": "I'm very happy."},
+    {"id": "p02", "roman": "wo bahut udaas hai.", "ur": "وہ بہت اداس ہے۔", "en": "He's very sad. / She's very sad."},
+    {"id": "p03", "roman": "ammii bahut thakii haiN.", "ur": "امی بہت تھکی ہیں۔", "en": "Mum is very tired."},
+    {"id": "p04", "roman": "abbuu biimaar nahiiN haiN.", "ur": "ابو بیمار نہیں ہیں۔", "en": "Dad isn't ill."},
+    {"id": "p05", "roman": "ham bahut masruuf haiN.", "ur": "ہم بہت مصروف ہیں۔", "en": "We're very busy."},
+    {"id": "p06", "roman": "maiN pareshaan nahiiN huuN.", "ur": "میں پریشان نہیں ہوں۔", "en": "I'm not worried."},
+    {"id": "p07", "roman": "maiN thakaa nahiiN huuN.", "ur": "میں تھکا نہیں ہوں۔", "en": "I'm not tired.", "learner_f": {"roman": "maiN thakii nahiiN huuN.", "ur": "میں تھکی نہیں ہوں۔"}},
+    {"id": "p08", "roman": "maiN bilkul Thiik huuN.", "ur": "میں بالکل ٹھیک ہوں۔", "en": "I'm absolutely fine."}
+  ]
+}

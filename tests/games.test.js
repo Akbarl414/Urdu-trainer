@@ -95,7 +95,7 @@ test('the sentence pool: short reorder exercises of completed lessons, in the le
 
 test('unlocksAfterLesson finds the first lesson that makes the pool big enough', () => {
   const count = (done) => sentencePool({ ...deviceAfter(0), progress: { lessons: Object.fromEntries([...done].map((id) => [id, { firstCompletedAt: NOW }])) }, srs: { decks: { main: { cards: {} } } }, settings: { learnerGender: null } }, content, NOW).length;
-  assert.equal(unlocksAfterLesson(content, count, 3), 2);
+  assert.equal(unlocksAfterLesson(content, count, 3), 1, 'lesson 1 has practice sentences (D36), so it unlocks after the first lesson');
   assert.equal(unlocksAfterLesson(content, count, 999), null);
 });
 

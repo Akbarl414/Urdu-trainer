@@ -1,0 +1,215 @@
+{
+  "id": "lesson-006",
+  "unit": "unit-01",
+  "order": 6,
+  "title": "What's your name? Where are you from?",
+  "can_do": "You can exchange names and say where you're from.",
+  "context": "uk-life",
+  "grammar": [
+    {
+      "heading": "Question words stay where they are",
+      "body": "In English, question words jump to the front: \"Where are you from?\" In Urdu they stay where the answer goes. Build the answer, then swap the new information for the question word. The verb stays last.",
+      "table": {
+        "headers": ["Question", "Answer"],
+        "rows": [
+          [{ "roman": "aap kahaaN se haiN?", "ur": "آپ کہاں سے ہیں؟", "en": "Where are you from?" }, { "roman": "maiN landan se huuN.", "ur": "میں لندن سے ہوں۔", "en": "I'm from London." }],
+          [{ "roman": "aapkaa naam kyaa hai?", "ur": "آپ کا نام کیا ہے؟", "en": "What's your name?" }, { "roman": "meraa naam sanaa hai.", "ur": "میرا نام ثنا ہے۔", "en": "My name is Sana." }]
+        ]
+      }
+    },
+    {
+      "heading": "Asking someone's name",
+      "body": "Word for word, `aapkaa naam kyaa hai?` is \"your name what is?\" Here `kyaa` really does mean \"what\", unlike the `kyaa` at the start of a yes/no question. To a friend or a child, use `tumhaaraa` for \"your\". `naam` is masculine for everyone, so it's always `meraa naam`, even for a woman.",
+      "examples": [
+        { "roman": "aapkaa naam kyaa hai?", "ur": "آپ کا نام کیا ہے؟", "en": "What's your name? (polite)" },
+        { "roman": "tumhaaraa naam kyaa hai?", "ur": "تمہارا نام کیا ہے؟", "en": "What's your name? (to a friend or child)" },
+        { "roman": "meraa naam bilaal hai.", "ur": "میرا نام بلال ہے۔", "en": "My name is Bilal." }
+      ]
+    },
+    {
+      "heading": "`se`: from",
+      "body": "`se` means \"from\", and it comes after the place: `landan se` is \"from London\". For now, learn `kahaaN se` (\"from where\") as a chunk. Use `haiN` for elders, as usual.",
+      "examples": [
+        { "roman": "maiN bradford se huuN.", "ur": "میں بریڈفورڈ سے ہوں۔", "en": "I'm from Bradford." },
+        { "roman": "tum kahaaN se ho?", "ur": "تم کہاں سے ہو؟", "en": "Where are you from? (to a friend)" },
+        { "roman": "ammii laahaur se haiN.", "ur": "امی لاہور سے ہیں۔", "en": "Mum is from Lahore." }
+      ]
+    },
+    {
+      "heading": "`aunty` and `uncle`",
+      "body": "You don't call an older person by their first name. Your friends' parents, older neighbours and people at the mosque or community centre are `aunty` and `uncle`, whether you're related or not. Add `jii` for extra respect. Both words stay the same for one person or several, and they take the respectful `haiN`.",
+      "examples": [
+        { "roman": "assalaam-o-alaikum, aunty jii!", "ur": "السلام علیکم، آنٹی جی!", "en": "Hello, Aunty!" },
+        { "roman": "uncle kahaaN se haiN?", "ur": "انکل کہاں سے ہیں؟", "en": "Where is Uncle from?" },
+        { "roman": "aunty paakistaan se haiN.", "ur": "آنٹی پاکستان سے ہیں۔", "en": "Aunty is from Pakistan." }
+      ]
+    }
+  ],
+  "new_vocab": ["naam", "kahaan", "aapkaa", "tumhaaraa", "aapkaa-naam-kyaa-hai", "aap-kahaan-se-hain", "aunty", "uncle"],
+  "exercises": [
+    {
+      "id": "e01",
+      "type": "multiple-choice",
+      "prompt": "You've just met an older woman at the community centre, and you'd like to know her name. What do you ask?",
+      "options": [
+        { "roman": "aapkaa naam kyaa hai?", "ur": "آپ کا نام کیا ہے؟", "en": "What's your name?" },
+        { "roman": "aap kahaaN se haiN?", "ur": "آپ کہاں سے ہیں؟", "en": "Where are you from?" },
+        { "roman": "aap kaisii haiN?", "ur": "آپ کیسی ہیں؟", "en": "How are you?" }
+      ],
+      "answerIndex": 0,
+      "explanation": "`naam` is \"name\". The word for \"what\" stays in the middle: \"your name what is?\"",
+      "tags": ["question-words"]
+    },
+    {
+      "id": "e02",
+      "type": "fill-blank",
+      "sentence": { "roman": "aapkaa ___ kyaa hai?", "ur": "آپ کا ___ کیا ہے؟", "en": "What's your name?" },
+      "answer": "naam",
+      "answer_ur": "نام",
+      "explanation": "`aapkaa naam` is \"your name\".",
+      "tags": ["question-words"]
+    },
+    {
+      "id": "e03",
+      "type": "fill-blank",
+      "sentence": { "roman": "aap ___ se haiN?", "ur": "آپ ___ سے ہیں؟", "en": "Where are you from?" },
+      "answer": "kahaaN",
+      "answer_ur": "کہاں",
+      "hint": "The word for \"where\" goes before `se`.",
+      "explanation": "`kahaaN se` is \"from where\". It sits where the place would go in the answer.",
+      "tags": ["question-words"]
+    },
+    {
+      "id": "e04",
+      "sentence_card": true,
+      "type": "reorder",
+      "sentence": { "roman": "aapkaa naam kyaa hai?", "ur": "آپ کا نام کیا ہے؟", "en": "What's your name?" },
+      "tokens": ["aapkaa", "naam", "kyaa", "hai"],
+      "answerOrders": [
+        ["aapkaa", "naam", "kyaa", "hai"],
+        ["kyaa", "naam", "hai", "aapkaa"],
+        ["naam", "kyaa", "hai", "aapkaa"]
+      ],
+      "explanation": "\"Your name what is?\" The verb goes last. In relaxed speech you'll also hear `kyaa naam hai aapkaa?`",
+      "tags": ["question-words", "word-order"]
+    },
+    {
+      "id": "e05",
+      "type": "reorder",
+      "sentence": { "roman": "maiN landan se huuN.", "ur": "میں لندن سے ہوں۔", "en": "I'm from London." },
+      "tokens": ["maiN", "landan", "se", "huuN"],
+      "answerOrders": [["maiN", "landan", "se", "huuN"]],
+      "explanation": "`se` comes after the place, and the verb comes last: \"I London from am.\"",
+      "tags": ["word-order"]
+    },
+    {
+      "id": "e06",
+      "sentence_card": true,
+      "type": "transform",
+      "from": { "roman": "aap kahaaN se haiN?", "ur": "آپ کہاں سے ہیں؟", "en": "Where are you from?" },
+      "instruction": "You're asking a friend your own age. Change `aap` to `tum`.",
+      "answers": [{ "roman": "tum kahaaN se ho?", "ur": "تم کہاں سے ہو؟" }],
+      "explanation": "`tum` takes `ho`, so both words change. `kahaaN se` stays as it is.",
+      "tags": ["question-words", "honaa"]
+    },
+    {
+      "id": "e07",
+      "type": "choose-form",
+      "sentence": { "roman": "maiN landan se ___.", "ur": "میں لندن سے ___۔", "en": "I'm from London." },
+      "options": [
+        { "roman": "huuN", "ur": "ہوں" },
+        { "roman": "hai", "ur": "ہے" },
+        { "roman": "haiN", "ur": "ہیں" }
+      ],
+      "answerIndex": 0,
+      "explanation": "`maiN` always takes `huuN`.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e08",
+      "type": "error-spot",
+      "sentence": { "roman": "merii naam imraan hai.", "ur": "میری نام عمران ہے۔", "en": "My name is Imran." },
+      "answer": "meraa naam imraan hai.",
+      "answer_ur": "میرا نام عمران ہے۔",
+      "explanation": "`naam` is masculine, so it takes `meraa`. It doesn't matter whose name it is.",
+      "tags": ["agreement-chunk"]
+    },
+    {
+      "id": "e09",
+      "type": "listen",
+      "audio_text": { "roman": "aap kahaaN se haiN?", "ur": "آپ کہاں سے ہیں؟", "en": "Where are you from?" },
+      "options": ["Where are you from?", "What's your name?", "How are you?", "Are you ready?"],
+      "answerIndex": 0,
+      "explanation": "`kahaaN se` is \"from where\".",
+      "tags": ["question-words"]
+    },
+    {
+      "id": "e10",
+      "type": "multiple-choice",
+      "prompt": "You knock at your friend's house and their mum opens the door. You greet her first. What do you say?",
+      "options": [
+        { "roman": "assalaam-o-alaikum, aunty!", "ur": "السلام علیکم، آنٹی!", "en": "Hello, Aunty!" },
+        { "roman": "assalaam-o-alaikum, uncle!", "ur": "السلام علیکم، انکل!", "en": "Hello, Uncle! But she's a woman." },
+        { "roman": "wa-alaikum-assalaam, aunty!", "ur": "وعلیکم السلام، آنٹی!", "en": "That's the reply, and she hasn't greeted you yet." }
+      ],
+      "answerIndex": 0,
+      "explanation": "She's your friend's mum, so she's `aunty`. You greet first with `assalaam-o-alaikum`.",
+      "tags": ["respect"]
+    },
+    {
+      "id": "e11",
+      "type": "choose-form",
+      "sentence": { "roman": "aunty kahaaN se ___?", "ur": "آنٹی کہاں سے ___؟", "en": "Where is Aunty from?" },
+      "options": [
+        { "roman": "haiN", "ur": "ہیں" },
+        { "roman": "hai", "ur": "ہے" },
+        { "roman": "huuN", "ur": "ہوں" }
+      ],
+      "answerIndex": 0,
+      "acceptIndexes": [1],
+      "explanation": "`haiN` is the respectful choice for an elder. `hai` is correct grammar too, and common when talking about someone within the family, but `haiN` is the safer choice for an aunty. `huuN` only goes with `maiN`.",
+      "tags": ["honaa", "respect"]
+    },
+    {
+      "id": "e12",
+      "sentence_card": true,
+      "type": "translate",
+      "en": "My name is Sana. I'm from Lahore.",
+      "answers": [
+        { "roman": "meraa naam sanaa hai. maiN laahaur se huuN.", "ur": "میرا نام ثنا ہے۔ میں لاہور سے ہوں۔" },
+        { "roman": "meraa naam sanaa hai. laahaur se huuN.", "ur": "میرا نام ثنا ہے۔ لاہور سے ہوں۔" }
+      ],
+      "self_grade": true,
+      "explanation": "`naam` is masculine, so it's `meraa naam`, even for Sana. `se` comes after the place. You can drop `maiN` in the second sentence, because `huuN` already says \"I am\".",
+      "tags": ["question-words"]
+    }
+  ],
+  "dialogue": {
+    "setting": "An Eid party at the community centre. An older woman you haven't met comes over to say hello, with her husband just behind her. You don't know her name, so she's `aunty` for now. You're younger, so you greet first. Just for this scene, your name is Sam.",
+    "speakers": [
+      { "id": "you", "en": "You", "learner": true },
+      { "id": "aunty", "en": "Aunty", "gender": "f" },
+      { "id": "uncle", "en": "Uncle", "gender": "m" }
+    ],
+    "lines": [
+      { "speaker": "you", "roman": "assalaam-o-alaikum, aunty! aap kaisii haiN?", "ur": "السلام علیکم، آنٹی! آپ کیسی ہیں؟", "en": "Hello, Aunty! How are you?", "options": [{ "roman": "assalaam-o-alaikum, uncle! aap kaisii haiN?", "ur": "السلام علیکم، انکل! آپ کیسی ہیں؟", "en": "Hello, Uncle! How are you? But she's a woman, so she's aunty." }, { "roman": "wa-alaikum-assalaam, aunty! aap kaisii haiN?", "ur": "وعلیکم السلام، آنٹی! آپ کیسی ہیں؟", "en": "That's the reply, and she hasn't greeted you yet." }] },
+      { "speaker": "aunty", "roman": "wa-alaikum-assalaam, beTaa! alhamdulillaah. tumhaaraa naam kyaa hai?", "ur": "وعلیکم السلام، بیٹا! الحمد للہ۔ تمہارا نام کیا ہے؟", "en": "And peace be upon you, dear! I'm well, thank God. What's your name?", "check": { "question": "What does Aunty want to know?", "options": ["Your name", "Where you're from", "Whether you're ready"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "meraa naam sam hai.", "ur": "میرا نام سیم ہے۔", "en": "My name is Sam." },
+      { "speaker": "aunty", "roman": "sam, tum kahaaN se ho?", "ur": "سیم، تم کہاں سے ہو؟", "en": "Sam, where are you from?", "check": { "question": "What does she ask you now?", "options": ["Where you're from", "What your name is", "How you are"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "maiN landan se huuN. aur aap?", "ur": "میں لندن سے ہوں۔ اور آپ؟", "en": "I'm from London. And you?", "options": [{ "roman": "maiN landan se haiN. aur aap?", "ur": "میں لندن سے ہیں۔ اور آپ؟", "en": "maiN goes with huuN, not haiN." }, { "roman": "aap landan se haiN. aur aap?", "ur": "آپ لندن سے ہیں۔ اور آپ؟", "en": "You are from London. And you? That says she's from London." }] },
+      { "speaker": "aunty", "roman": "maiN laahaur se huuN. ye mere shauhar haiN.", "ur": "میں لاہور سے ہوں۔ یہ میرے شوہر ہیں۔", "en": "I'm from Lahore. This is my husband.", "check": { "question": "Where is she from, and who is with her?", "options": ["Lahore; her husband", "Lahore; her son", "London; her husband"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "assalaam-o-alaikum, uncle!", "ur": "السلام علیکم، انکل!", "en": "Hello, Uncle!", "options": [{ "roman": "assalaam-o-alaikum, aunty!", "ur": "السلام علیکم، آنٹی!", "en": "Hello, Aunty! But he's a man, so he's uncle." }, { "roman": "aap kahaaN se haiN?", "ur": "آپ کہاں سے ہیں؟", "en": "Where are you from? You haven't greeted him yet." }] },
+      { "speaker": "uncle", "roman": "wa-alaikum-assalaam, beTaa! kyaa haal hai?", "ur": "وعلیکم السلام، بیٹا! کیا حال ہے؟", "en": "And peace be upon you, dear! How are you?", "check": { "question": "What does Uncle ask?", "options": ["How you are", "What your name is", "Where you're from"], "answerIndex": 0 } }
+    ]
+  },
+  "practice_sentences": [
+    {"id": "p01", "roman": "meraa naam bilaal hai.", "ur": "میرا نام بلال ہے۔", "en": "My name is Bilal."},
+    {"id": "p02", "roman": "tumhaaraa naam kyaa hai?", "ur": "تمہارا نام کیا ہے؟", "en": "What's your name? (to a friend or child)", "alt_orders": [["kyaa", "naam", "hai", "tumhaaraa"], ["naam", "kyaa", "hai", "tumhaaraa"]]},
+    {"id": "p03", "roman": "maiN bradford se huuN.", "ur": "میں بریڈفورڈ سے ہوں۔", "en": "I'm from Bradford."},
+    {"id": "p04", "roman": "ammii laahaur se haiN.", "ur": "امی لاہور سے ہیں۔", "en": "Mum is from Lahore."},
+    {"id": "p05", "roman": "aunty kahaaN se haiN?", "ur": "آنٹی کہاں سے ہیں؟", "en": "Where is Aunty from?"},
+    {"id": "p06", "roman": "uncle paakistaan se haiN.", "ur": "انکل پاکستان سے ہیں۔", "en": "Uncle is from Pakistan."},
+    {"id": "p07", "roman": "tum kahaaN se ho?", "ur": "تم کہاں سے ہو؟", "en": "Where are you from? (to a friend)"},
+    {"id": "p08", "roman": "aapkii ammii kahaaN se haiN?", "ur": "آپ کی امی کہاں سے ہیں؟", "en": "Where is your mum from?"}
+  ]
+}

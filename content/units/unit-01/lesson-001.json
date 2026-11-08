@@ -216,5 +216,15 @@
       { "speaker": "dad", "roman": "wa-alaikum-assalaam! alhamdulillaah, Thiik huuN. aur aap?", "ur": "وعلیکم السلام! الحمد للہ، ٹھیک ہوں۔ اور آپ؟", "en": "And peace be upon you! Fine, thank God. And you?", "check": {"question": "What does he ask you at the end?", "options": ["And you?", "Who are you?", "How is your mum?"], "answerIndex": 0} },
       { "speaker": "you", "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too." }
     ]
-  }
+  },
+  "practice_sentences": [
+    {"id": "p01", "roman": "aap Thiik haiN?", "ur": "آپ ٹھیک ہیں؟", "en": "Are you well?"},
+    {"id": "p02", "roman": "aap bhii Thiik haiN?", "ur": "آپ بھی ٹھیک ہیں؟", "en": "Are you well too?"},
+    {"id": "p03", "roman": "alhamdulillaah, maiN Thiik huuN.", "ur": "الحمد للہ، میں ٹھیک ہوں۔", "en": "Thank God, I'm fine.", "alt_orders": [["maiN", "Thiik", "huuN", "alhamdulillaah"]]},
+    {"id": "p04", "roman": "aur aap kaise haiN?", "ur": "اور آپ کیسے ہیں؟", "en": "And how are you? (to a man)"},
+    {"id": "p05", "roman": "aur aap kaisii haiN?", "ur": "اور آپ کیسی ہیں؟", "en": "And how are you? (to a woman)"},
+    {"id": "p06", "roman": "assalaam-o-alaikum! kyaa haal hai?", "ur": "السلام علیکم! کیا حال ہے؟", "en": "Hello! How are things?"},
+    {"id": "p07", "roman": "wa-alaikum-assalaam! maiN Thiik huuN.", "ur": "وعلیکم السلام! میں ٹھیک ہوں۔", "en": "Hello! I'm fine."},
+    {"id": "p08", "roman": "maiN Thiik huuN, aur aap?", "ur": "میں ٹھیک ہوں، اور آپ؟", "en": "I'm fine, and you?"}
+  ]
 }

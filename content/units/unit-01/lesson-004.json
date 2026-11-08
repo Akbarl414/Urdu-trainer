@@ -201,5 +201,15 @@
       { "speaker": "grandma", "roman": "wo bhii student hai?", "ur": "وہ بھی اسٹوڈنٹ ہے؟", "en": "Is he a student too?", "check": {"question": "What does she ask about your brother?", "options": ["Whether he is a student too", "Whether he is a doctor", "Whether he is married"], "answerIndex": 0} },
       { "speaker": "you", "roman": "jii, wo bhii student hai.", "ur": "جی، وہ بھی اسٹوڈنٹ ہے۔", "en": "Yes, he's a student too.", "options": [{"roman": "jii, wo bhii student haiN.", "ur": "جی، وہ بھی اسٹوڈنٹ ہیں۔", "en": "Also fine: the respectful plural, for an elder brother.", "accept": true}, {"roman": "jii, maiN bhii student huuN.", "ur": "جی، میں بھی اسٹوڈنٹ ہوں۔", "en": "Yes, I'm a student too."}] }
     ]
-  }
+  },
+  "practice_sentences": [
+    {"id": "p01", "roman": "ye meraa dost hai.", "ur": "یہ میرا دوست ہے۔", "en": "This is my friend."},
+    {"id": "p02", "roman": "wo merii behen hai.", "ur": "وہ میری بہن ہے۔", "en": "That's my sister."},
+    {"id": "p03", "roman": "wo mere bhaaii haiN.", "ur": "وہ میرے بھائی ہیں۔", "en": "That's my brother."},
+    {"id": "p04", "roman": "ye merii ammii haiN.", "ur": "یہ میری امی ہیں۔", "en": "This is my mum."},
+    {"id": "p05", "roman": "ye bilaal hai.", "ur": "یہ بلال ہے۔", "en": "This is Bilal."},
+    {"id": "p06", "roman": "wo Thiik hai?", "ur": "وہ ٹھیک ہے؟", "en": "Is he all right? / Is she all right?"},
+    {"id": "p07", "roman": "merii behen doctor hai.", "ur": "میری بہن ڈاکٹر ہے۔", "en": "My sister is a doctor."},
+    {"id": "p08", "roman": "mere abbuu bhii Thiik haiN.", "ur": "میرے ابو بھی ٹھیک ہیں۔", "en": "My dad is fine too."}
+  ]
 }

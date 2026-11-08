@@ -1,0 +1,212 @@
+{
+  "id": "lesson-008",
+  "unit": "unit-01",
+  "order": 8,
+  "title": "Thank you, sorry, goodbye",
+  "can_do": "You can thank, apologise and say goodbye politely.",
+  "context": "uk-life",
+  "grammar": [
+    {
+      "heading": "Saying thank you",
+      "body": "`shukriyaa` is \"thank you\", and `bahut shukriyaa` is \"thank you very much\". The usual reply is `koii baat nahiiN`, \"no problem\" or \"you're welcome\". These are set phrases, so learn them whole.",
+      "examples": [
+        { "roman": "bahut shukriyaa, uncle!", "ur": "بہت شکریہ، انکل!", "en": "Thank you very much, Uncle!" },
+        { "roman": "koii baat nahiiN.", "ur": "کوئی بات نہیں۔", "en": "No problem. / You're welcome." }
+      ]
+    },
+    {
+      "heading": "Sorry and excuse me",
+      "body": "`maaf kiijiye` means \"sorry\", and also \"excuse me\" when you need someone's attention. People often just say `sorry` in the UK, and that's fine with friends and family. With elders and people you don't know, `maaf kiijiye` shows more respect. The answer is the same as for thank you: `koii baat nahiiN`.",
+      "examples": [
+        { "roman": "maaf kiijiye, aunty!", "ur": "معاف کیجیے، آنٹی!", "en": "Sorry, Aunty!" },
+        { "roman": "sorry, bhaaii!", "ur": "سوری، بھائی!", "en": "Sorry, brother!" },
+        { "roman": "koii baat nahiiN, beTaa.", "ur": "کوئی بات نہیں، بیٹا۔", "en": "Never mind, dear." }
+      ]
+    },
+    {
+      "heading": "`jii` softens what you say",
+      "body": "You've met `jii` as a polite \"yes\" and after names. Put it in front of these phrases too, and they sound warmer and more respectful. It's optional with friends, and a good habit with elders.",
+      "examples": [
+        { "roman": "jii, shukriyaa.", "ur": "جی، شکریہ۔", "en": "Thank you. (warmly)" },
+        { "roman": "jii, koii baat nahiiN.", "ur": "جی، کوئی بات نہیں۔", "en": "That's all right, no problem." }
+      ]
+    },
+    {
+      "heading": "Saying goodbye",
+      "body": "`xudaa haafiz` is the everyday goodbye; many people say `allaah haafiz` instead. Add `phir milenge`, \"see you again\", and often `inshaallaah`, \"God willing\". To wish someone well, say `apnaa xayaal rakhiye`, \"take care of yourself\".",
+      "examples": [
+        { "roman": "xudaa haafiz! phir milenge.", "ur": "خدا حافظ! پھر ملیں گے۔", "en": "Goodbye! See you again." },
+        { "roman": "phir milenge, inshaallaah.", "ur": "پھر ملیں گے، ان شاء اللہ۔", "en": "See you again, God willing." },
+        { "roman": "apnaa xayaal rakhiye.", "ur": "اپنا خیال رکھیے۔", "en": "Take care of yourself." }
+      ]
+    }
+  ],
+  "new_vocab": ["shukriyaa", "maaf-kiijiye", "sorry", "koii-baat-nahiin", "xudaa-haafiz", "phir-milenge", "inshaallaah", "apnaa-xayaal-rakhiye"],
+  "exercises": [
+    {
+      "id": "e01",
+      "type": "multiple-choice",
+      "prompt": "Your neighbour brings round a parcel that was left with them. What do you say?",
+      "options": [
+        { "roman": "bahut shukriyaa!", "ur": "بہت شکریہ!", "en": "Thank you very much!" },
+        { "roman": "maaf kiijiye!", "ur": "معاف کیجیے!", "en": "Sorry!" },
+        { "roman": "xudaa haafiz!", "ur": "خدا حافظ!", "en": "Goodbye!" }
+      ],
+      "answerIndex": 0,
+      "explanation": "`shukriyaa` is \"thank you\". Add `bahut` to make it stronger.",
+      "tags": ["phrases"]
+    },
+    {
+      "id": "e02",
+      "type": "multiple-choice",
+      "prompt": "On a crowded bus, you step on an older woman's foot. What do you say?",
+      "options": [
+        { "roman": "maaf kiijiye!", "ur": "معاف کیجیے!", "en": "Sorry!" },
+        { "roman": "sorry!", "ur": "سوری!", "en": "Sorry! Fine as well, in the UK." },
+        { "roman": "shukriyaa!", "ur": "شکریہ!", "en": "Thank you!" },
+        { "roman": "koii baat nahiiN.", "ur": "کوئی بات نہیں۔", "en": "No problem. That's what she would say to you." }
+      ],
+      "answerIndex": 0,
+      "acceptIndexes": [1],
+      "explanation": "`maaf kiijiye` is the respectful choice with an elder you don't know. `sorry` is fine too, and very common in the UK; it's just more relaxed.",
+      "tags": ["phrases", "respect"]
+    },
+    {
+      "id": "e03",
+      "type": "fill-blank",
+      "sentence": { "roman": "bahut ___!", "ur": "بہت ___!", "en": "Thank you very much!" },
+      "answer": "shukriyaa",
+      "answer_ur": "شکریہ",
+      "explanation": "`bahut shukriyaa` is \"thank you very much\".",
+      "tags": ["phrases"]
+    },
+    {
+      "id": "e04",
+      "type": "fill-blank",
+      "sentence": { "roman": "koii baat ___.", "ur": "کوئی بات ___۔", "en": "No problem." },
+      "answer": "nahiiN",
+      "answer_ur": "نہیں",
+      "explanation": "`koii baat nahiiN` is one set phrase: \"no problem\".",
+      "tags": ["phrases"]
+    },
+    {
+      "id": "e05",
+      "sentence_card": true,
+      "type": "reorder",
+      "sentence": { "roman": "jii, koii baat nahiiN.", "ur": "جی، کوئی بات نہیں۔", "en": "That's all right, no problem." },
+      "tokens": ["jii", "koii", "baat", "nahiiN"],
+      "answerOrders": [["jii", "koii", "baat", "nahiiN"]],
+      "explanation": "`jii` softens the phrase, and `koii baat nahiiN` stays together in that order.",
+      "tags": ["phrases", "word-order"]
+    },
+    {
+      "id": "e06",
+      "type": "reorder",
+      "sentence": { "roman": "phir milenge, inshaallaah.", "ur": "پھر ملیں گے، ان شاء اللہ۔", "en": "See you again, God willing." },
+      "tokens": ["phir", "milenge", "inshaallaah"],
+      "answerOrders": [["phir", "milenge", "inshaallaah"], ["inshaallaah", "phir", "milenge"]],
+      "explanation": "`inshaallaah` can go at either end: \"see you again, God willing\" or \"God willing, see you again\".",
+      "tags": ["phrases", "word-order"]
+    },
+    {
+      "id": "e07",
+      "type": "multiple-choice",
+      "prompt": "You helped your neighbour carry their shopping in, and they say `bahut shukriyaa!` What do you say back?",
+      "options": [
+        { "roman": "koii baat nahiiN.", "ur": "کوئی بات نہیں۔", "en": "No problem." },
+        { "roman": "maaf kiijiye.", "ur": "معاف کیجیے۔", "en": "Sorry. But you've done nothing wrong." },
+        { "roman": "aapkaa naam kyaa hai?", "ur": "آپ کا نام کیا ہے؟", "en": "What's your name? But they've just thanked you." }
+      ],
+      "answerIndex": 0,
+      "explanation": "`koii baat nahiiN` is the natural reply to thanks as well as to an apology.",
+      "tags": ["phrases"]
+    },
+    {
+      "id": "e08",
+      "type": "error-spot",
+      "sentence": { "roman": "maaf kiijiye, aunty. maiN bahut masruuf hai.", "ur": "معاف کیجیے، آنٹی۔ میں بہت مصروف ہے۔", "en": "Sorry, Aunty. I'm very busy." },
+      "answer": "maaf kiijiye, aunty. maiN bahut masruuf huuN.",
+      "answer_ur": "معاف کیجیے، آنٹی۔ میں بہت مصروف ہوں۔",
+      "explanation": "`maiN` needs `huuN`, not `hai`.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e09",
+      "type": "listen",
+      "audio_text": { "roman": "phir milenge, inshaallaah.", "ur": "پھر ملیں گے، ان شاء اللہ۔", "en": "See you again, God willing." },
+      "options": ["See you again, God willing.", "Thank you very much.", "Sorry, no problem.", "Take care of yourself."],
+      "answerIndex": 0,
+      "explanation": "`phir milenge` is \"see you again\", and `inshaallaah` is \"God willing\".",
+      "tags": ["phrases"]
+    },
+    {
+      "id": "e10",
+      "sentence_card": true,
+      "type": "translate",
+      "en": "Thank you very much. Goodbye!",
+      "answers": [
+        { "roman": "bahut shukriyaa. xudaa haafiz!", "ur": "بہت شکریہ۔ خدا حافظ!" },
+        { "roman": "jii, bahut shukriyaa. xudaa haafiz!", "ur": "جی، بہت شکریہ۔ خدا حافظ!" },
+        { "roman": "bahut shukriyaa. allaah haafiz!", "ur": "بہت شکریہ۔ اللہ حافظ!" },
+        { "roman": "jii, bahut shukriyaa. allaah haafiz!", "ur": "جی، بہت شکریہ۔ اللہ حافظ!" }
+      ],
+      "self_grade": true,
+      "explanation": "`jii` at the start is optional and adds warmth. `xudaa haafiz` and `allaah haafiz` both mean \"goodbye\".",
+      "tags": ["phrases"]
+    },
+    {
+      "id": "e11",
+      "type": "multiple-choice",
+      "prompt": "Your older neighbour is leaving after a long chat. What's a warm thing to say as they go?",
+      "options": [
+        { "roman": "apnaa xayaal rakhiye.", "ur": "اپنا خیال رکھیے۔", "en": "Take care of yourself." },
+        { "roman": "koii baat nahiiN.", "ur": "کوئی بات نہیں۔", "en": "No problem. They didn't apologise or thank you." },
+        { "roman": "maaf kiijiye.", "ur": "معاف کیجیے۔", "en": "Sorry. There's nothing to apologise for." }
+      ],
+      "answerIndex": 0,
+      "explanation": "`apnaa xayaal rakhiye` is \"take care of yourself\". The `-iye` ending suits an elder.",
+      "tags": ["phrases", "respect"]
+    },
+    {
+      "id": "e12",
+      "sentence_card": true,
+      "type": "translate",
+      "en": "Goodbye, Aunty. Take care of yourself.",
+      "answers": [
+        { "roman": "xudaa haafiz, aunty. apnaa xayaal rakhiye.", "ur": "خدا حافظ، آنٹی۔ اپنا خیال رکھیے۔" },
+        { "roman": "allaah haafiz, aunty. apnaa xayaal rakhiye.", "ur": "اللہ حافظ، آنٹی۔ اپنا خیال رکھیے۔" },
+        { "roman": "aunty, xudaa haafiz. apnaa xayaal rakhiye.", "ur": "آنٹی، خدا حافظ۔ اپنا خیال رکھیے۔" },
+        { "roman": "aunty, allaah haafiz. apnaa xayaal rakhiye.", "ur": "آنٹی، اللہ حافظ۔ اپنا خیال رکھیے۔" }
+      ],
+      "self_grade": true,
+      "explanation": "`xudaa haafiz` and `allaah haafiz` are both fine for \"goodbye\", and `aunty` can go at either end.",
+      "tags": ["phrases", "respect"]
+    }
+  ],
+  "dialogue": {
+    "setting": "In the car park outside the supermarket, you walk straight into your neighbour Imran and knock his shopping bag. He is older than you, so you call him `imraan saahab`. He's in a hurry.",
+    "speakers": [
+      { "id": "you", "en": "You", "learner": true },
+      { "id": "imraan", "en": "Imran (neighbour)", "gender": "m" }
+    ],
+    "lines": [
+      { "speaker": "you", "roman": "maaf kiijiye, imraan saahab!", "ur": "معاف کیجیے، عمران صاحب!", "en": "I'm sorry, Mr Imran!", "options": [{ "roman": "sorry, imraan saahab!", "ur": "سوری، عمران صاحب!", "en": "Sorry, Mr Imran! Also fine and common in the UK. maaf kiijiye is more respectful.", "accept": true }, { "roman": "koii baat nahiiN, imraan saahab!", "ur": "کوئی بات نہیں، عمران صاحب!", "en": "No problem, Mr Imran! That's what he would say to you." }, { "roman": "shukriyaa, imraan saahab!", "ur": "شکریہ، عمران صاحب!", "en": "Thank you, Mr Imran! But you've just walked into him." }] },
+      { "speaker": "imraan", "roman": "koii baat nahiiN! kyaa haal hai?", "ur": "کوئی بات نہیں! کیا حال ہے؟", "en": "No problem! How are you?", "check": { "question": "What does Imran say about the bump?", "options": ["It's no problem", "He's sorry", "He's very worried"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "alhamdulillaah, Thiik huuN. aur aaishaa kaisii haiN?", "ur": "الحمد للہ، ٹھیک ہوں۔ اور عائشہ کیسی ہیں؟", "en": "Fine, thank God. And how is Aisha?" },
+      { "speaker": "imraan", "roman": "wo bhii Thiik haiN, shukriyaa. maaf kiijiye, maiN bahut masruuf huuN.", "ur": "وہ بھی ٹھیک ہیں، شکریہ۔ معاف کیجیے، میں بہت مصروف ہوں۔", "en": "She's fine too, thanks. Sorry, I'm very busy.", "check": { "question": "Why can't Imran stop to chat?", "options": ["He's very busy", "He's ill", "He's tired"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "koii baat nahiiN! phir milenge.", "ur": "کوئی بات نہیں! پھر ملیں گے۔", "en": "No problem! See you again." },
+      { "speaker": "imraan", "roman": "inshaallaah! apnaa xayaal rakhiye. xudaa haafiz!", "ur": "ان شاء اللہ! اپنا خیال رکھیے۔ خدا حافظ!", "en": "God willing! Take care of yourself. Goodbye!", "check": { "question": "What does Imran wish you?", "options": ["That you take care of yourself", "That you get home quickly", "That you have a good Eid"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "shukriyaa! xudaa haafiz!", "ur": "شکریہ! خدا حافظ!", "en": "Thank you! Goodbye!", "options": [{ "roman": "shukriyaa! allaah haafiz!", "ur": "شکریہ! اللہ حافظ!", "en": "Thank you! Goodbye! Also fine: it means the same.", "accept": true }, { "roman": "kyaa haal hai?", "ur": "کیا حال ہے؟", "en": "How are you? But he's saying goodbye." }] }
+    ]
+  },
+  "practice_sentences": [
+    {"id": "p01", "roman": "bahut shukriyaa, aunty!", "ur": "بہت شکریہ، آنٹی!", "en": "Thank you very much, Aunty!", "alt_orders": [["aunty", "bahut", "shukriyaa"]]},
+    {"id": "p02", "roman": "maaf kiijiye, uncle!", "ur": "معاف کیجیے، انکل!", "en": "Sorry, Uncle!", "alt_orders": [["uncle", "maaf", "kiijiye"]]},
+    {"id": "p03", "roman": "xudaa haafiz, phir milenge!", "ur": "خدا حافظ، پھر ملیں گے!", "en": "Goodbye, see you again!", "alt_orders": [["phir", "milenge", "xudaa", "haafiz"]]},
+    {"id": "p04", "roman": "koii baat nahiiN, aunty.", "ur": "کوئی بات نہیں، آنٹی۔", "en": "No problem, Aunty.", "alt_orders": [["aunty", "koii", "baat", "nahiiN"]]},
+    {"id": "p05", "roman": "phir milenge, beTaa.", "ur": "پھر ملیں گے، بیٹا۔", "en": "See you again, dear.", "alt_orders": [["beTaa", "phir", "milenge"]]},
+    {"id": "p06", "roman": "shukriyaa, apnaa xayaal rakhiye.", "ur": "شکریہ، اپنا خیال رکھیے۔", "en": "Thank you, take care of yourself."},
+    {"id": "p07", "roman": "xudaa haafiz, apnaa xayaal rakhiye.", "ur": "خدا حافظ، اپنا خیال رکھیے۔", "en": "Goodbye, take care of yourself.", "alt_orders": [["apnaa", "xayaal", "rakhiye", "xudaa", "haafiz"]]},
+    {"id": "p08", "roman": "sorry, maiN masruuf huuN.", "ur": "سوری، میں مصروف ہوں۔", "en": "Sorry, I'm busy."}
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "id": "lesson-009",
+  "unit": "unit-01",
+  "order": 9,
+  "title": "Welcome, come in!",
+  "can_do": "You can respond when you're welcomed into someone's home.",
+  "context": "family",
+  "grammar": [
+    {
+      "heading": "Polite invitations",
+      "body": "A good host says these the moment you arrive: `aaiye` is \"please come\" and `andar aaiye` is \"come in\". `baiThiye` is \"please sit down\". Learn them as whole chunks for now. You'll hear them all the time.",
+      "examples": [
+        { "roman": "aaiye, andar aaiye!", "ur": "آئیے، اندر آئیے!", "en": "Come in, please come in!" },
+        { "roman": "baiThiye, baiThiye.", "ur": "بیٹھیے، بیٹھیے۔", "en": "Do sit down." }
+      ]
+    },
+    {
+      "heading": "\"Will you have…?\"",
+      "body": "To offer something, name it and add `lenge?`: `chaae lenge?` is \"will you have some tea?\" Swap the first word to offer something else. `aur` also means \"more\", so `aur chaae lenge?` is \"will you have more tea?\" Your host may also say `lengii` to a woman; `lenge` is a safe polite form for anyone.",
+      "examples": [
+        { "roman": "chaae lenge?", "ur": "چائے لیں گے؟", "en": "Will you have some tea?" },
+        { "roman": "paanii lenge?", "ur": "پانی لیں گے؟", "en": "Will you have some water?" },
+        { "roman": "aur chaae lenge?", "ur": "اور چائے لیں گے؟", "en": "Will you have more tea?" }
+      ]
+    },
+    {
+      "heading": "Yes please, no thanks, enough",
+      "body": "`jii, shukriyaa` accepts politely, and `jii nahiiN, shukriyaa` declines politely. When you've had enough, say `bas, shukriyaa`. Hosts usually offer again, so you may have to say it twice.",
+      "examples": [
+        { "roman": "jii, shukriyaa.", "ur": "جی، شکریہ۔", "en": "Yes, thank you." },
+        { "roman": "jii nahiiN, shukriyaa.", "ur": "جی نہیں، شکریہ۔", "en": "No, thank you." },
+        { "roman": "bas, shukriyaa.", "ur": "بس، شکریہ۔", "en": "That's enough, thank you." }
+      ]
+    },
+    {
+      "heading": "Saying something nice",
+      "body": "A small compliment goes a long way. `mazedaar` is \"delicious\" and `xuubsuurat` is \"beautiful\". Like `xush`, they never change.",
+      "examples": [
+        { "roman": "chaae bahut mazedaar hai.", "ur": "چائے بہت مزیدار ہے۔", "en": "The tea is delicious." },
+        { "roman": "aapkaa ghar bahut xuubsuurat hai.", "ur": "آپ کا گھر بہت خوبصورت ہے۔", "en": "Your house is very beautiful." }
+      ]
+    }
+  ],
+  "new_vocab": ["aaiye", "baithiye", "chaae", "paanii", "chaae-lenge", "bas", "mazedaar", "ghar", "xuubsuurat"],
+  "exercises": [
+    {
+      "id": "e01",
+      "type": "multiple-choice",
+      "prompt": "Your aunty opens the door and says this. What does she mean?",
+      "sentence": { "roman": "aaiye, andar aaiye!", "ur": "آئیے، اندر آئیے!", "en": "Come in, please come in!" },
+      "options": ["Please come in", "Please sit down", "Thank you very much", "See you again"],
+      "answerIndex": 0,
+      "explanation": "`aaiye` is \"please come\", and `andar` is \"inside\".",
+      "tags": ["hospitality"]
+    },
+    {
+      "id": "e02",
+      "type": "multiple-choice",
+      "prompt": "Your host asks `chaae lenge?` You would like some tea. What do you say?",
+      "options": [
+        { "roman": "jii, shukriyaa.", "ur": "جی، شکریہ۔", "en": "Yes, thank you." },
+        { "roman": "jii nahiiN, shukriyaa.", "ur": "جی نہیں، شکریہ۔", "en": "No, thank you. But you'd like some." },
+        { "roman": "xudaa haafiz.", "ur": "خدا حافظ۔", "en": "Goodbye. But you've only just sat down." }
+      ],
+      "answerIndex": 0,
+      "explanation": "`jii, shukriyaa` is a polite yes. `jii` is doing the work of \"yes\" here.",
+      "tags": ["hospitality"]
+    },
+    {
+      "id": "e03",
+      "type": "multiple-choice",
+      "prompt": "You've finished your cup, and your host is offering more. You've had enough. What do you say?",
+      "options": [
+        { "roman": "bas, shukriyaa.", "ur": "بس، شکریہ۔", "en": "That's enough, thank you." },
+        { "roman": "jii nahiiN, shukriyaa.", "ur": "جی نہیں، شکریہ۔", "en": "No, thank you. Also fine." },
+        { "roman": "jii, zaruur!", "ur": "جی، ضرور!", "en": "Yes, of course! But you've had enough." },
+        { "roman": "chaae lenge?", "ur": "چائے لیں گے؟", "en": "Will you have some tea? That's what your host says." }
+      ],
+      "answerIndex": 0,
+      "acceptIndexes": [1],
+      "explanation": "`bas` is what you say when you've had enough. `jii nahiiN, shukriyaa` is fine too; `bas` is just the natural word for stopping refills.",
+      "tags": ["hospitality"]
+    },
+    {
+      "id": "e04",
+      "type": "fill-blank",
+      "sentence": { "roman": "chaae ___?", "ur": "چائے ___؟", "en": "Will you have some tea?" },
+      "answer": "lenge",
+      "answer_ur": "لیں گے",
+      "explanation": "`chaae lenge?` is the polite offer. Learn it as a chunk for now.",
+      "tags": ["hospitality"]
+    },
+    {
+      "id": "e05",
+      "type": "fill-blank",
+      "sentence": { "roman": "___, shukriyaa.", "ur": "___، شکریہ۔", "en": "That's enough, thank you." },
+      "answer": "bas",
+      "answer_ur": "بس",
+      "explanation": "`bas` means \"enough\" and politely stops the refills.",
+      "tags": ["hospitality"]
+    },
+    {
+      "id": "e06",
+      "sentence_card": true,
+      "type": "reorder",
+      "sentence": { "roman": "chaae bahut mazedaar hai.", "ur": "چائے بہت مزیدار ہے۔", "en": "The tea is delicious." },
+      "tokens": ["chaae", "bahut", "mazedaar", "hai"],
+      "answerOrders": [["chaae", "bahut", "mazedaar", "hai"]],
+      "explanation": "The word order is the same as `maiN bahut xush huuN`: `bahut` before the describing word, and the verb last.",
+      "tags": ["word-order"]
+    },
+    {
+      "id": "e07",
+      "type": "reorder",
+      "sentence": { "roman": "baiThiye, chaae lenge?", "ur": "بیٹھیے، چائے لیں گے؟", "en": "Sit down, will you have some tea?" },
+      "tokens": ["baiThiye", "chaae", "lenge"],
+      "answerOrders": [["baiThiye", "chaae", "lenge"]],
+      "explanation": "First the invitation, then the offer. `lenge` comes last, like any verb.",
+      "tags": ["hospitality", "word-order"]
+    },
+    {
+      "id": "e08",
+      "type": "error-spot",
+      "sentence": { "roman": "chaae bahut mazedaar huuN.", "ur": "چائے بہت مزیدار ہوں۔", "en": "The tea is delicious." },
+      "answer": "chaae bahut mazedaar hai.",
+      "answer_ur": "چائے بہت مزیدار ہے۔",
+      "explanation": "`huuN` only goes with `maiN`. The tea takes `hai`.",
+      "tags": ["honaa"]
+    },
+    {
+      "id": "e09",
+      "type": "listen",
+      "audio_text": { "roman": "baiThiye, paanii lenge?", "ur": "بیٹھیے، پانی لیں گے؟", "en": "Sit down, will you have some water?" },
+      "options": ["Sit down, will you have some water?", "Come in, will you have some tea?", "Thank you, that's enough.", "Your house is beautiful."],
+      "answerIndex": 0,
+      "explanation": "`baiThiye` is \"please sit down\", and `paanii lenge?` is \"will you have some water?\"",
+      "tags": ["hospitality"]
+    },
+    {
+      "id": "e10",
+      "sentence_card": true,
+      "type": "transform",
+      "from": { "roman": "chaae lenge?", "ur": "چائے لیں گے؟", "en": "Will you have some tea?" },
+      "instruction": "Offer water instead of tea.",
+      "answers": [{ "roman": "paanii lenge?", "ur": "پانی لیں گے؟" }],
+      "explanation": "Swap the drink. `lenge?` stays the same.",
+      "tags": ["hospitality"]
+    },
+    {
+      "id": "e11",
+      "type": "multiple-choice",
+      "prompt": "Your grandmother comes into the room, and you want to offer her the free chair. What do you say?",
+      "options": [
+        { "roman": "baiThiye.", "ur": "بیٹھیے۔", "en": "Please sit down." },
+        { "roman": "chaae mazedaar hai.", "ur": "چائے مزیدار ہے۔", "en": "The tea is delicious." },
+        { "roman": "phir milenge.", "ur": "پھر ملیں گے۔", "en": "See you again." }
+      ],
+      "answerIndex": 0,
+      "explanation": "`baiThiye` is the polite \"sit down\", right for your grandmother.",
+      "tags": ["hospitality", "respect"]
+    },
+    {
+      "id": "e12",
+      "sentence_card": true,
+      "type": "translate",
+      "en": "Thank you. Your house is very beautiful.",
+      "answers": [
+        { "roman": "shukriyaa. aapkaa ghar bahut xuubsuurat hai.", "ur": "شکریہ۔ آپ کا گھر بہت خوبصورت ہے۔" },
+        { "roman": "jii, shukriyaa. aapkaa ghar bahut xuubsuurat hai.", "ur": "جی، شکریہ۔ آپ کا گھر بہت خوبصورت ہے۔" }
+      ],
+      "self_grade": true,
+      "explanation": "`aapkaa ghar` is \"your house\", and `ghar` is masculine, so it's `aapkaa`. `bahut` goes before `xuubsuurat`, and `hai` is last.",
+      "tags": ["hospitality"]
+    }
+  ],
+  "dialogue": {
+    "setting": "You've been invited round for tea at your partner's aunty's house for the first time. She opens the door. You're the one arriving, and the younger one, so you greet first.",
+    "speakers": [
+      { "id": "you", "en": "You", "learner": true },
+      { "id": "aunty", "en": "Aunty", "gender": "f" }
+    ],
+    "lines": [
+      { "speaker": "you", "roman": "assalaam-o-alaikum, aunty!", "ur": "السلام علیکم، آنٹی!", "en": "Hello, Aunty!", "options": [{ "roman": "wa-alaikum-assalaam, aunty!", "ur": "وعلیکم السلام، آنٹی!", "en": "That's the reply, and she hasn't greeted you yet." }, { "roman": "xudaa haafiz, aunty!", "ur": "خدا حافظ، آنٹی!", "en": "Goodbye, Aunty! But you've only just arrived." }] },
+      { "speaker": "aunty", "roman": "wa-alaikum-assalaam, beTaa! aaiye, andar aaiye. baiThiye.", "ur": "وعلیکم السلام، بیٹا! آئیے، اندر آئیے۔ بیٹھیے۔", "en": "And peace be upon you, dear! Come in, come in. Sit down.", "check": { "question": "What does Aunty ask you to do?", "options": ["Come in and sit down", "Wait outside", "Take your shoes off"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "aapkaa ghar bahut xuubsuurat hai.", "ur": "آپ کا گھر بہت خوبصورت ہے۔", "en": "Your house is very beautiful." },
+      { "speaker": "aunty", "roman": "shukriyaa, beTaa! chaae lenge?", "ur": "شکریہ، بیٹا! چائے لیں گے؟", "en": "Thank you, dear! Will you have some tea?", "check": { "question": "What is Aunty offering you?", "options": ["Tea", "Water", "Dinner"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "jii, shukriyaa.", "ur": "جی، شکریہ۔", "en": "Yes, thank you.", "options": [{ "roman": "jii, zaruur. shukriyaa.", "ur": "جی، ضرور۔ شکریہ۔", "en": "Yes, of course, thank you. Also fine, and a bit warmer.", "accept": true }, { "roman": "maaf kiijiye, aunty!", "ur": "معاف کیجیے، آنٹی!", "en": "Sorry, Aunty! But nothing has gone wrong." }, { "roman": "xudaa haafiz, aunty!", "ur": "خدا حافظ، آنٹی!", "en": "Goodbye, Aunty! But you've only just sat down." }] },
+      { "speaker": "aunty", "roman": "aur chaae lenge?", "ur": "اور چائے لیں گے؟", "en": "Will you have more tea?", "check": { "question": "Your cup is empty. What is Aunty asking?", "options": ["Whether you'd like more tea", "Whether the tea is hot", "Whether you'd like water"], "answerIndex": 0 } },
+      { "speaker": "you", "roman": "bas, shukriyaa. chaae bahut mazedaar hai.", "ur": "بس، شکریہ۔ چائے بہت مزیدار ہے۔", "en": "That's enough, thank you. The tea is delicious.", "options": [{ "roman": "jii nahiiN, shukriyaa. chaae bahut mazedaar hai.", "ur": "جی نہیں، شکریہ۔ چائے بہت مزیدار ہے۔", "en": "No, thank you. The tea is delicious. Also fine.", "accept": true }, { "roman": "aur chaae lenge? chaae bahut mazedaar hai.", "ur": "اور چائے لیں گے؟ چائے بہت مزیدار ہے۔", "en": "That's what she has just asked you." }] }
+    ]
+  },
+  "practice_sentences": [
+    {"id": "p01", "roman": "aap paanii lenge?", "ur": "آپ پانی لیں گے؟", "en": "Will you have some water?"},
+    {"id": "p02", "roman": "aaiye, andar aaiye.", "ur": "آئیے، اندر آئیے۔", "en": "Come in, please come in."},
+    {"id": "p03", "roman": "aaiye, baiThiye, beTaa.", "ur": "آئیے، بیٹھیے، بیٹا۔", "en": "Come, sit down, dear.", "alt_orders": [["beTaa", "aaiye", "baiThiye"]]},
+    {"id": "p04", "roman": "jii nahiiN, shukriyaa.", "ur": "جی نہیں، شکریہ۔", "en": "No, thank you."},
+    {"id": "p05", "roman": "jii, chaae bahut mazedaar hai.", "ur": "جی، چائے بہت مزیدار ہے۔", "en": "Yes, the tea is delicious."},
+    {"id": "p06", "roman": "aapkaa ghar xuubsuurat hai.", "ur": "آپ کا گھر خوبصورت ہے۔", "en": "Your house is beautiful."},
+    {"id": "p07", "roman": "bas, shukriyaa, aunty.", "ur": "بس، شکریہ، آنٹی۔", "en": "That's enough, thank you, Aunty.", "alt_orders": [["aunty", "bas", "shukriyaa"]]},
+    {"id": "p08", "roman": "aur chaae lenge, uncle?", "ur": "اور چائے لیں گے، انکل؟", "en": "Will you have more tea, Uncle?", "alt_orders": [["uncle", "aur", "chaae", "lenge"]]}
+  ]
+}

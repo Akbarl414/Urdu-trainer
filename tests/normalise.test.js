@@ -159,6 +159,46 @@ test('greeting spellings also work inside a longer answer, and other words are s
   assert.equal(check('salam', ['salaam']).result, 'close', 'a different phrase is untouched (ordinary vowel folding only)');
 });
 
+test('lesson 6-10 phone spellings count as close, and never stand in for a different phrase', () => {
+  const close = [
+    ['aap ka naam kya hai', 'aapkaa naam kyaa hai?'],
+    ['apka nam kia hai', 'aapkaa naam kyaa hai?'],
+    ['aap ki ammi', 'aapkii ammii'],
+    ['tumara naam', 'tumhaaraa naam'],
+    ['aap kahan se hain', 'aap kahaaN se haiN?'],
+    ['khush', 'xush'],
+    ['main bohat khush hoon', 'maiN bahut xush huuN.'],
+    ['bht thaka hun', 'bahut thakaa huuN.'],
+    ['preshan', 'pareshaan'],
+    ['shukria', 'shukriyaa'],
+    ['maaf kijiye', 'maaf kiijiye'],
+    ['maf kijie', 'maaf kiijiye'],
+    ['koi baat nahi', 'koii baat nahiiN'],
+    ['koi baat nhi', 'koii baat nahiiN'],
+    ['khuda hafiz', 'xudaa haafiz'],
+    ['khudahafiz', 'xudaa haafiz'],
+    ['allah hafiz', 'allaah haafiz'],
+    ['fir milenge', 'phir milenge'],
+    ['phir milain ge', 'phir milenge'],
+    ['inshallah', 'inshaallaah'],
+    ['insha allah', 'inshaallaah'],
+    ['apna khayal rakhiye', 'apnaa xayaal rakhiye'],
+    ['aiye', 'aaiye'],
+    ['bethiye', 'baiThiye'],
+    ['chai lenge', 'chaae lenge?'],
+    ['chaye len ge', 'chaae lenge?'],
+    ['khubsurat', 'xuubsuurat'],
+    ['phir aiye ga', 'phir aaiyegaa'],
+  ];
+  for (const [typed, expected] of close) assert.equal(check(typed, [expected]).result, 'close', typed);
+  // Variants belong to their own phrase.
+  assert.equal(check('khuda hafiz', ['shukriyaa']).result, 'wrong');
+  assert.equal(check('chai', ['paanii']).result, 'wrong');
+  assert.equal(check('aap ki', ['aapkaa']).result, 'wrong', 'the ending carries gender');
+  assert.equal(check('aap ka', ['aapkii']).result, 'wrong', 'the ending carries gender');
+  assert.equal(check('aap ke', ['aapkaa']).result, 'wrong', 'the ending carries gender');
+});
+
 test('lesson 5 phone spellings: nahiiN, pataa nahiiN, jii (g), tayyaar', () => {
   for (const typed of ['nhi', 'nai', 'nahi', 'nahin', 'nahee']) assert.equal(check(typed, ['nahiiN']).result, 'close', typed);
   for (const typed of ['pta nhi', 'pata nahi', 'pata nai', 'pta nahi']) assert.equal(check(typed, ['pataa nahiiN']).result, 'close', typed);

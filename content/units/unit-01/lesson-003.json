@@ -199,5 +199,15 @@
       { "speaker": "you", "roman": "aur bacche Thiik haiN?", "ur": "اور بچے ٹھیک ہیں؟", "en": "And are the children well?" },
       { "speaker": "aaishaa", "roman": "jii, alhamdulillaah, bacche Thiik haiN.", "ur": "جی، الحمد للہ، بچے ٹھیک ہیں۔", "en": "Yes, thank God, the children are fine.", "check": {"question": "How are the children?", "options": ["Fine, thank God", "Not well", "She doesn't know"], "answerIndex": 0} }
     ]
-  }
+  },
+  "practice_sentences": [
+    {"id": "p01", "roman": "ham Thiik haiN.", "ur": "ہم ٹھیک ہیں۔", "en": "We're fine."},
+    {"id": "p02", "roman": "maiN doctor huuN.", "ur": "میں ڈاکٹر ہوں۔", "en": "I'm a doctor."},
+    {"id": "p03", "roman": "aap student haiN?", "ur": "آپ اسٹوڈنٹ ہیں؟", "en": "Are you a student?"},
+    {"id": "p04", "roman": "aaj ham Thiik haiN.", "ur": "آج ہم ٹھیک ہیں۔", "en": "We're fine today.", "alt_orders": [["ham", "aaj", "Thiik", "haiN"]]},
+    {"id": "p05", "roman": "ab maiN Thiik huuN.", "ur": "اب میں ٹھیک ہوں۔", "en": "I'm fine now.", "alt_orders": [["maiN", "ab", "Thiik", "huuN"]]},
+    {"id": "p06", "roman": "imraan saahab doctor haiN.", "ur": "عمران صاحب ڈاکٹر ہیں۔", "en": "Mr Imran is a doctor."},
+    {"id": "p07", "roman": "ham paRosii haiN.", "ur": "ہم پڑوسی ہیں۔", "en": "We're neighbours."},
+    {"id": "p08", "roman": "tum student ho?", "ur": "تم اسٹوڈنٹ ہو؟", "en": "Are you a student?"}
+  ]
 }
