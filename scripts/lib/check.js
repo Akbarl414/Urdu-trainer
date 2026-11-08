@@ -282,8 +282,8 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
       if (line.check) err(l, `dialogue.lines[${i}].check is only for other speakers' lines`);
       const romans = (line.options || []).map((o) => o.roman);
       if (new Set(romans).size !== romans.length) err(l, `dialogue.lines[${i}].options has duplicates`);
-      if (romans.includes(line.roman)) err(l, `dialogue.lines[${i}].options repeats the line itself; list only wrong answers`);
-      if (line.learner_f?.options && line.learner_f.options.some((o) => o.roman === line.learner_f.roman)) err(l, `dialogue.lines[${i}].learner_f.options repeats the woman's line; list only wrong answers`);
+      if (romans.includes(line.roman)) err(l, `dialogue.lines[${i}].options repeats the line itself; list only the other options`);
+      if (line.learner_f?.options && line.learner_f.options.some((o) => o.roman === line.learner_f.roman)) err(l, `dialogue.lines[${i}].learner_f.options repeats the woman's line; list only the other options`);
       if (line.options && line.learner_f && !line.learner_f.options) warnings.push(`${label(l)}: dialogue.lines[${i}] has options and learner_f but no learner_f.options; the woman's choice uses the man's wrong answers.`);
       if (line.learner_f) {
         if (line.learner_f.roman === line.roman) warnings.push(`${label(l)}: dialogue.lines[${i}].learner_f.roman is the same as the base line`);
@@ -405,6 +405,10 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
     }
     if (e.options && e.answerIndex !== undefined) {
       if (e.answerIndex >= e.options.length) err(l, `${path}.answerIndex ${e.answerIndex} is out of range (${e.options.length} options)`);
+      for (const a of e.acceptIndexes ?? []) {
+        if (a >= e.options.length) err(l, `${path}.acceptIndexes ${a} is out of range (${e.options.length} options)`);
+        if (a === e.answerIndex) err(l, `${path}.acceptIndexes repeats answerIndex`);
+      }
       e.options.forEach((o, i) => {
         const text = typeof o === 'string' ? o : `${o.roman ?? ''} ${o.en ?? ''}`;
         if (text.includes('(')) err(l, `${path}.options[${i}] contains "(" — annotated options give the answer away`);

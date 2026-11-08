@@ -17,13 +17,14 @@ export function choiceList(options, onPick) {
   );
   return {
     el: h('div', { class: 'stack choices' }, buttons),
-    /** Mark the right and the chosen options and show each option's English. */
-    reveal(correctIndex, pickedIndex) {
+    /** Mark the right option(s) and the chosen one, and show each option's English. */
+    reveal(correct, pickedIndex) {
       locked = true;
+      const right = [correct].flat();
       buttons.forEach((b, i) => {
         b.disabled = true;
-        b.classList.toggle('is-correct', i === correctIndex);
-        b.classList.toggle('is-wrong', i === pickedIndex && i !== correctIndex);
+        b.classList.toggle('is-correct', right.includes(i));
+        b.classList.toggle('is-wrong', i === pickedIndex && !right.includes(i));
         if (options[i].en) b.append(h('span', { class: 'choice-en' }, options[i].en));
       });
     },

@@ -28,7 +28,7 @@
     },
     {
       "heading": "Parents get `haiN`",
-      "body": "Parents and other elders get the respectful plural, as you saw with `saahab` in lesson 3: `haiN` instead of `hai`, even for one person. With a man, `meraa` becomes `mere` too. `merii` never changes. `ye meraa abbuu hai` would sound disrespectful.",
+      "body": "Parents and other elders usually get the respectful plural, as you saw with `saahab` in lesson 3: `haiN` instead of `hai`, even for one person. With a man, `meraa` becomes `mere` too. `merii` never changes. `ye meraa abbuu hai` is common within the family, but `haiN` is more respectful.",
       "table": {
         "headers": ["Who", "Introducing them"],
         "rows": [
@@ -81,17 +81,19 @@
       "sentence": { "roman": "ye merii ammii ___.", "ur": "یہ میری امی ___۔", "en": "This is my mum." },
       "answer": "haiN",
       "answer_ur": "ہیں",
+      "altAnswers": ["hai"],
       "hint": "Mum gets the respectful form.",
-      "explanation": "Parents get the respectful plural `haiN`, even though it's one person.",
+      "explanation": "Parents usually get the respectful plural `haiN`, even for one person. `ye merii ammii hai` is fine too, and common within the family.",
       "tags": ["honaa", "respect"]
     },
     {
       "id": "e04",
       "type": "error-spot",
-      "sentence": { "roman": "ye meraa abbuu hai.", "ur": "یہ میرا ابو ہے۔", "en": "This is my dad." },
+      "sentence": { "roman": "ye merii abbuu haiN.", "ur": "یہ میری ابو ہیں۔", "en": "This is my dad." },
       "answer": "ye mere abbuu haiN.",
       "answer_ur": "یہ میرے ابو ہیں۔",
-      "explanation": "Dad gets respect: `haiN` instead of `hai`, and `meraa` becomes `mere`. Two words change.",
+      "altAnswers": ["ye meraa abbuu hai."],
+      "explanation": "A dad is a man, so `merii` is wrong. `ye mere abbuu haiN` is the respectful way to say it; `ye meraa abbuu hai` is fine too, and common within the family.",
       "tags": ["respect", "possessive"]
     },
     {
@@ -154,7 +156,7 @@
         { "roman": "ho", "ur": "ہو" }
       ],
       "answerIndex": 1,
-      "explanation": "A husband is introduced with respect, so `haiN`, and that's why it's `mere`, not `meraa`.",
+      "explanation": "`mere` is the plural form, used here for respect, so the verb has to match: `haiN`. `hai` doesn't go with `mere`.",
       "tags": ["respect"]
     },
     {
@@ -163,11 +165,12 @@
       "type": "translate",
       "en": "This is my mum, and this is my dad.",
       "answers": [
-        { "roman": "ye merii ammii haiN, aur ye mere abbuu haiN.", "ur": "یہ میری امی ہیں، اور یہ میرے ابو ہیں۔" }
+        { "roman": "ye merii ammii haiN, aur ye mere abbuu haiN.", "ur": "یہ میری امی ہیں، اور یہ میرے ابو ہیں۔" },
+        { "roman": "ye merii ammii hai, aur ye meraa abbuu hai.", "ur": "یہ میری امی ہے، اور یہ میرا ابو ہے۔" }
       ],
       "self_grade": true,
       "hint": "Both parents get the respectful verb.",
-      "explanation": "Both get `haiN`. `merii ammii` stays as it is; `meraa` becomes `mere` before `abbuu`.",
+      "explanation": "Both usually get `haiN`, the respectful plural: `merii ammii` stays as it is, and `meraa` becomes `mere` before `abbuu`. `merii ammii hai` and `meraa abbuu hai` are fine too, and common within the family.",
       "tags": ["respect", "possessive"]
     },
     {
@@ -192,11 +195,11 @@
     "lines": [
       { "speaker": "you", "roman": "assalaam-o-alaikum! aap kaisii haiN?", "ur": "السلام علیکم! آپ کیسی ہیں؟", "en": "Hello! How are you?" },
       { "speaker": "grandma", "roman": "wa-alaikum-assalaam, beTaa. alhamdulillaah, Thiik huuN.", "ur": "وعلیکم السلام، بیٹا۔ الحمد للہ، ٹھیک ہوں۔", "en": "And peace be upon you, dear. Fine, thank God.", "check": {"question": "How is she?", "options": ["Fine, thank God", "Tired", "She doesn't say"], "answerIndex": 0} },
-      { "speaker": "you", "roman": "ye merii ammii haiN, aur ye mere abbuu haiN.", "ur": "یہ میری امی ہیں، اور یہ میرے ابو ہیں۔", "en": "This is my mum, and this is my dad.", "options": [{"roman": "ye meraa ammii haiN, aur ye merii abbuu haiN.", "ur": "یہ میرا امی ہیں، اور یہ میری ابو ہیں۔", "en": "The two forms of \"my\" are the wrong way round."}, {"roman": "ye merii ammii hai, aur ye mere abbuu hai.", "ur": "یہ میری امی ہے، اور یہ میرے ابو ہے۔", "en": "Parents take the respectful plural verb."}] },
+      { "speaker": "you", "roman": "ye merii ammii haiN, aur ye mere abbuu haiN.", "ur": "یہ میری امی ہیں، اور یہ میرے ابو ہیں۔", "en": "This is my mum, and this is my dad.", "options": [{"roman": "ye meraa ammii haiN, aur ye merii abbuu haiN.", "ur": "یہ میرا امی ہیں، اور یہ میری ابو ہیں۔", "en": "The two forms of \"my\" are the wrong way round."}, {"roman": "ye merii ammii hai, aur ye meraa abbuu hai.", "ur": "یہ میری امی ہے، اور یہ میرا ابو ہے۔", "en": "Also fine, and common within the family. With haiN it is more respectful.", "accept": true}] },
       { "speaker": "grandma", "roman": "assalaam-o-alaikum! aap kaise haiN?", "ur": "السلام علیکم! آپ کیسے ہیں؟", "en": "Hello! How are you both?", "check": {"question": "Who is she speaking to now?", "options": ["Your mum and dad", "Your brother", "You"], "answerIndex": 0} },
       { "speaker": "you", "roman": "aur wo meraa bhaaii hai.", "ur": "اور وہ میرا بھائی ہے۔", "en": "And that's my brother, over there." },
       { "speaker": "grandma", "roman": "wo bhii student hai?", "ur": "وہ بھی اسٹوڈنٹ ہے؟", "en": "Is he a student too?", "check": {"question": "What does she ask about your brother?", "options": ["Whether he is a student too", "Whether he is a doctor", "Whether he is married"], "answerIndex": 0} },
-      { "speaker": "you", "roman": "jii, wo bhii student hai.", "ur": "جی، وہ بھی اسٹوڈنٹ ہے۔", "en": "Yes, he's a student too.", "options": [{"roman": "jii, wo bhii student haiN.", "ur": "جی، وہ بھی اسٹوڈنٹ ہیں۔", "en": "The respectful plural is for elders, not for your brother."}, {"roman": "jii, maiN bhii student huuN.", "ur": "جی، میں بھی اسٹوڈنٹ ہوں۔", "en": "Yes, I'm a student too."}] }
+      { "speaker": "you", "roman": "jii, wo bhii student hai.", "ur": "جی، وہ بھی اسٹوڈنٹ ہے۔", "en": "Yes, he's a student too.", "options": [{"roman": "jii, wo bhii student haiN.", "ur": "جی، وہ بھی اسٹوڈنٹ ہیں۔", "en": "Also fine: the respectful plural, for an elder brother.", "accept": true}, {"roman": "jii, maiN bhii student huuN.", "ur": "جی، میں بھی اسٹوڈنٹ ہوں۔", "en": "Yes, I'm a student too."}] }
     ]
   }
 }

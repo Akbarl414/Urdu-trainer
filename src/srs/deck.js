@@ -5,7 +5,7 @@
 // so running it at lesson commit and once at boot can't disturb anyone's progress.
 
 import { unlockedFeatures, facetsFor, wordCardId, exerciseCardId } from './facets.js';
-import { newCard, review, alreadyKnow } from './fsrs.js';
+import { newCard, review, alreadyKnow, capFirstReturn } from './fsrs.js';
 
 const STEP_GAP_MS = 60 * 1000; // a second lesson rating counts as a later learning step
 
@@ -65,6 +65,7 @@ export function syncDeck(data, content, now, { grades = {}, known = [] } = {}) {
       [grades[id]].flat().forEach((g, i) => {
         card = review(card, facet, g, now + i * STEP_GAP_MS, id);
       });
+      if (wordId && facet === 'main') card = capFirstReturn(card, now, id); // "I already know this" keeps its long interval
     }
     cards[id] = card;
     created.push(id);

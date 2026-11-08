@@ -96,9 +96,10 @@ export function spaceSiblings(ids, { lessonOf = defaultLessonOf, isYoung = () =>
  * Up to `n` cards from the front of `ids`, chosen so lessons and formats differ as much as possible (the warm-up, PLAN D28).
  * @param {string[]} ids  in priority order
  * @param {number} n
- * @param {{ lessonOf?: (id: string) => string|null, formatOf?: (id: string) => string|null }} [opts]
+ * @param {{ lessonOf?: (id: string) => string|null, formatOf?: (id: string) => string|null, first?: (id: string) => boolean }} [opts]
+ *   first: cards to choose before any others (the previous lesson's new words, PLAN D32)
  */
-export function pickVaried(ids, n, { lessonOf = defaultLessonOf, formatOf = () => null } = {}) {
+export function pickVaried(ids, n, { lessonOf = defaultLessonOf, formatOf = () => null, first = () => false } = {}) {
   const rest = [...ids];
   const out = [];
   const lessons = new Set();
@@ -109,7 +110,7 @@ export function pickVaried(ids, n, { lessonOf = defaultLessonOf, formatOf = () =
     rest.forEach((id, i) => {
       const lesson = lessonOf(id);
       const format = formatOf(id);
-      const score = (lesson !== null && !lessons.has(lesson) ? 2 : 0) + (format !== null && !formats.has(format) ? 1 : 0) + (out.some((x) => itemKey(x) === itemKey(id)) ? -3 : 0);
+      const score = (first(id) ? 10 : 0) + (lesson !== null && !lessons.has(lesson) ? 2 : 0) + (format !== null && !formats.has(format) ? 1 : 0) + (out.some((x) => itemKey(x) === itemKey(id)) ? -3 : 0);
       if (score > bestScore) {
         bestScore = score;
         best = i;

@@ -134,6 +134,15 @@
           "type": "integer",
           "minimum": 0
         },
+        "acceptIndexes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "uniqueItems": true,
+          "description": "Other options that are also right: politeness or register variants (PLAN D33). The explanation says how they differ."
+        },
         "learner_f": {
           "type": "object",
           "minProperties": 1,
@@ -197,6 +206,15 @@
         "answerIndex": {
           "type": "integer",
           "minimum": 0
+        },
+        "acceptIndexes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "uniqueItems": true,
+          "description": "Other options that are also right: politeness or register variants (PLAN D33). The explanation says how they differ."
         },
         "learner_f": {
           "type": "object",

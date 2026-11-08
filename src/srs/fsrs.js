@@ -123,6 +123,20 @@ export async function createEngine({ fuzz = true, retention, getTarget = () => D
   return { newCard, preview, review, retrievability, alreadyKnow };
 }
 
+/**
+ * A new word from a lesson first returns within 1-3 days whatever the memory target (PLAN D32): at Relaxed the scheduler
+ * alone would leave it about 8 days. The day is fixed by the card id, so a lesson's words spread over the three days.
+ * Only a card that has graduated and would come back later than that is changed.
+ */
+export function capFirstReturn(card, now, cardId) {
+  if (card.st !== CARD_STATE.review) return card;
+  let h = 0;
+  for (const ch of String(cardId)) h = (Math.imul(h, 31) + ch.charCodeAt(0)) >>> 0;
+  const days = 1 + (h % 3);
+  const latest = now + days * DAY_MS;
+  return card.due > latest ? { ...card, due: latest, sd: days } : card;
+}
+
 let readTarget = () => DEFAULT_MEMORY_TARGET;
 /** Boot tells the scheduler where the setting lives, so it is read live (a change or an imported backup applies at once). */
 export function configureMemoryTarget(getTarget) {

@@ -91,3 +91,35 @@ test('validator: options belong to the learner and must be wrong answers', () =>
   b = makeBundle(); lines(b)[1].options = [{ ...wrong, roman: 'Bad' }];
   assert.ok(errorsOf(b).some((e) => /capital/.test(e)));
 });
+
+test('register variants: an accepted option counts as right alongside the line itself', () => {
+  const d = { ...dialogue, lines: [{ speaker: 'you', roman: 'ye merii ammii haiN.', ur: 'یہ میری امی ہیں۔', en: 'This is my mum.', options: [{ roman: 'ye merii ammii hai.', ur: 'یہ میری امی ہے۔', en: 'Also fine.', accept: true }, { roman: 'ye meraa ammii hai.', ur: 'یہ میرا امی ہے۔', en: 'Wrong "my".' }] }] };
+  const t = lineTask(d, 0, 'm');
+  assert.equal(t.correct.length, 2);
+  assert.ok(t.correct.includes(t.answerIndex));
+  assert.deepEqual(new Set(t.correct.map((i) => t.options[i].roman)), new Set(['ye merii ammii haiN.', 'ye merii ammii hai.']));
+});
+
+test('the distractor rule holds in Lessons 2–4: register variants are accepted or absent', () => {
+  const opts = (l, i) => content.getLesson(l).dialogue.lines[i].options;
+  assert.equal(opts('lesson-002', 3).find((o) => o.roman.includes('tum')).accept, true);
+  assert.equal(opts('lesson-004', 2).find((o) => o.roman === 'ye merii ammii hai, aur ye meraa abbuu hai.').accept, true);
+  assert.equal(opts('lesson-004', 6).find((o) => o.roman === 'jii, wo bhii student haiN.').accept, true);
+  const ex = (l, e) => content.getExercise(l, e);
+  assert.deepEqual(ex('lesson-002', 'e04').acceptIndexes, [2]);
+  assert.deepEqual(ex('lesson-003', 'e04').acceptIndexes, [0]);
+  assert.ok(ex('lesson-004', 'e03').altAnswers.includes('hai'));
+  assert.equal(ex('lesson-004', 'e04').sentence.roman, 'ye merii abbuu haiN.', 'the mistake is a gender error, not a register choice');
+  assert.ok(ex('lesson-004', 'e04').altAnswers.includes('ye meraa abbuu hai.'));
+  assert.ok(ex('lesson-004', 'e11').answers.some((a) => a.roman === 'ye merii ammii hai, aur ye meraa abbuu hai.'));
+});
+
+test('validator: acceptIndexes must be in range and differ from the answer', () => {
+  let b = makeBundle(); const mc = () => b.lessons[0].data.exercises.find((e) => e.id === 'e02');
+  mc().acceptIndexes = [9];
+  assert.ok(errorsOf(b).some((e) => /acceptIndexes 9 is out of range/.test(e)));
+  b = makeBundle(); mc().acceptIndexes = [mc().answerIndex];
+  assert.ok(errorsOf(b).some((e) => /repeats answerIndex/.test(e)));
+  b = makeBundle(); mc().acceptIndexes = [1];
+  assert.deepEqual(errorsOf(b), []);
+});

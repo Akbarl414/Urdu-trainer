@@ -4,7 +4,8 @@
 
 import { studyDay, previousDay } from '../db/day.js';
 import { runProblem, progressLine } from './machine.js';
-import { buildQueue, pickVaried } from '../srs/queue.js';
+import { buildQueue, pickVaried, dueInPriorityOrder } from '../srs/queue.js';
+import { parseCardId } from '../srs/facets.js';
 import { isReviewable, lessonOfCard, describeCard, faceOptions } from '../srs/cardFace.js';
 import { reviewsDoneToday } from '../srs/stats.js';
 
@@ -84,13 +85,22 @@ export function todayQueue(data, content, now) {
   });
 }
 
-/** Chooses the warm-up: at most a handful of cards from different lessons in different formats (PLAN D28). */
-export function warmupPicker(data, content) {
+/**
+ * Chooses the warm-up: the new words of the lesson before `lesson` come first, then at most a handful of cards
+ * from different lessons in different formats (PLAN D28, D32). Those new words count even if today's cap left them out of `queue`.
+ */
+export function warmupPicker(data, content, lesson, now = Date.now()) {
   const cards = data.srs.decks.main.cards;
   const opts = faceOptions(data, content);
+  const previous = content.lessons.find((l) => l.order === lesson.order - 1);
+  const first = (id) => {
+    const p = parseCardId(id);
+    return !!previous && p?.kind === 'word' && p.facet === 'main' && content.getWord(p.wordId)?.introduced_in === previous.id;
+  };
   const formatOf = (id) => {
     const face = describeCard(id, content, { ...opts, card: cards[id] });
     return face?.format ?? face?.exercise?.type ?? null;
   };
-  return (queue, n) => pickVaried(queue, n, { lessonOf: (id) => lessonOfCard(id, content), formatOf });
+  const dueFirst = dueInPriorityOrder(cards, now, { rolloverHour: data.settings.dayRolloverHour, isReviewable: (id) => isReviewable(id, content) }).filter(first);
+  return (queue, n) => pickVaried([...new Set([...queue, ...dueFirst])], n, { lessonOf: (id) => lessonOfCard(id, content), formatOf, first });
 }

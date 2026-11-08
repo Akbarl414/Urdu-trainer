@@ -81,7 +81,7 @@ export function mountExercise(ctx, rawExercise, { onResult, onContinue }) {
     case 'multiple-choice': {
       promptArea.append(...[h('p', { class: 'ex-question' }, ex.prompt), ex.sentence ? sentenceBlock(ex.sentence) : null].filter(Boolean));
       const list = choiceList(X.choiceOptions(ex), (i) => {
-        list.reveal(ex.answerIndex, i);
+        list.reveal(X.correctIndexes(ex), i);
         finish(X.isChoiceCorrect(ex, i));
       });
       answerArea.append(list.el);
@@ -90,7 +90,7 @@ export function mountExercise(ctx, rawExercise, { onResult, onContinue }) {
     case 'choose-form': {
       promptArea.append(sentenceBlock(ex.sentence, { blank: true }));
       const list = choiceList(X.choiceOptions(ex), (i) => {
-        list.reveal(ex.answerIndex, i);
+        list.reveal(X.correctIndexes(ex), i);
         const right = ex.options[ex.answerIndex];
         finish(X.isChoiceCorrect(ex, i), { reveal: [doneSentence(ex.sentence, { roman: ex.sentence.roman.replace('___', right.roman), ur: ex.sentence.ur.replace('___', right.ur) })] });
       });
@@ -100,7 +100,7 @@ export function mountExercise(ctx, rawExercise, { onResult, onContinue }) {
     case 'listen': {
       promptArea.append(h('p', { class: 'ex-question' }, 'What did you hear?'), h('div', { class: 'listen-play' }, audioButton(ex.audio_text, { big: true, label: 'Play' })), h('p', { class: 'muted small center' }, 'Tap as often as you like.'));
       const list = choiceList(X.choiceOptions(ex), (i) => {
-        list.reveal(ex.answerIndex, i);
+        list.reveal(X.correctIndexes(ex), i);
         finish(X.isChoiceCorrect(ex, i), { reveal: [doneSentence(ex.audio_text)] });
       });
       answerArea.append(list.el);

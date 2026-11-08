@@ -88,7 +88,8 @@
         { "roman": "ho", "ur": "ہو" }
       ],
       "answerIndex": 1,
-      "explanation": "`saahab` shows respect, so the verb is the respectful plural `haiN`, even for one man.",
+      "acceptIndexes": [0],
+      "explanation": "`saahab` shows respect, so people say `haiN`, the respectful plural, even for one man. `hai` isn't a grammar mistake, but it sounds less respectful next to `saahab`.",
       "tags": ["honaa", "respect"]
     },
     {

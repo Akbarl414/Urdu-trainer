@@ -7,7 +7,7 @@
 //          --words 8        new words per lesson (default 8)
 //          --retention 0.75 add a scenario with every card at this retention, with games and without
 
-import { createEngine, MEMORY_TARGETS, GRADE, CARD_STATE, markWeak } from '../src/srs/fsrs.js';
+import { createEngine, MEMORY_TARGETS, GRADE, CARD_STATE, markWeak, capFirstReturn } from '../src/srs/fsrs.js';
 import { buildQueue, studyDayEnd } from '../src/srs/queue.js';
 import { chooseFormat } from '../src/srs/format.js';
 import { earnsGameCredit } from '../src/srs/gameCredit.js';
@@ -131,7 +131,7 @@ async function simulate({ retention, games, cap, seed, accuracy = 1 }) {
       let card = engine.newCard(now);
       if (random() < LESSON_WORD_P) {
         card = engine.review(card, 'main', GRADE.good, now, id);
-        card = engine.review(card, 'main', GRADE.good, now + 60000, id);
+        card = capFirstReturn(engine.review(card, 'main', GRADE.good, now + 60000, id), now, id);
       } else card = engine.review(card, 'main', GRADE.again, now, id);
       add(id, card, m);
       made.push(id);

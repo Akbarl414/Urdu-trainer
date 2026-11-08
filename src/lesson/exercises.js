@@ -40,7 +40,10 @@ export function choiceOptions(ex) {
   return ex.options.map((o) => (typeof o === 'string' ? { text: o } : { roman: o.roman, ur: o.ur, en: o.en }));
 }
 
-export const isChoiceCorrect = (ex, index) => index === ex.answerIndex;
+/** Every option that counts as right: the answer, plus any accepted politeness or register variants (PLAN D33). */
+export const correctIndexes = (ex) => [ex.answerIndex, ...(ex.acceptIndexes ?? [])];
+
+export const isChoiceCorrect = (ex, index) => correctIndexes(ex).includes(index);
 
 /** Roman answers a typed or spoken answer is compared with. */
 export function acceptedAnswers(ex) {

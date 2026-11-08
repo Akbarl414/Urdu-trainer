@@ -51,6 +51,36 @@
         }
       }
     },
+    "dialogueOption": {
+      "type": "object",
+      "description": "A learner's dialogue option other than the line itself. Wrong answers must be unambiguously wrong (PLAN D33). A politeness or register variant is marked accept: true, and its English says how it differs.",
+      "required": [
+        "roman",
+        "ur",
+        "en"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "roman": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ur": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "accept": {
+          "type": "boolean"
+        },
+        "audio": {
+          "$ref": "#/definitions/audioPath"
+        }
+      }
+    },
     "pair": {
       "type": "object",
       "description": "A Urdu form with no English gloss of its own: roman + ur.",

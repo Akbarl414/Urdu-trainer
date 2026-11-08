@@ -369,3 +369,46 @@ test('streak: shown while yesterday or today was studied, zero once a day is mis
   assert.equal(currentStreak(stats, '2026-11-03'), 0);
   assert.equal(currentStreak({ streak: 0, lastStudyDay: null }, DAY), 0);
 });
+
+// ---------------------------------------------------------------- first return and warm-up priority (PLAN D32)
+
+const { warmupPicker } = await import('../src/lesson/path.js');
+const { configureMemoryTarget } = await import('../src/srs/fsrs.js');
+
+test('commit: new words first return within 1–3 days at every memory target, spread over those days', () => {
+  try {
+    for (const target of ['relaxed', 'balanced', 'strong']) {
+      configureMemoryTarget(() => target);
+      const data = defaultData(NOW);
+      data.progress.run = playThrough({ known: [], wrong: [] });
+      commitLesson(data, content, NOW);
+      const days = lesson.new_vocab.filter((w) => w !== 'aur').map((w) => (data.srs.decks.main.cards[`w:${w}:main`].due - NOW) / 86400000);
+      for (const d of days) assert.ok(d >= 1 && d <= 3, `${target}: ${d} days`);
+      if (target === 'relaxed') assert.ok(new Set(days).size >= 2, `spread: ${days}`);
+    }
+  } finally {
+    configureMemoryTarget(() => 'relaxed');
+  }
+});
+
+test('commit: "I already know this" keeps its longer first interval', () => {
+  const data = defaultData(NOW);
+  data.progress.run = playThrough({ known: ['main'] });
+  commitLesson(data, content, NOW);
+  assert.ok((data.srs.decks.main.cards['w:main:main'].due - NOW) / 86400000 > 3);
+});
+
+test('warm-up: the previous lesson’s new words come first, even past the daily cap', () => {
+  const data = defaultData(NOW);
+  const mk = (s) => ({ due: NOW - 3600000, s, d: 5, st: 2, r: 3, l: 0, lr: NOW - 2 * 86400000, sd: 2, ls: 0 });
+  for (const id of ['lesson-001', 'lesson-002', 'lesson-003']) data.progress.lessons[id] = { firstCompletedAt: 1, lastCompletedAt: 1, timesCompleted: 1, knownWordIds: [] };
+  const cards = data.srs.decks.main.cards;
+  cards['w:tum:main'] = mk(2); // lesson 2
+  cards['w:ham:main'] = mk(2); // lesson 3
+  cards['w:parosii:main'] = mk(2); // lesson 3
+  cards['w:aur:main'] = mk(2); // lesson 1
+  const pick = warmupPicker(data, content, content.getLesson('lesson-004'), NOW);
+  const chosen = pick(['w:aur:main', 'w:tum:main', 'w:ham:main'], 3); // w:parosii is due but outside the capped queue
+  assert.deepEqual(new Set(chosen.slice(0, 2)), new Set(['w:ham:main', 'w:parosii:main']));
+  assert.equal(chosen.length, 3);
+});

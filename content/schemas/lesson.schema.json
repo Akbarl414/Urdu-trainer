@@ -400,9 +400,9 @@
                 "minItems": 1,
                 "maxItems": 3,
                 "items": {
-                  "$ref": "common.schema.json#/definitions/triple"
+                  "$ref": "common.schema.json#/definitions/dialogueOption"
                 },
-                "description": "Learner lines only: wrong answers. With options the learner picks the line; without them the learner builds it from tiles. The English of each stays hidden until answered, so it can say why the option is wrong."
+                "description": "Learner lines only: the other options. With options the learner picks the line; without them the learner builds it from tiles. The English of each stays hidden until answered, so it can say why the option is wrong, or how an accepted variant differs."
               },
               "learner_f": {
                 "type": "object",
@@ -429,9 +429,9 @@
                     "minItems": 1,
                     "maxItems": 3,
                     "items": {
-                      "$ref": "common.schema.json#/definitions/triple"
+                      "$ref": "common.schema.json#/definitions/dialogueOption"
                     },
-                    "description": "The woman's wrong options, when they differ from the base ones."
+                    "description": "The woman's other options, when they differ from the base ones."
                   },
                   "audio": {
                     "$ref": "common.schema.json#/definitions/audioPath"

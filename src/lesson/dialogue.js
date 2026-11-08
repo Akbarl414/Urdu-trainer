@@ -26,7 +26,7 @@ function shuffled(right, wrong, seed) {
  * @param {number} i  line index
  * @param {'m'|'f'|null|undefined} gender
  * @returns {{ kind: 'hear', question: string, options: {text:string}[], answerIndex: number }
- *   | { kind: 'pick', options: {roman:string,ur:string,en?:string}[], answerIndex: number }
+ *   | { kind: 'pick', options: {roman:string,ur:string,en?:string,accept?:boolean}[], answerIndex: number, correct: number[] }
  *   | { kind: 'tiles', tiles: string[], order: string[] }}
  */
 export function lineTask(dialogue, i, gender) {
@@ -38,7 +38,11 @@ export function lineTask(dialogue, i, gender) {
     const picked = shuffled(options[answerIndex], options.filter((_, n) => n !== answerIndex), seed);
     return { kind: 'hear', question, options: picked.options.map((text) => ({ text })), answerIndex: picked.answerIndex };
   }
-  if (line.options?.length) return { kind: 'pick', ...shuffled({ roman: line.roman, ur: line.ur, en: line.en }, line.options, seed) };
+  if (line.options?.length) {
+    const picked = shuffled({ roman: line.roman, ur: line.ur, en: line.en }, line.options, seed);
+    // Accepted options are politeness or register variants (PLAN D33): right, with their English saying how they differ.
+    return { kind: 'pick', ...picked, correct: picked.options.flatMap((o, n) => (n === picked.answerIndex || o.accept ? [n] : [])) };
+  }
   const order = tokens(line.roman);
   return { kind: 'tiles', order, tiles: reorderTiles({ id: seed, tokens: order, answerOrders: [order] }) };
 }

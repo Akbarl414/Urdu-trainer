@@ -95,8 +95,8 @@ export function mountDialogue(ctx) {
   const area = h('div', { class: 'ex-answer' });
   if (task.kind === 'pick') {
     const list = choiceList(task.options, (picked) => {
-      list.reveal(task.answerIndex, picked);
-      answered(picked === task.answerIndex);
+      list.reveal(task.correct, picked);
+      answered(task.correct.includes(picked));
     });
     area.append(list.el);
   } else {

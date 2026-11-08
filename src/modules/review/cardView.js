@@ -99,7 +99,7 @@ export function reviewCard({ id, content, show, onGraded }) {
   }
 
   function chooseOption(o) {
-    const right = o.value === face.correct;
+    const right = o.value === face.correct || !!face.accepted?.includes(o.value);
     reveal({ suggested: right ? GRADE.good : GRADE.again, feedback: h('p', { class: `feedback ${right ? 'good' : 'bad'}` }, right ? 'Correct' : `Not quite — you chose “${o.label}”.`) });
   }
 

@@ -204,6 +204,7 @@ function exerciseFace(id, parsed, source, { learnerGender = null } = {}) {
         defaultMode: 'choice',
         options: ex.options.map((o, i) => ({ label: typeof o === 'string' ? o : o.roman ?? o.en, value: i })),
         correct: ex.answerIndex,
+        accepted: ex.acceptIndexes ?? [],
         reveal: [{ en: typeof ex.options[ex.answerIndex] === 'string' ? ex.options[ex.answerIndex] : ex.options[ex.answerIndex].roman }, ...why],
       };
     case 'choose-form':
@@ -215,6 +216,7 @@ function exerciseFace(id, parsed, source, { learnerGender = null } = {}) {
         defaultMode: 'choice',
         options: ex.options.map((o, i) => ({ label: o.roman, ur: o.ur, value: i })),
         correct: ex.answerIndex,
+        accepted: ex.acceptIndexes ?? [],
         reveal: [{ roman: sentence.roman.replace('___', ex.options[ex.answerIndex].roman), ur: sentence.ur.replace('___', ex.options[ex.answerIndex].ur), en: sentence.en }, ...why],
       };
     case 'reorder': {
