@@ -65,7 +65,7 @@ export function syncDeck(data, content, now, { grades = {}, known = [] } = {}) {
       [grades[id]].flat().forEach((g, i) => {
         card = review(card, facet, g, now + i * STEP_GAP_MS, id);
       });
-      if (wordId && facet === 'main') card = capFirstReturn(card, now, id); // "I already know this" keeps its long interval
+      if (facet === 'main' || facet === 'default') card = capFirstReturn(card, now, id); // words and sentence cards; "I already know this" keeps its long interval
     }
     cards[id] = card;
     created.push(id);

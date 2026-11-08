@@ -249,7 +249,7 @@ Cards of the earlier design (`meaning_ur_en`, `meaning_en_ur`, `situation_to_phr
 - Uses the current `DefaultScheduler` API pinned to `version: 'FSRS-6'` (its default is FSRS-7, which would change every interval), created once at module load (it is async). The card id seeds fuzz, so cards spread out but each card is stable. The stored CompactCard is independent of the library's own card fields (`toFsrs`/`fromFsrs` in `srs/fsrs.js` translate), so upgrading the library never touches stored data. Verified against the previous classic-API build: identical results on 45 of 50 comparison points; the 5 differences are cards with stability under a day, where the classic API gave Good and Easy the same interval and this one separates them by a day.
 - Buttons show the `preview()` due time of each grade, formatted like `10m · 1d · 3d · 9d`.
 - **Lesson items on commit** (D28): the lesson's two word checks act as the main card's learning steps. Both right → Good twice, so the card graduates, and it first returns within 1–3 days at every memory target (D32). Anything missed → Again, and it comes back the same day. **"I already know this"** cards get Easy applied twice, about 1 minute apart internally, giving a first interval of weeks (about 6 at Relaxed).
-- **Sentence cards** get their rating from the lesson attempt (correct → Good twice, hint → Hard, wrong → Again).
+- **Sentence cards** get their rating from the lesson attempt (correct → Good twice, then the same 1–3 day first return as new words, D32; hint → Hard; wrong → Again).
 
 ### 5.4 Daily queue (`queue.js`)
 1. Candidates: all non-retired cards with `due ≤ end of study day`, excluding the New state (every card is born from a lesson, so the deck has no "new card" stream).
@@ -418,12 +418,12 @@ D1–D4 and the curriculum/romanization changes were decided by you. The rest us
 | D29 | Memory target (Phase 4b) | Replaces D16's two retention targets. `settings.memoryTarget` (`'relaxed' \| 'balanced' \| 'strong'`, default `relaxed`) sets one desired retention for every card: 0.80, 0.85 or 0.90. Added in `MIGRATIONS[4]`; a saved value is kept. Control on Today until Settings (Phase 5) takes it over. Chosen after simulating 180 days of one lesson a day: Relaxed, games counting (with the D30 guards), cap 35 as a safety net. Results below. |
 | D30 | Games and reviews (Phase 4b) | **Replaces the earlier "games never push intervals further out" rule** (BRIEF §5.4, PLAN §5.6). A correct game answer counts as a Good review from the moment games are built, subject to three guards in `src/srs/gameCredit.js`: recall formats only (typed, speed recall from memory, listening; never option-picking); Review-state cards only, due or within 20% of their interval from being due; at most one credit per card per study day (`gc`). Wrong answers still mark a card weak. The games spec in §8 carries the same guards. |
 | D31 | Interactive dialogues (Phase 4b) | Dialogues felt passive. Screens are now: the scene, one per line, then the whole exchange played through (`stepLength` = lines + 2; no run-format change, because old indexes still mean the same line). **The learner's lines:** built from tiles, or picked from options when the line has `options` (authored wrong answers, with an English note revealed after answering), always in the learner's own gender form (`learner_f`, which may also carry `options`). **Other speakers:** the line plays first and its text stays hidden until a comprehension question (`check`, required by the validator) is answered; with no voice the line is shown to read instead. Dialogue answers are not rated: they create no cards and don't touch the schedule. `DIALOGUE_LINE_SEC` went from 12 to 20. Logic in `src/lesson/dialogue.js`. No stored shape changed. Lessons 1–5 updated with `check` and `options`; no shipped id changed. |
-| D32 | Early first return (Phase 4b) | At Relaxed the scheduler alone first brought a new word back after about 8 days. A new word or phrase from a lesson now first returns within 1–3 days at every memory target: `capFirstReturn` (`src/srs/fsrs.js`) limits a graduated card's first interval to 1, 2 or 3 days, chosen by card id so a lesson's words spread out. FSRS stability is unchanged. "I already know this" words keep their longer first interval, and sentence cards are not capped. **Warm-up:** the due new words of the lesson before the one being started come first, even if the daily cap left them out of the queue, then the variety rule (D28). No stored shape changed. |
+| D32 | Early first return (Phase 4b) | At Relaxed the scheduler alone first brought a new card back after about 8 days. A new word, phrase or sentence card from a lesson now first returns within 1–3 days at every memory target: `capFirstReturn` (`src/srs/fsrs.js`) limits a graduated card's first interval to 1, 2 or 3 days, chosen by card id so a lesson's cards spread out. FSRS stability is unchanged. "I already know this" words keep their longer first interval. **Warm-up:** the due new words of the lesson before the one being started come first, even if the daily cap left them out of the queue, then the variety rule (D28). No stored shape changed. |
 | D33 | Distractor rule (Phase 4b) | **Wrong options must be unambiguously wrong: wrong gender agreement, wrong person, wrong meaning or wrong word. A politeness or register variant is never marked wrong.** Respectful plural `haiN` for an elder brother and `hai` for one's own mum are both acceptable. Where the register choice matters, accept both and explain the difference after answering. Applies to dialogue options, choice exercises, error-spot sentences and typed answers. Schema: `acceptIndexes` on `multiple-choice` and `choose-form`, `accept: true` on a dialogue option (its English says how it differs); typed answers use `altAnswers` or extra `answers`. Lessons 1–5 corrected to match: no ids changed. Also recorded in `CONTENT_GUIDE.md` and the checklist in `CLAUDE.md`. |
 
 ### Final load simulation (D29, D32)
 
-`npm run simulate-load`, seeded, default settings. Games assume 2 rounds a day of 8 recall-format items, played after the day's reviews, with credit only as D30 allows. Until games exist, the "before games exist" row applies. New words first return within 1–3 days (D32).
+`npm run simulate-load`, seeded, default settings. Games assume 2 rounds a day of 8 recall-format items, played after the day's reviews, with credit only as D30 allows. Until games exist, the "before games exist" row applies. New words and sentence cards first return within 1–3 days (D32).
 
 ```
 180 days, one lesson a day: 8 new words + 2–3 sentence cards. Average of 5 simulated learners.
@@ -433,33 +433,33 @@ NO CAP: what the schedule asks for
 
 Scenario                          Avg/day  Peak  Day 30  Day 90  Day 180  +repeats  Game credits  Answered right  Recall day 180
 --------------------------------  -------  ----  ------  ------  -------  --------  ------------  --------------  --------------
-Relaxed 0.80 + games (chosen)          28    50      18      29       40        39           1.3             88%             90%
-Relaxed 0.80, before games exist       29    55      19      31       37        41           0.0             88%             90%
-Balanced 0.85 + games                  33    57      23      35       48        44           1.4             91%             93%
-Strong 0.90 + games                    43    72      29      44       60        54           1.6             94%             95%
+Relaxed 0.80 + games (chosen)          28    51      18      31       39        39           1.2             89%             90%
+Relaxed 0.80, before games exist       29    48      19      30       38        40           0.0             89%             90%
+Balanced 0.85 + games                  33    58      24      34       48        44           1.4             91%             92%
+Strong 0.90 + games                    44    73      29      43       60        54           1.6             93%             95%
 
 CAP 35: what you would actually do
 
 Scenario                          Avg/day  Day 30  Day 90  Day 180  Days at cap  Most waiting  Waiting day 180  Recall day 180
 --------------------------------  -------  ------  ------  -------  -----------  ------------  ---------------  --------------
-Relaxed 0.80 + games (chosen)          27      18      30       35           64            66               65             90%
-Relaxed 0.80, before games exist       28      19      31       35           83           100               96             89%
-Balanced 0.85 + games                  30      23      34       35           95           237              237             92%
-Strong 0.90 + games                    32      29      35       35          134           586              585             93%
+Relaxed 0.80 + games (chosen)          27      18      30       35           58            54               54             90%
+Relaxed 0.80, before games exist       28      19      30       34           77            91               64             89%
+Balanced 0.85 + games                  30      24      34       35           98           258              258             92%
+Strong 0.90 + games                    32      29      35       35          136           599              599             93%
 
 NO CAP, a learner who recalls 8% less than the model expects
 
 Scenario                          Avg/day  Peak  Day 30  Day 90  Day 180  +repeats  Game credits  Answered right  Recall day 180
 --------------------------------  -------  ----  ------  ------  -------  --------  ------------  --------------  --------------
-Relaxed 0.80 + games (chosen)          37    64      23      36       52        54           1.2             82%             90%
-Relaxed 0.80, before games exist       37    63      22      39       55        55           0.0             81%             89%
-Balanced 0.85 + games                  46    84      28      48       70        64           1.3             84%             92%
-Strong 0.90 + games                    64   114      38      64       98        84           1.5             86%             95%
+Relaxed 0.80 + games (chosen)          37    65      22      38       53        54           1.2             82%             90%
+Relaxed 0.80, before games exist       38    68      22      41       54        55           0.0             82%             89%
+Balanced 0.85 + games                  46    81      29      48       68        64           1.4             84%             92%
+Strong 0.90 + games                    65   118      38      67      100        84           1.5             86%             95%
 
 Cards at day 180: about 1912. "+repeats" counts every card shown per day, including same-day repeats after a miss.
 ```
 
-**Reading it:** at Relaxed with games the load is 28 a day on average and about 40 by day 180. At cap 35 about 65 reviews are waiting by day 180. A learner recalling 8% worse than the model reaches about 52 a day by day 180. The D30 guards limit games to about 1.3 credited reviews a day, so games barely change the load (28 vs 29 on average); the day-180 figures are 7-day averages and differ by a few cards between rows from noise alone.
+**Reading it:** at Relaxed with games the load is 28 a day on average and about 39 by day 180. At cap 35 about 54 reviews are waiting by day 180. A learner recalling 8% worse than the model reaches about 53 a day by day 180. The D30 guards limit games to about 1.2 credited reviews a day, so games barely change the load (28 vs 29 on average); the day-180 figures are 7-day averages and differ by a few cards between rows from noise alone.
 
 ---
 

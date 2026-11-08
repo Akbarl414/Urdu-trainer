@@ -124,8 +124,8 @@ export async function createEngine({ fuzz = true, retention, getTarget = () => D
 }
 
 /**
- * A new word from a lesson first returns within 1-3 days whatever the memory target (PLAN D32): at Relaxed the scheduler
- * alone would leave it about 8 days. The day is fixed by the card id, so a lesson's words spread over the three days.
+ * A new word or sentence card from a lesson first returns within 1-3 days whatever the memory target (PLAN D32): at Relaxed the scheduler
+ * alone would leave it about 8 days. The day is fixed by the card id, so a lesson's cards spread over the three days.
  * Only a card that has graduated and would come back later than that is changed.
  */
 export function capFirstReturn(card, now, cardId) {

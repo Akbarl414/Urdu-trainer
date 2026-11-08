@@ -144,7 +144,7 @@ async function simulate({ retention, games, cap, seed, accuracy = 1 }) {
       const x = random();
       if (x < LESSON_SENTENCE.good) {
         card = engine.review(card, 'default', GRADE.good, now, id);
-        card = engine.review(card, 'default', GRADE.good, now + 60000, id);
+        card = capFirstReturn(engine.review(card, 'default', GRADE.good, now + 60000, id), now, id);
       } else if (x < LESSON_SENTENCE.good + LESSON_SENTENCE.hard) card = engine.review(card, 'default', GRADE.hard, now, id);
       else card = engine.review(card, 'default', GRADE.again, now, id);
       add(id, card, { phrase: false, blank: false, bornDay: day });

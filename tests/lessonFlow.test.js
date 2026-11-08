@@ -391,6 +391,26 @@ test('commit: new words first return within 1–3 days at every memory target, s
   }
 });
 
+test('commit: sentence cards answered right also first return within 1–3 days at every memory target', () => {
+  try {
+    for (const target of ['relaxed', 'balanced', 'strong']) {
+      configureMemoryTarget(() => target);
+      const data = defaultData(NOW);
+      data.progress.run = playThrough({ known: [], wrong: [], hinted: [] });
+      commitLesson(data, content, NOW);
+      const sentences = lesson.exercises.filter((e) => e.sentence_card).map((e) => data.srs.decks.main.cards[`x:lesson-001:${e.id}`]);
+      assert.equal(sentences.length, 3);
+      for (const c of sentences) {
+        const d = (c.due - NOW) / 86400000;
+        assert.equal(c.st, CARD_STATE.review, target);
+        assert.ok(d >= 1 && d <= 3, `${target}: ${d} days`);
+      }
+    }
+  } finally {
+    configureMemoryTarget(() => 'relaxed');
+  }
+});
+
 test('commit: "I already know this" keeps its longer first interval', () => {
   const data = defaultData(NOW);
   data.progress.run = playThrough({ known: ['main'] });
