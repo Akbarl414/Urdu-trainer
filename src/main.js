@@ -1,6 +1,7 @@
 import './ui/styles/tokens.css';
 import './ui/styles/base.css';
 import './ui/styles/lesson.css';
+import './ui/styles/themes.css';
 import { store } from './db/storage.js';
 import { startRouter } from './router.js';
 import { showRecovery } from './ui/recovery.js';
@@ -11,14 +12,9 @@ import { syncDeck } from './srs/deck.js';
 import { configureAudio, initAudio } from './audio/tts.js';
 import { loanwordTokens } from './lesson/loanwords.js';
 import { applyScriptSetting } from './ui/scriptToggle.js';
+import { applyTheme, reapplyTheme } from './ui/theme.js';
 
 const app = document.getElementById('app');
-
-function applyTheme() {
-  const theme = store.data.settings.theme;
-  if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
-  else delete document.documentElement.dataset.theme;
-}
 
 function boot() {
   const status = store.status();
@@ -26,6 +22,7 @@ function boot() {
   // Storage could not be loaded safely: show the recovery screen and nothing else.
   // (The voice test touches no storage, so it stays reachable.)
   if (status.mode === 'recovery') {
+    reapplyTheme(); // storage is blocked: the default look, following the phone's light/dark setting
     if (window.location.hash.startsWith('#/debug/')) startRouter(app);
     else showRecovery(app, store);
     return;

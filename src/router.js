@@ -7,6 +7,7 @@ const routes = {
   '/lesson/extra': () => import('./modules/lesson/player.js').then((m) => ({ render: m.renderExtra })),
   '/review': () => import('./modules/review/review.js'),
   '/debug/voices': () => import('./modules/debug/voices.js'),
+  '/debug/themes': () => import('./modules/debug/themes.js'),
 };
 
 export function startRouter(container) {

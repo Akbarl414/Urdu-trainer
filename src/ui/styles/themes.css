@@ -1,0 +1,106 @@
+/*
+ * Decorative CSS for the three looks (PLAN D26). Everything structural comes from the tokens in tokens.css; this file
+ * only adds flourishes, and every rule is scoped to  [data-theme='x']  as a descendant selector. Never restyle layout here.
+ * Colours come from tokens (masks and gradients), so a flourish follows light/dark automatically.
+ * Keep it away from reading text: no pattern ever sits behind lesson prose except Jewel's faint page tiles, which cards cover.
+ */
+
+/* ---- shared: display type ---- */
+.lesson-title, .stat strong, .swatch-name { font-family: var(--font-head); font-weight: var(--head-weight); letter-spacing: var(--head-spacing); }
+.page > h1 { position: relative; }
+
+/* ================= Truck Art ================= */
+[data-theme='truck-art'] { --edge-soft: var(--edge); }
+/* a row of little diamonds, like the painted borders on a truck's tailboard */
+[data-theme='truck-art'] .page > h1::after,
+[data-theme='truck-art'] .flourish::after {
+  content: ''; display: block; height: 12px; width: min(200px, 70%); margin-top: 4px;
+  background: linear-gradient(90deg, var(--deco-1) 33%, var(--deco-2) 33% 66%, var(--deco-3) 66%);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12'%3E%3Cpath d='M10 0l6 6-6 6-6-6z'/%3E%3C/svg%3E") repeat-x left center / 20px 12px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12'%3E%3Cpath d='M10 0l6 6-6 6-6-6z'/%3E%3C/svg%3E") repeat-x left center / 20px 12px;
+}
+[data-theme='truck-art'] .card.primary { border-color: var(--deco-1); box-shadow: 0 5px 0 var(--deco-1); }
+[data-theme='truck-art'] .card h2::before { content: '✿ '; color: var(--deco-1); }
+[data-theme='truck-art'] .bar { border: 3px solid var(--edge); background: var(--surface); }
+[data-theme='truck-art'] .bar-fill { border-radius: 999px 0 0 999px; }
+[data-theme='truck-art'] .btn { text-transform: none; font-weight: 700; font-size: 1.05rem; }
+[data-theme='truck-art'] .btn-small { font-size: 0.95rem; }
+[data-theme='truck-art'] .chip { border: 2px solid var(--primary); }
+[data-theme='truck-art'] .seg.on { box-shadow: inset 0 -3px 0 var(--deco-2); }
+[data-theme='truck-art'] .tile-btn, [data-theme='truck-art'] .tile { border-width: 2px; border-color: var(--edge); }
+[data-theme='truck-art'] .tile-btn { box-shadow: 0 3px 0 var(--edge); }
+[data-theme='truck-art'] .grade { box-shadow: 0 3px 0 currentColor; }
+[data-theme='truck-art'] .grade.suggested { box-shadow: 0 3px 0 currentColor, 0 0 0 3px color-mix(in srgb, var(--primary) 35%, transparent); }
+[data-theme='truck-art'] .lesson-actions .btn { box-shadow: var(--shadow-btn); }
+[data-theme='truck-art'] .banner { border-bottom: 3px solid var(--edge); }
+
+/* ================= Jewel ================= */
+[data-theme='jewel'] { --edge-soft: color-mix(in srgb, var(--edge) 55%, var(--line)); }
+/* a gold rule with a diamond in the middle under every page title */
+[data-theme='jewel'] .page > h1::after,
+[data-theme='jewel'] .flourish::after {
+  content: '◆'; display: block; margin-top: 2px; font-size: 0.6rem; line-height: 1; text-align: center; color: var(--deco-1); width: min(220px, 80%);
+  background: linear-gradient(90deg, transparent, var(--deco-1)) left center / calc(50% - 10px) 1px no-repeat, linear-gradient(90deg, var(--deco-1), transparent) right center / calc(50% - 10px) 1px no-repeat;
+}
+[data-theme='jewel'] h1, [data-theme='jewel'] .lesson-title { letter-spacing: 0.005em; }
+[data-theme='jewel'] .btn { font-weight: 600; letter-spacing: 0.02em; border-color: var(--btn-edge); }
+[data-theme='jewel'] .btn-secondary { border-color: var(--primary); }
+[data-theme='jewel'] .card.primary { border-color: var(--edge); box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 4px color-mix(in srgb, var(--edge) 60%, transparent); }
+/* gold marks a milestone: the summary stats, the finished-today card, a completed bar */
+[data-theme='jewel'] .stats .stat strong, [data-theme='jewel'] .card.done .lesson-title { color: var(--ink); background: linear-gradient(transparent 62%, color-mix(in srgb, var(--deco-1) 45%, transparent) 62%); }
+[data-theme='jewel'] .card.done { border-color: var(--edge); }
+[data-theme='jewel'] .bar { border: 1px solid color-mix(in srgb, var(--edge) 60%, transparent); }
+[data-theme='jewel'] .bar-fill { box-shadow: inset -3px 0 0 var(--deco-1); }
+[data-theme='jewel'] .lesson-title { font-size: 1.25rem; }
+[data-theme='jewel'] .seg.on { box-shadow: inset 0 -2px 0 var(--deco-1); }
+[data-theme='jewel'] .tile-btn, [data-theme='jewel'] .tile { border-color: color-mix(in srgb, var(--edge) 60%, var(--line)); }
+
+/* ================= Neon Pop ================= */
+[data-theme='neon'] .page > h1::after,
+[data-theme='neon'] .flourish::after {
+  content: ''; display: block; width: 64px; height: 7px; margin-top: 6px; background: var(--deco-1); border-radius: 2px; transform: skewX(-24deg); box-shadow: 8px 0 0 var(--deco-2);
+}
+[data-theme='neon'][data-mode='light'] { --edge-soft: var(--edge); }
+[data-theme='neon'] h1 { text-transform: none; line-height: 1.05; }
+[data-theme='neon'] .lesson-title { font-size: 1.3rem; }
+[data-theme='neon'] .btn { font-weight: 700; letter-spacing: 0.01em; }
+[data-theme='neon'] .btn-big { font-size: 1.2rem; }
+[data-theme='neon'][data-mode='dark'] .bar-fill { box-shadow: 0 0 12px color-mix(in srgb, var(--deco-1) 70%, transparent); }
+[data-theme='neon'] .stat strong { font-size: 1.7rem; }
+[data-theme='neon'] .seg.on { font-weight: 700; }
+[data-theme='neon'] .tile-btn, [data-theme='neon'] .tile { border-width: 2px; border-color: var(--edge-soft, var(--line)); }
+[data-theme='neon'][data-mode='dark'] .tile-btn, [data-theme='neon'][data-mode='dark'] .tile { border-color: var(--line); }
+/* snappy: things pop in */
+@keyframes pop-in { from { transform: scale(0.96) translateY(6px); opacity: 0; } to { transform: none; opacity: 1; } }
+[data-theme='neon'] .lesson-body > *, [data-theme='neon'] .page.today > .card { animation: pop-in 0.18s var(--ease) both; }
+[data-theme='neon'] .choice:not(:disabled):active { transform: translate(2px, 2px); }
+[data-theme='neon'] .choice.is-correct { animation: pop-in 0.2s var(--ease); }
+@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+[data-theme='neon'] .choice.is-wrong { animation: shake 0.2s; }
+
+/* ================= the theme switcher (each swatch is scoped to its own look's tokens) ================= */
+.theme-switcher h2 { font-size: 1.25rem; }
+.swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
+.swatch {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-height: 96px; padding: 10px; text-align: left; cursor: pointer;
+  font: inherit; color: var(--ink); background: var(--paper) var(--bg-pattern); border: 2px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow-btn); transition: transform var(--dur) var(--ease);
+}
+.swatch:active { transform: scale(0.97); }
+.swatch[aria-pressed='true'] { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary); }
+.swatch-dots { display: flex; gap: 4px; }
+.swatch-dots i { width: 16px; height: 16px; border-radius: 50%; background: var(--primary); border: 2px solid var(--ink); }
+.swatch-dots i:nth-child(2) { background: var(--accent); }
+.swatch-dots i:nth-child(3) { background: var(--good); }
+.swatch-name { font-size: 1rem; line-height: 1.15; }
+.swatch-blurb { font-size: 0.75rem; line-height: 1.2; color: var(--ink-muted); }
+@media (max-width: 360px) { .swatches { grid-template-columns: 1fr; } .swatch { min-height: 0; } }
+
+/* ================= #/debug/themes ================= */
+.debug-head { max-width: 640px; margin: 0 auto; padding: 16px; }
+.theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 0; }
+.panel { background: var(--paper) var(--bg-pattern); color: var(--ink); font-family: var(--font-body); color-scheme: inherit; min-width: 0; }
+.panel .page { padding-top: 20px; }
+.panel .urdu-script { display: block; } /* panels always show the script, whatever the setting is */
+.panel .banner { position: static; border-radius: var(--radius-sm); }
+.swatch[aria-pressed='true'] .swatch-name::after { content: ' ✓'; }

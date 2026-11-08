@@ -3,6 +3,7 @@
 import { h } from '../../ui/dom.js';
 import { prose } from '../../ui/prose.js';
 import { scriptToggle } from '../../ui/scriptToggle.js';
+import { themeSwitcher } from '../../ui/theme.js';
 import { store } from '../../db/storage.js';
 import { getContent } from '../../db/contentLoader.js';
 import { todayState, todayQueue } from '../../lesson/path.js';
@@ -62,6 +63,7 @@ export function render(container) {
       h('p', { class: 'progress-line' }, bits.join(' · ')),
       gender,
       primaryCard(t, queue, now, cap),
+      themeSwitcher(),
       reviewCard(t, queue, cap),
       practiceCard(),
       h(

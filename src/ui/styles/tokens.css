@@ -1,44 +1,260 @@
-/* Colour direction (PLAN D10): warm and understated. Light, with a dark theme following the system. */
+/*
+ * Design tokens (PLAN D26). A theme is a token set plus a little decorative CSS (themes.css), never a fork of the
+ * components. Three looks (data-theme) x light/dark (data-mode) = six variants. <html> carries both attributes.
+ *
+ * Rules for this file (tests/theme-contrast.test.js parses it, so keep the block shape):
+ *   - one block per variant, selector exactly  [data-theme='x'][data-mode='y']  (not :root-only, so the debug page can scope one);
+ *   - every colour is a #rrggbb hex, one declaration per line;
+ *   - text/background pairs must reach WCAG AA (4.5:1); the test fails the build otherwise.
+ *
+ * Colour roles:   paper = page, surface = cards, ink / ink-muted = text, line = hairlines, edge = chunky borders,
+ *   primary (+ primary-ink) = main buttons and links, accent (+ accent-ink) = fills such as the warning banner,
+ *   accent-text = accent used as text, good / bad = feedback text and borders (bad-ink on a bad fill),
+ *   deco-1..3 = decorative only (flourishes, bars): never carry meaning, no contrast requirement.
+ */
+
+/* ---- neutral defaults (before JS picks a variant, and on the debug page's own chrome) ---- */
 :root {
-  --paper: #faf6ef;
+  --paper: #fff6dc;
   --surface: #ffffff;
-  --ink: #2a2724;
-  --ink-muted: #6b645c;
-  --line: #e4dccf;
-  --primary: #1f6b66;
+  --ink: #12214a;
+  --ink-muted: #49557a;
+  --line: #d9cfae;
+  --edge: #12214a;
+  --primary: #b5135a;
   --primary-ink: #ffffff;
-  --accent: #c98a2b;
-  --good: #3c7d4a;
-  --bad: #b4483a;
-  --tap: 44px;
-  --radius: 14px;
+  --accent: #f6b400;
+  --accent-ink: #12214a;
+  --accent-text: #8a5a00;
+  --good: #0b7a5c;
+  --bad: #b3261e;
+  --bad-ink: #ffffff;
+  --deco-1: #b5135a;
+  --deco-2: #f6b400;
+  --deco-3: #0b8a7a;
+  --focus: #12214a;
+  --bar-fill: var(--primary);
+  --bg-pattern: none;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --paper: #1c1a18;
-    --surface: #26231f;
-    --ink: #ede7dc;
-    --ink-muted: #a59d92;
-    --line: #3a352f;
-    --primary: #4fa39c;
-    --primary-ink: #10201f;
-    --accent: #d9a04a;
-    --good: #6bb27a;
-    --bad: #d98173;
-    color-scheme: dark;
-  }
+
+/* ---- shared non-colour defaults; each look overrides what it needs ---- */
+:root, [data-theme] {
+  --tap: 44px;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-head: var(--font-body);
+  --font-btn: var(--font-body);
+  --head-weight: 700;
+  --head-spacing: 0;
+  --head-transform: none;
+  --h1-size: 1.6rem;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-btn: 999px;
+  --border-w: 1px;
+  --btn-edge: transparent;
+  --shadow-card: none;
+  --shadow-btn: none;
+  --shadow-btn-press: none;
+  --bar-h: 6px;
+  --dur: 0.2s;
+  --ease: ease;
 }
-:root[data-theme='dark'] {
-  --paper: #1c1a18;
-  --surface: #26231f;
-  --ink: #ede7dc;
-  --ink-muted: #a59d92;
-  --line: #3a352f;
-  --primary: #4fa39c;
-  --primary-ink: #10201f;
-  --accent: #d9a04a;
-  --good: #6bb27a;
-  --bad: #d98173;
+
+/* ================= Truck Art: navy, marigold, hot pink, peacock green ================= */
+[data-theme='truck-art'][data-mode='light'] {
+  --paper: #fff6dc;
+  --surface: #ffffff;
+  --ink: #12214a;
+  --ink-muted: #49557a;
+  --line: #d9cfae;
+  --edge: #12214a;
+  --primary: #b5135a;
+  --primary-ink: #ffffff;
+  --accent: #f6b400;
+  --accent-ink: #12214a;
+  --accent-text: #8a5a00;
+  --good: #0b7a5c;
+  --bad: #b3261e;
+  --bad-ink: #ffffff;
+  --deco-1: #b5135a;
+  --deco-2: #f6b400;
+  --deco-3: #0b8a7a;
+  --focus: #12214a;
+  --btn-edge: #12214a;
+  color-scheme: light;
+}
+[data-theme='truck-art'][data-mode='dark'] {
+  --paper: #0f1b3d;
+  --surface: #182a5c;
+  --ink: #fff3d1;
+  --ink-muted: #bcc5e8;
+  --line: #34478a;
+  --edge: #ffc21a;
+  --primary: #ff74b1;
+  --primary-ink: #0f1b3d;
+  --accent: #ffc21a;
+  --accent-ink: #0f1b3d;
+  --accent-text: #ffc21a;
+  --good: #3fdcbd;
+  --bad: #ff8d84;
+  --bad-ink: #0f1b3d;
+  --deco-1: #ff74b1;
+  --deco-2: #ffc21a;
+  --deco-3: #2bc7ab;
+  --focus: #ffc21a;
+  --btn-edge: #0a1330;
   color-scheme: dark;
+}
+[data-theme='truck-art'] {
+  --font-head: 'Baloo 2', system-ui, sans-serif;
+  --font-btn: 'Baloo 2', system-ui, sans-serif;
+  --head-weight: 800;
+  --h1-size: 2rem;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-btn: 18px;
+  --border-w: 3px;
+  --shadow-card: 0 4px 0 var(--edge);
+  --shadow-btn: 0 4px 0 var(--btn-edge);
+  --shadow-btn-press: 0 1px 0 var(--btn-edge);
+  --bar-h: 16px;
+  --dur: 0.15s;
+  --ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --bar-fill: repeating-linear-gradient(-45deg, var(--deco-1) 0 10px, var(--deco-2) 10px 20px, var(--deco-3) 20px 30px);
+}
+
+/* ================= Jewel: emerald and ruby, gold, cream / near-black ================= */
+[data-theme='jewel'][data-mode='light'] {
+  --paper: #f8f1e0;
+  --surface: #fffdf7;
+  --ink: #1d2b26;
+  --ink-muted: #56615b;
+  --line: #ded0ab;
+  --edge: #b8902f;
+  --primary: #0a6b4b;
+  --primary-ink: #ffffff;
+  --accent: #a31d3f;
+  --accent-ink: #ffffff;
+  --accent-text: #a31d3f;
+  --good: #157447;
+  --bad: #b42318;
+  --bad-ink: #ffffff;
+  --deco-1: #b8902f;
+  --deco-2: #0a6b4b;
+  --deco-3: #a31d3f;
+  --focus: #0a6b4b;
+  --btn-edge: #b8902f;
+  --bg-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23b8902f' stroke-opacity='.16' stroke-width='1'%3E%3Cpath d='M28 6l6 16 16 6-16 6-6 16-6-16-16-6 16-6z'/%3E%3Cpath d='M0 0l8 8M56 0l-8 8M0 56l8-8M56 56l-8-8'/%3E%3Ccircle cx='28' cy='28' r='3'/%3E%3C/g%3E%3C/svg%3E");
+  color-scheme: light;
+}
+[data-theme='jewel'][data-mode='dark'] {
+  --paper: #0c1210;
+  --surface: #141d19;
+  --ink: #efe7d2;
+  --ink-muted: #aab4ab;
+  --line: #2a3a33;
+  --edge: #d9b350;
+  --primary: #34c38f;
+  --primary-ink: #04140d;
+  --accent: #ff6b85;
+  --accent-ink: #1a0409;
+  --accent-text: #ff8da1;
+  --good: #5bd49a;
+  --bad: #ff8b7e;
+  --bad-ink: #1a0409;
+  --deco-1: #d9b350;
+  --deco-2: #34c38f;
+  --deco-3: #ff6b85;
+  --focus: #d9b350;
+  --btn-edge: #d9b350;
+  --bg-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23d9b350' stroke-opacity='.13' stroke-width='1'%3E%3Cpath d='M28 6l6 16 16 6-16 6-6 16-6-16-16-6 16-6z'/%3E%3Cpath d='M0 0l8 8M56 0l-8 8M0 56l8-8M56 56l-8-8'/%3E%3Ccircle cx='28' cy='28' r='3'/%3E%3C/g%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+[data-theme='jewel'] {
+  --font-head: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --head-weight: 700;
+  --h1-size: 1.9rem;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-btn: 10px;
+  --border-w: 1px;
+  --shadow-card: 0 1px 2px color-mix(in srgb, var(--ink) 14%, transparent);
+  --shadow-btn: 0 1px 2px color-mix(in srgb, var(--ink) 25%, transparent);
+  --shadow-btn-press: none;
+  --dur: 0.3s;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --bar-h: 8px;
+  --bar-fill: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 70%, var(--deco-1)));
+}
+
+/* ================= Neon Pop: near-black, electric lime, coral ================= */
+[data-theme='neon'][data-mode='light'] {
+  --paper: #f5f5f0;
+  --surface: #ffffff;
+  --ink: #0a0a0f;
+  --ink-muted: #4d4d5a;
+  --line: #d3d3cb;
+  --edge: #0a0a0f;
+  --primary: #0a0a0f;
+  --primary-ink: #c8ff2e;
+  --accent: #ff5a4e;
+  --accent-ink: #0a0a0f;
+  --accent-text: #c4271b;
+  --good: #0f7536;
+  --bad: #c4271b;
+  --bad-ink: #ffffff;
+  --deco-1: #8fd400;
+  --deco-2: #ff5a4e;
+  --deco-3: #0a0a0f;
+  --focus: #0a0a0f;
+  --btn-edge: #c8ff2e;
+  color-scheme: light;
+}
+[data-theme='neon'][data-mode='dark'] {
+  --paper: #08080b;
+  --surface: #15151c;
+  --ink: #ffffff;
+  --ink-muted: #b4b4c4;
+  --line: #2d2d3a;
+  --edge: #c8ff2e;
+  --primary: #c8ff2e;
+  --primary-ink: #08080b;
+  --accent: #ff6b5e;
+  --accent-ink: #08080b;
+  --accent-text: #ff8a80;
+  --good: #4be38a;
+  --bad: #ff7a70;
+  --bad-ink: #08080b;
+  --deco-1: #c8ff2e;
+  --deco-2: #ff6b5e;
+  --deco-3: #ffffff;
+  --focus: #c8ff2e;
+  --btn-edge: #08080b;
+  color-scheme: dark;
+}
+[data-theme='neon'] {
+  --font-head: 'Space Grotesk', system-ui, sans-serif;
+  --font-btn: 'Space Grotesk', system-ui, sans-serif;
+  --head-weight: 700;
+  --head-spacing: -0.02em;
+  --h1-size: 2.3rem;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-btn: 14px;
+  --border-w: 2px;
+  --shadow-card: 4px 4px 0 var(--deco-2);
+  --shadow-btn: 3px 3px 0 var(--deco-2);
+  --shadow-btn-press: 0 0 0 var(--deco-2);
+  --bar-h: 10px;
+  --dur: 0.1s;
+  --ease: cubic-bezier(0.2, 1.4, 0.4, 1);
+  --bar-fill: linear-gradient(90deg, var(--deco-1), var(--deco-2));
+}
+
+/* ---- focus and motion ---- */
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  :root, [data-theme] { --dur: 0s; }
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
