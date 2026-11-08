@@ -28,13 +28,13 @@ test('planner: with nothing due the warm-up is empty and practice keeps all 12 e
 });
 
 test('planner: the warm-up is at most 6 cards, whatever the time left (PLAN D28)', () => {
-  const p = planLesson({ lesson, dueQueue: queueOf(40), dueTotal: 40, pace: {} });
-  // fixed = 4*30 + 10*20 + 7*12 + 30 = 434; practice 12*20 = 240; (900-434-240)/10 = 22 slots of time
-  assert.equal(p.warmupSlots, 22);
+  const p = planLesson({ lesson, dueQueue: queueOf(30), dueTotal: 30, pace: {} });
+  // fixed = 4*30 + 10*20 + 7*20 + 30 = 490; practice 12*20 = 240; (900-490-240)/10 = 17 slots of time
+  assert.equal(p.warmupSlots, 17);
   assert.equal(p.warmup.length, WARMUP_MAX);
   assert.equal(WARMUP_MAX, 6);
   assert.ok(p.estimateSec <= BUDGET_SEC);
-  assert.equal(p.mode, 'normal', '40 due is not over 2 × 22');
+  assert.equal(p.mode, 'normal', '30 due is not over 2 × 17');
 });
 
 test('planner: pickWarmup chooses which cards the warm-up shows', () => {
@@ -50,7 +50,7 @@ test('planner: the daily cap limits the warm-up', () => {
 test('planner: a slow learner gets fewer warm-up reviews, never fewer than 8 exercises unless the lesson has fewer', () => {
   const mild = planLesson({ lesson, dueQueue: queueOf(40), dueTotal: 3, pace: { reviewSec: 20, wordSec: 25, exerciseSec: 30 } });
   assert.ok(mild.exerciseIds.length >= 8 && mild.exerciseIds.length <= 12);
-  assert.ok(mild.warmupSlots < 22, 'slower reviews fit fewer into the time');
+  assert.ok(mild.warmupSlots < 17, 'slower reviews fit fewer into the time');
   assert.ok(mild.warmup.length <= WARMUP_MAX);
   const crawl = planLesson({ lesson, dueQueue: [], pace: { reviewSec: 30, wordSec: 60, exerciseSec: 90 } });
   assert.equal(crawl.exerciseIds.length, 8, 'practice shrinks to its floor when the rest already fills the time');
@@ -110,7 +110,7 @@ test('machine: walks every step in order and ends on the summary', () => {
   assert.equal(seen.filter((s) => s.startsWith('warmup')).length, 2);
   assert.equal(seen.filter((s) => s.startsWith('grammar')).length, 4);
   assert.equal(seen.filter((s) => s.startsWith('practice')).length, 12);
-  assert.equal(seen.filter((s) => s.startsWith('dialogue')).length, 8, 'the scene plus 7 lines');
+  assert.equal(seen.filter((s) => s.startsWith('dialogue')).length, 9, 'the scene, 7 lines and the whole exchange');
   // known words (even indexes) show only the intro; new ones show intro, recog, prod
   assert.equal(seen.filter((s) => s.startsWith('words:0')).length, 1);
   assert.deepEqual(seen.filter((s) => s.startsWith('words:1:')), ['words:1:intro', 'words:1:recog', 'words:1:prod']);

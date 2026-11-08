@@ -2,7 +2,7 @@
 // warm-up reviews and how many practice exercises fit in about 15 minutes.
 //
 // budget        = 900 s
-// fixed         = grammarScreens*30 + newWords*wordSec + dialogueLines*12 + 30 (summary)
+// fixed         = grammarScreens*30 + newWords*wordSec + dialogueLines*20 + 30 (summary)
 // practiceCount = clamp(exercises, 8, 12)
 // warmupSlots   = floor((budget - fixed - practiceCount*exerciseSec) / reviewSec)
 // if warmupSlots < 0: shrink practice (never below 8), warm-up 0
@@ -17,7 +17,7 @@ export const BUDGET_SEC = 900;
 export const WARMUP_MAX = 6;
 export const SUMMARY_SEC = 30;
 export const GRAMMAR_SCREEN_SEC = 30;
-export const DIALOGUE_LINE_SEC = 12;
+export const DIALOGUE_LINE_SEC = 20; // interactive since D31: hear and answer, or build the line
 export const PRACTICE_MIN = 8;
 export const PRACTICE_MAX = 12;
 

@@ -193,12 +193,12 @@
       { "id": "aaishaa", "en": "Aisha (neighbour)", "gender": "f" }
     ],
     "lines": [
-      { "speaker": "imraan", "roman": "assalaam-o-alaikum! kyaa aap tayyaar haiN?", "ur": "السلام علیکم! کیا آپ تیار ہیں؟", "en": "Hello! Are you ready?" },
-      { "speaker": "you", "roman": "wa-alaikum-assalaam! jii haaN, maiN tayyaar huuN.", "ur": "وعلیکم السلام! جی ہاں، میں تیار ہوں۔", "en": "Hello! Yes, I'm ready." },
-      { "speaker": "imraan", "roman": "kyaa sanaa bhii tayyaar hai?", "ur": "کیا ثنا بھی تیار ہے؟", "en": "Is Sana ready too?" },
+      { "speaker": "imraan", "roman": "assalaam-o-alaikum! kyaa aap tayyaar haiN?", "ur": "السلام علیکم! کیا آپ تیار ہیں؟", "en": "Hello! Are you ready?", "check": {"question": "What does Imran want to know?", "options": ["Whether you are ready", "Whether you are well", "Whether you are a student"], "answerIndex": 0} },
+      { "speaker": "you", "roman": "wa-alaikum-assalaam! jii haaN, maiN tayyaar huuN.", "ur": "وعلیکم السلام! جی ہاں، میں تیار ہوں۔", "en": "Hello! Yes, I'm ready.", "options": [{"roman": "wa-alaikum-assalaam! jii nahiiN, maiN tayyaar nahiiN huuN.", "ur": "وعلیکم السلام! جی نہیں، میں تیار نہیں ہوں۔", "en": "Hello! No, I'm not ready."}, {"roman": "wa-alaikum-assalaam! jii haaN, aap tayyaar haiN.", "ur": "وعلیکم السلام! جی ہاں، آپ تیار ہیں۔", "en": "Hello! Yes, you are ready."}] },
+      { "speaker": "imraan", "roman": "kyaa sanaa bhii tayyaar hai?", "ur": "کیا ثنا بھی تیار ہے؟", "en": "Is Sana ready too?", "check": {"question": "What does he ask about Sana?", "options": ["Whether she is ready too", "Whether she is well", "Where she is"], "answerIndex": 0} },
       { "speaker": "you", "roman": "pataa nahiiN. shaayad nahiiN!", "ur": "پتا نہیں۔ شاید نہیں!", "en": "No idea. Maybe not!" },
-      { "speaker": "imraan", "roman": "aaishaa bhii tayyaar nahiiN hai.", "ur": "عائشہ بھی تیار نہیں ہے۔", "en": "Aisha isn't ready either." },
-      { "speaker": "aaishaa", "roman": "maiN tayyaar huuN!", "ur": "میں تیار ہوں!", "en": "I'm ready!" }
+      { "speaker": "imraan", "roman": "aaishaa bhii tayyaar nahiiN hai.", "ur": "عائشہ بھی تیار نہیں ہے۔", "en": "Aisha isn't ready either.", "check": {"question": "What does he say about Aisha?", "options": ["She isn't ready either", "She is ready", "She is already at the fair"], "answerIndex": 0} },
+      { "speaker": "aaishaa", "roman": "maiN tayyaar huuN!", "ur": "میں تیار ہوں!", "en": "I'm ready!", "check": {"question": "What does Aisha call out?", "options": ["I'm ready!", "I'm not ready!", "No idea!"], "answerIndex": 0} }
     ]
   }
 }

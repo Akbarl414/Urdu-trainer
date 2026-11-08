@@ -208,12 +208,12 @@
       { "id": "dad", "en": "Partner's dad", "gender": "m" }
     ],
     "lines": [
-      { "speaker": "you", "roman": "assalaam-o-alaikum!", "ur": "السلام علیکم!", "en": "Hello! (Peace be upon you.)" },
-      { "speaker": "mum", "roman": "wa-alaikum-assalaam! kyaa haal hai?", "ur": "وعلیکم السلام! کیا حال ہے؟", "en": "And peace be upon you! How are you?" },
-      { "speaker": "you", "roman": "alhamdulillaah, Thiik huuN. aap kaisii haiN?", "ur": "الحمد للہ، ٹھیک ہوں۔ آپ کیسی ہیں؟", "en": "Fine, thank God. How are you?" },
-      { "speaker": "mum", "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too." },
+      { "speaker": "you", "roman": "assalaam-o-alaikum!", "ur": "السلام علیکم!", "en": "Hello! (Peace be upon you.)", "options": [{"roman": "wa-alaikum-assalaam!", "ur": "وعلیکم السلام!", "en": "And peace be upon you! This one only answers a greeting."}, {"roman": "alhamdulillaah!", "ur": "الحمد للہ!", "en": "Thank God!"}] },
+      { "speaker": "mum", "roman": "wa-alaikum-assalaam! kyaa haal hai?", "ur": "وعلیکم السلام! کیا حال ہے؟", "en": "And peace be upon you! How are you?", "check": {"question": "What is she asking you?", "options": ["How you are", "Where you live", "Whether you are ready"], "answerIndex": 0} },
+      { "speaker": "you", "roman": "alhamdulillaah, Thiik huuN. aap kaisii haiN?", "ur": "الحمد للہ، ٹھیک ہوں۔ آپ کیسی ہیں؟", "en": "Fine, thank God. How are you?", "options": [{"roman": "alhamdulillaah, Thiik huuN. aap kaise haiN?", "ur": "الحمد للہ، ٹھیک ہوں۔ آپ کیسے ہیں؟", "en": "Fine, thank God. How are you? This form is for a man."}, {"roman": "wa-alaikum-assalaam! Thiik huuN. aap kaisii haiN?", "ur": "وعلیکم السلام! ٹھیک ہوں۔ آپ کیسی ہیں؟", "en": "She has already greeted you, so there is nothing left to reply to."}] },
+      { "speaker": "mum", "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too.", "check": {"question": "How is she?", "options": ["She is fine too", "She is tired", "She doesn't say"], "answerIndex": 0} },
       { "speaker": "you", "roman": "assalaam-o-alaikum! aap kaise haiN?", "ur": "السلام علیکم! آپ کیسے ہیں؟", "en": "Hello! How are you?" },
-      { "speaker": "dad", "roman": "wa-alaikum-assalaam! alhamdulillaah, Thiik huuN. aur aap?", "ur": "وعلیکم السلام! الحمد للہ، ٹھیک ہوں۔ اور آپ؟", "en": "And peace be upon you! Fine, thank God. And you?" },
+      { "speaker": "dad", "roman": "wa-alaikum-assalaam! alhamdulillaah, Thiik huuN. aur aap?", "ur": "وعلیکم السلام! الحمد للہ، ٹھیک ہوں۔ اور آپ؟", "en": "And peace be upon you! Fine, thank God. And you?", "check": {"question": "What does he ask you at the end?", "options": ["And you?", "Who are you?", "How is your mum?"], "answerIndex": 0} },
       { "speaker": "you", "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too." }
     ]
   }

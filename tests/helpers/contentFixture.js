@@ -45,7 +45,7 @@ const bundle = {
         dialogue: {
           setting: 'Ahmad meets Sara.',
           speakers: [{ id: 'ahmad', en: 'Ahmad', gender: 'm' }, { id: 'you', en: 'You', learner: true }],
-          lines: [{ speaker: 'ahmad', ...t('assalaam-o-alaikum!', 'السلام علیکم!', 'Hello!') }, { speaker: 'you', ...t('wa-alaikum-assalaam!', 'وعلیکم السلام!', 'Hello to you!') }],
+          lines: [{ speaker: 'ahmad', ...t('assalaam-o-alaikum!', 'السلام علیکم!', 'Hello!'), check: { question: 'What is Ahmad doing?', options: ['Greeting you', 'Leaving'], answerIndex: 0 } }, { speaker: 'you', ...t('wa-alaikum-assalaam!', 'وعلیکم السلام!', 'Hello to you!') }],
         },
       },
     },

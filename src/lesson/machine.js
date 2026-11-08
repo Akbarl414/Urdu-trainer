@@ -8,7 +8,7 @@
 //   grammar   one grammar screen per index
 //   words     one word per index, three possible screens: sub 'intro' → 'recog' → 'prod' ('I already know this' skips the checks)
 //   practice  one exercise per index             (plan.exerciseIds[index])
-//   dialogue  index 0 = the scene, then one line per index
+//   dialogue  index 0 = the scene, then one line per index, then the whole exchange played through
 //   summary   a single screen
 //
 // Warm-up reviews are written to the deck as they are graded (real reviews). Everything else is buffered in the
@@ -30,7 +30,7 @@ export function stepLength(run, lesson, step = run.step) {
     case 'practice':
       return run.plan.exerciseIds.length;
     case 'dialogue':
-      return lesson.dialogue?.lines?.length ? lesson.dialogue.lines.length + 1 : 0;
+      return lesson.dialogue?.lines?.length ? lesson.dialogue.lines.length + 2 : 0;
     case 'summary':
       return 1;
     default:

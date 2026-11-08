@@ -201,13 +201,13 @@
       { "id": "grandma", "en": "Partner's grandmother", "gender": "f" }
     ],
     "lines": [
-      { "speaker": "bilaal", "roman": "assalaam-o-alaikum! kyaa haal hai?", "ur": "السلام علیکم! کیا حال ہے؟", "en": "Hi! How's it going?" },
-      { "speaker": "you", "roman": "wa-alaikum-assalaam! Thiik huuN. tum kaise ho?", "ur": "وعلیکم السلام! ٹھیک ہوں۔ تم کیسے ہو؟", "en": "Hi! I'm fine. How are you?" },
-      { "speaker": "bilaal", "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too." },
-      { "speaker": "you", "roman": "assalaam-o-alaikum! aap kaisii haiN?", "ur": "السلام علیکم! آپ کیسی ہیں؟", "en": "Hello! How are you?" },
-      { "speaker": "grandma", "roman": "wa-alaikum-assalaam, beTaa! alhamdulillaah, Thiik huuN. tum Thiik ho?", "ur": "وعلیکم السلام، بیٹا! الحمد للہ، ٹھیک ہوں۔ تم ٹھیک ہو؟", "en": "And peace be upon you, dear! Fine, thank God. Are you well?" },
+      { "speaker": "bilaal", "roman": "assalaam-o-alaikum! kyaa haal hai?", "ur": "السلام علیکم! کیا حال ہے؟", "en": "Hi! How's it going?", "check": {"question": "What is Bilaal doing?", "options": ["Saying hello and asking how you are", "Saying goodbye", "Asking where you have been"], "answerIndex": 0} },
+      { "speaker": "you", "roman": "wa-alaikum-assalaam! Thiik huuN. tum kaise ho?", "ur": "وعلیکم السلام! ٹھیک ہوں۔ تم کیسے ہو؟", "en": "Hi! I'm fine. How are you?", "options": [{"roman": "wa-alaikum-assalaam! Thiik ho. tum kaise ho?", "ur": "وعلیکم السلام! ٹھیک ہو۔ تم کیسے ہو؟", "en": "This says \"you are fine\", not \"I am fine\"."}, {"roman": "assalaam-o-alaikum! Thiik huuN. tum kaise ho?", "ur": "السلام علیکم! ٹھیک ہوں۔ تم کیسے ہو؟", "en": "Bilaal greeted you first, so you give the reply."}] },
+      { "speaker": "bilaal", "roman": "maiN bhii Thiik huuN.", "ur": "میں بھی ٹھیک ہوں۔", "en": "I'm fine too.", "check": {"question": "How is Bilaal?", "options": ["He is fine too", "He is tired", "He doesn't say"], "answerIndex": 0} },
+      { "speaker": "you", "roman": "assalaam-o-alaikum! aap kaisii haiN?", "ur": "السلام علیکم! آپ کیسی ہیں؟", "en": "Hello! How are you?", "options": [{"roman": "assalaam-o-alaikum! tum kaisii ho?", "ur": "السلام علیکم! تم کیسی ہو؟", "en": "Too familiar for a grandmother."}, {"roman": "assalaam-o-alaikum! aap kaise haiN?", "ur": "السلام علیکم! آپ کیسے ہیں؟", "en": "This form is for a man."}] },
+      { "speaker": "grandma", "roman": "wa-alaikum-assalaam, beTaa! alhamdulillaah, Thiik huuN. tum Thiik ho?", "ur": "وعلیکم السلام، بیٹا! الحمد للہ، ٹھیک ہوں۔ تم ٹھیک ہو؟", "en": "And peace be upon you, dear! Fine, thank God. Are you well?", "check": {"question": "What does she ask you?", "options": ["Whether you are well", "Whether you have eaten", "Where Zain is"], "answerIndex": 0} },
       { "speaker": "you", "roman": "jii, alhamdulillaah.", "ur": "جی، الحمد للہ۔", "en": "Yes, thank God." },
-      { "speaker": "grandma", "roman": "zain, tuu Thiik hai, beTaa?", "ur": "زین، تو ٹھیک ہے، بیٹا؟", "en": "Zain, are you all right, sweetheart?" }
+      { "speaker": "grandma", "roman": "zain, tuu Thiik hai, beTaa?", "ur": "زین، تو ٹھیک ہے، بیٹا؟", "en": "Zain, are you all right, sweetheart?", "check": {"question": "Who is she talking to now?", "options": ["Zain, the little boy", "You", "Bilaal"], "answerIndex": 0} }
     ]
   }
 }

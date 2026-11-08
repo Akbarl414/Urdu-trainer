@@ -283,7 +283,7 @@ Input: lesson, due queue, `pace` averages, today's counts. Output: a `LessonPlan
 
 ```
 budget        = 900 s
-fixed         = grammarScreens*30 + newWords*wordSec + dialogueLines*12 + 30 (summary)
+fixed         = grammarScreens*30 + newWords*wordSec + dialogueLines*20 + 30 (summary)
 practiceCount = clamp(lesson.exercises.length, 8, 12)
 warmupSlots   = floor((budget - fixed - practiceCount*exerciseSec) / reviewSec)   // time available; the warm-up itself is at most 6 cards (D28)
 if warmupSlots < 0: practiceCount = max(8, practiceCount + floor(warmupSlots*reviewSec/exerciseSec)); warmupSlots = 0
@@ -302,9 +302,9 @@ Mode (D7):
           ┌──────────── resume (run in storage) ─────────────┐
 IDLE ─start─► WARMUP ─► GRAMMAR ─► WORDS ─► PRACTICE ─► DIALOGUE ─► SUMMARY ─commit─► DONE
               (skip if   (screen i) (word i: (ex i)      (line i:
-               none due)            intro →              listen → reveal
-                                    known? →              → say aloud
-                                    check)                [→ record])
+               none due)            intro →              hear + question, or build my line;
+                                    known? →             then the whole exchange, D31)
+                                    check)
 ```
 - The run state is `{ lessonId, studyDay, plan, step, index, warmupDone[], knownWordIds[], wordResults{}, exerciseResults{}, startedAt }`, stored in `progress.run` after **every** transition. Closing the app mid-lesson shows "Continue" on Today.
 - Warm-up reviews are real reviews and get written as each one is graded. Everything else is buffered in `run` until commit.
@@ -417,6 +417,7 @@ D1–D4 and the curriculum/romanization changes were decided by you. The rest us
 | D28 | Card redesign (Phase 4b) | Warm-up reviews dragged, and 5–10 cards per word gave each other away. **One main card per word**, with rotating formats, gender inside the card, a separate perfective only for irregular verbs, and 2–3 flagged sentence cards per lesson (§5.2). **Migration (`STORAGE_VERSION` 5, `MIGRATIONS[4]`, `tests/fixtures/storage-v5.json`):** no card is deleted. `w:X:main` copies X's production card whole (the recognition card if production was never reviewed; an existing main card is never overwritten). Old word cards and unflagged exercise cards in lessons 1–5 get `retired: true`: stored, frozen, never shown. The flagged list is frozen inside the migration, so later content can't change it. A regular verb's stored `perfective` card can't be marked by the migration (it has no content to consult), so it is simply never shown; none exist yet because `perfective` unlocks at lesson 101. **Lesson commit:** the two lesson checks count as learning steps (§5.3). **Warm-up** at most 6 cards, chosen for variety; review-heavy mode no longer lengthens it. **Grading:** a right word with the wrong gender suggests Hard. **Daily cap:** default 35; a device still on the old default of 60 moves to 35, and any other value is left alone. `npm run simulate-load` compares the options; the final numbers are in D29. |
 | D29 | Memory target (Phase 4b) | Replaces D16's two retention targets. `settings.memoryTarget` (`'relaxed' \| 'balanced' \| 'strong'`, default `relaxed`) sets one desired retention for every card: 0.80, 0.85 or 0.90. Added in `MIGRATIONS[4]`; a saved value is kept. Control on Today until Settings (Phase 5) takes it over. Chosen after simulating 180 days of one lesson a day: Relaxed, games counting (with the D30 guards), cap 35 as a safety net. Results below. |
 | D30 | Games and reviews (Phase 4b) | **Replaces the earlier "games never push intervals further out" rule** (BRIEF §5.4, PLAN §5.6). A correct game answer counts as a Good review from the moment games are built, subject to three guards in `src/srs/gameCredit.js`: recall formats only (typed, speed recall from memory, listening; never option-picking); Review-state cards only, due or within 20% of their interval from being due; at most one credit per card per study day (`gc`). Wrong answers still mark a card weak. The games spec in §8 carries the same guards. |
+| D31 | Interactive dialogues (Phase 4b) | Dialogues felt passive. Screens are now: the scene, one per line, then the whole exchange played through (`stepLength` = lines + 2; no run-format change, because old indexes still mean the same line). **The learner's lines:** built from tiles, or picked from options when the line has `options` (authored wrong answers, with an English note revealed after answering), always in the learner's own gender form (`learner_f`, which may also carry `options`). **Other speakers:** the line plays first and its text stays hidden until a comprehension question (`check`, required by the validator) is answered; with no voice the line is shown to read instead. Dialogue answers are not rated: they create no cards and don't touch the schedule. `DIALOGUE_LINE_SEC` went from 12 to 20. Logic in `src/lesson/dialogue.js`. No stored shape changed. Lessons 1–5 updated with `check` and `options`; no shipped id changed. |
 
 ### Final load simulation (D29)
 

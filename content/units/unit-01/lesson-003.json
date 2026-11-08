@@ -190,13 +190,13 @@
       { "id": "aaishaa", "en": "Aisha (neighbour)", "gender": "f" }
     ],
     "lines": [
-      { "speaker": "aaishaa", "roman": "assalaam-o-alaikum! maiN aaishaa huuN. ham paRosii haiN!", "ur": "السلام علیکم! میں عائشہ ہوں۔ ہم پڑوسی ہیں!", "en": "Hello! I'm Aisha. We're neighbours!" },
-      { "speaker": "you", "roman": "wa-alaikum-assalaam! aap kaisii haiN?", "ur": "وعلیکم السلام! آپ کیسی ہیں؟", "en": "Hello! How are you?" },
-      { "speaker": "aaishaa", "roman": "Thiik huuN, alhamdulillaah. aap student haiN?", "ur": "ٹھیک ہوں، الحمد للہ۔ آپ اسٹوڈنٹ ہیں؟", "en": "Fine, thank God. Are you a student?" },
+      { "speaker": "aaishaa", "roman": "assalaam-o-alaikum! maiN aaishaa huuN. ham paRosii haiN!", "ur": "السلام علیکم! میں عائشہ ہوں۔ ہم پڑوسی ہیں!", "en": "Hello! I'm Aisha. We're neighbours!", "check": {"question": "Who is Aisha?", "options": ["Your neighbour", "Your doctor", "Your partner's sister"], "answerIndex": 0} },
+      { "speaker": "you", "roman": "wa-alaikum-assalaam! aap kaisii haiN?", "ur": "وعلیکم السلام! آپ کیسی ہیں؟", "en": "Hello! How are you?", "options": [{"roman": "wa-alaikum-assalaam! aap kaise haiN?", "ur": "وعلیکم السلام! آپ کیسے ہیں؟", "en": "This form is for a man."}, {"roman": "assalaam-o-alaikum! aap kaisii haiN?", "ur": "السلام علیکم! آپ کیسی ہیں؟", "en": "Aisha greeted you first, so you give the reply."}] },
+      { "speaker": "aaishaa", "roman": "Thiik huuN, alhamdulillaah. aap student haiN?", "ur": "ٹھیک ہوں، الحمد للہ۔ آپ اسٹوڈنٹ ہیں؟", "en": "Fine, thank God. Are you a student?", "check": {"question": "What does she want to know?", "options": ["Whether you are a student", "Whether you are a doctor", "Whether you are ready"], "answerIndex": 0} },
       { "speaker": "you", "roman": "jii, maiN student huuN. aur aap?", "ur": "جی، میں اسٹوڈنٹ ہوں۔ اور آپ؟", "en": "Yes, I'm a student. And you?" },
-      { "speaker": "aaishaa", "roman": "maiN doctor huuN. imraan bhii doctor haiN.", "ur": "میں ڈاکٹر ہوں۔ عمران بھی ڈاکٹر ہیں۔", "en": "I'm a doctor. Imran is a doctor too." },
+      { "speaker": "aaishaa", "roman": "maiN doctor huuN. imraan bhii doctor haiN.", "ur": "میں ڈاکٹر ہوں۔ عمران بھی ڈاکٹر ہیں۔", "en": "I'm a doctor. Imran is a doctor too.", "check": {"question": "What do Aisha and Imran do?", "options": ["They are both doctors", "They are both students", "Aisha is a doctor and Imran is a student"], "answerIndex": 0} },
       { "speaker": "you", "roman": "aur bacche Thiik haiN?", "ur": "اور بچے ٹھیک ہیں؟", "en": "And are the children well?" },
-      { "speaker": "aaishaa", "roman": "jii, alhamdulillaah, bacche Thiik haiN.", "ur": "جی، الحمد للہ، بچے ٹھیک ہیں۔", "en": "Yes, thank God, the children are fine." }
+      { "speaker": "aaishaa", "roman": "jii, alhamdulillaah, bacche Thiik haiN.", "ur": "جی، الحمد للہ، بچے ٹھیک ہیں۔", "en": "Yes, thank God, the children are fine.", "check": {"question": "How are the children?", "options": ["Fine, thank God", "Not well", "She doesn't know"], "answerIndex": 0} }
     ]
   }
 }

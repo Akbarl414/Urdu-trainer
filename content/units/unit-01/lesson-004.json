@@ -191,12 +191,12 @@
     ],
     "lines": [
       { "speaker": "you", "roman": "assalaam-o-alaikum! aap kaisii haiN?", "ur": "السلام علیکم! آپ کیسی ہیں؟", "en": "Hello! How are you?" },
-      { "speaker": "grandma", "roman": "wa-alaikum-assalaam, beTaa. alhamdulillaah, Thiik huuN.", "ur": "وعلیکم السلام، بیٹا۔ الحمد للہ، ٹھیک ہوں۔", "en": "And peace be upon you, dear. Fine, thank God." },
-      { "speaker": "you", "roman": "ye merii ammii haiN, aur ye mere abbuu haiN.", "ur": "یہ میری امی ہیں، اور یہ میرے ابو ہیں۔", "en": "This is my mum, and this is my dad." },
-      { "speaker": "grandma", "roman": "assalaam-o-alaikum! aap kaise haiN?", "ur": "السلام علیکم! آپ کیسے ہیں؟", "en": "Hello! How are you both?" },
+      { "speaker": "grandma", "roman": "wa-alaikum-assalaam, beTaa. alhamdulillaah, Thiik huuN.", "ur": "وعلیکم السلام، بیٹا۔ الحمد للہ، ٹھیک ہوں۔", "en": "And peace be upon you, dear. Fine, thank God.", "check": {"question": "How is she?", "options": ["Fine, thank God", "Tired", "She doesn't say"], "answerIndex": 0} },
+      { "speaker": "you", "roman": "ye merii ammii haiN, aur ye mere abbuu haiN.", "ur": "یہ میری امی ہیں، اور یہ میرے ابو ہیں۔", "en": "This is my mum, and this is my dad.", "options": [{"roman": "ye meraa ammii haiN, aur ye merii abbuu haiN.", "ur": "یہ میرا امی ہیں، اور یہ میری ابو ہیں۔", "en": "The two forms of \"my\" are the wrong way round."}, {"roman": "ye merii ammii hai, aur ye mere abbuu hai.", "ur": "یہ میری امی ہے، اور یہ میرے ابو ہے۔", "en": "Parents take the respectful plural verb."}] },
+      { "speaker": "grandma", "roman": "assalaam-o-alaikum! aap kaise haiN?", "ur": "السلام علیکم! آپ کیسے ہیں؟", "en": "Hello! How are you both?", "check": {"question": "Who is she speaking to now?", "options": ["Your mum and dad", "Your brother", "You"], "answerIndex": 0} },
       { "speaker": "you", "roman": "aur wo meraa bhaaii hai.", "ur": "اور وہ میرا بھائی ہے۔", "en": "And that's my brother, over there." },
-      { "speaker": "grandma", "roman": "wo bhii student hai?", "ur": "وہ بھی اسٹوڈنٹ ہے؟", "en": "Is he a student too?" },
-      { "speaker": "you", "roman": "jii, wo bhii student hai.", "ur": "جی، وہ بھی اسٹوڈنٹ ہے۔", "en": "Yes, he's a student too." }
+      { "speaker": "grandma", "roman": "wo bhii student hai?", "ur": "وہ بھی اسٹوڈنٹ ہے؟", "en": "Is he a student too?", "check": {"question": "What does she ask about your brother?", "options": ["Whether he is a student too", "Whether he is a doctor", "Whether he is married"], "answerIndex": 0} },
+      { "speaker": "you", "roman": "jii, wo bhii student hai.", "ur": "جی، وہ بھی اسٹوڈنٹ ہے۔", "en": "Yes, he's a student too.", "options": [{"roman": "jii, wo bhii student haiN.", "ur": "جی، وہ بھی اسٹوڈنٹ ہیں۔", "en": "The respectful plural is for elders, not for your brother."}, {"roman": "jii, maiN bhii student huuN.", "ur": "جی، میں بھی اسٹوڈنٹ ہوں۔", "en": "Yes, I'm a student too."}] }
     ]
   }
 }

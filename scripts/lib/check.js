@@ -11,7 +11,7 @@ const MAX_WORDS_PER_UNIT = 80;
 /** Keys whose string (or string-array) values are Roman Urdu. */
 const ROMAN_KEYS = new Set(['roman', 'answer', 'altAnswers', 'tokens', 'answerOrders', 'forms']);
 /** English prose keys: Urdu inside `backticks` is checked against the scheme. */
-const PROSE_KEYS = new Set(['body', 'heading', 'notes', 'explanation', 'hint', 'setting', 'situation', 'literal', 'instruction', 'prompt', 'note']);
+const PROSE_KEYS = new Set(['body', 'heading', 'notes', 'explanation', 'hint', 'setting', 'situation', 'literal', 'instruction', 'prompt', 'note', 'question']);
 /** Exercise fields a learner_f override may not replace (D23). */
 const FIXED_EXERCISE_KEYS = ['id', 'type', 'tags', 'retired', 'sentence_card', 'learner_f'];
 const isUrKey = (k) => k === 'ur' || k.endsWith('_ur');
@@ -269,8 +269,22 @@ export function checkContent(bundle, { ajv, shippedIds = [] }) {
       used.add(line.speaker);
       if (!learnerIds.has(line.speaker)) {
         if (line.learner_f) err(l, `dialogue.lines[${i}].learner_f is only for the learner's own lines (speaker "${line.speaker}" has a fixed gender)`);
+        if (line.options) err(l, `dialogue.lines[${i}].options is only for the learner's own lines (other speakers get a "check" question)`);
+        if (!line.check) err(l, `dialogue.lines[${i}] needs a "check" question: the learner hears this line and answers it before seeing the text (PLAN D31)`);
+        else {
+          const { options, answerIndex } = line.check;
+          if (answerIndex >= options.length) err(l, `dialogue.lines[${i}].check.answerIndex ${answerIndex} is out of range`);
+          if (new Set(options).size !== options.length) err(l, `dialogue.lines[${i}].check.options has duplicates`);
+          if (options.some((o) => o.includes('('))) err(l, `dialogue.lines[${i}].check.options contains "(" — annotated options give the answer away`);
+        }
         return;
       }
+      if (line.check) err(l, `dialogue.lines[${i}].check is only for other speakers' lines`);
+      const romans = (line.options || []).map((o) => o.roman);
+      if (new Set(romans).size !== romans.length) err(l, `dialogue.lines[${i}].options has duplicates`);
+      if (romans.includes(line.roman)) err(l, `dialogue.lines[${i}].options repeats the line itself; list only wrong answers`);
+      if (line.learner_f?.options && line.learner_f.options.some((o) => o.roman === line.learner_f.roman)) err(l, `dialogue.lines[${i}].learner_f.options repeats the woman's line; list only wrong answers`);
+      if (line.options && line.learner_f && !line.learner_f.options) warnings.push(`${label(l)}: dialogue.lines[${i}] has options and learner_f but no learner_f.options; the woman's choice uses the man's wrong answers.`);
       if (line.learner_f) {
         if (line.learner_f.roman === line.roman) warnings.push(`${label(l)}: dialogue.lines[${i}].learner_f.roman is the same as the base line`);
       } else if (gendered(line.roman)) {
