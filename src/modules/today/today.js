@@ -8,11 +8,8 @@ import { getContent } from '../../db/contentLoader.js';
 import { todayState, todayQueue } from '../../lesson/path.js';
 import { practisableLessons } from '../../lesson/practice.js';
 import { planLesson } from '../../lesson/planner.js';
-import { voiceRoute, onAudioChange, isAudioReady } from '../../audio/tts.js';
 
 let askLater = false; // "Not now" lasts until the app is reopened (memory only; nothing is stored)
-
-const GENDER_LABEL = { m: 'man’s', f: 'woman’s' };
 
 function genderCard({ onAnswer, onLater, current }) {
   return h(
@@ -32,15 +29,6 @@ export function render(container) {
   const data = store.data;
   const page = h('main', { class: 'page today' });
   container.append(page);
-  let changing = false; // the learner tapped "change" on an answered question
-  const offAudio = onAudioChange(() => drawVoiceNote());
-  const voiceNote = h('p', { class: 'muted small', hidden: true });
-
-  function drawVoiceNote() {
-    const none = isAudioReady() && voiceRoute() === 'none';
-    voiceNote.hidden = !none;
-    voiceNote.textContent = none ? 'No voice on this device speaks Urdu or Hindi, so the audio buttons are hidden.' : '';
-  }
 
   function draw() {
     const now = Date.now();
@@ -48,7 +36,7 @@ export function render(container) {
     const t = todayState({ data, content, now, queue });
     const cap = data.settings.dailyReviewCap;
 
-    const gender = t.needsGender && !askLater ? genderCard({ onAnswer: answer, onLater: () => ((askLater = true), draw()) }) : changing ? genderCard({ current: data.settings.learnerGender, onAnswer: answer, onLater: () => ((changing = false), draw()) }) : null;
+    const gender = t.needsGender && !askLater ? genderCard({ onAnswer: answer, onLater: () => ((askLater = true), draw()) }) : null;
 
     const bits = [];
     if (t.position) bits.push(`Lesson ${t.position.lessonNumber} · Unit ${t.position.unitNumber}`);
@@ -68,19 +56,14 @@ export function render(container) {
         'section',
         { class: 'card tools' },
         h('div', { class: 'row' }, h('span', {}, 'Show Urdu script'), scriptToggle()),
-        data.settings.learnerGender ? h('p', { class: 'muted small' }, `Your lines use the ${GENDER_LABEL[data.settings.learnerGender]} forms. `, h('button', { class: 'linklike', type: 'button', onclick: () => ((changing = true), draw()) }, 'Change')) : null,
-        voiceNote,
-        h('p', { class: 'small' }, h('a', { href: '#/debug/voices' }, 'Voice test')),
       ),
       h('p', { class: 'muted small build' }, `Build ${__BUILD_ID__} · ${content.lessons.length} lesson${content.lessons.length === 1 ? '' : 's'} available`),
       ].filter(Boolean),
     );
-    drawVoiceNote();
   }
 
   function answer(g) {
     store.updateSettings({ learnerGender: g });
-    changing = false;
     draw();
   }
 
@@ -153,5 +136,5 @@ export function render(container) {
   }
 
   draw();
-  return () => offAudio();
+  return () => {};
 }

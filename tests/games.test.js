@@ -296,3 +296,20 @@ test('games read plurals only through nounPlural() (PLAN D26)', () => {
   const bad = files.filter((f) => /\.plural\b|oblique_pl|\.plural_/.test(readFileSync(f, 'utf8').replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '')));
   assert.deepEqual(bad, []);
 });
+
+test('noWeak: a miss changes nothing (Listen & type, meaning mode)', () => {
+  const { data, id } = dueDevice();
+  const before = JSON.stringify(data.srs.decks.main.cards[id]);
+  const out = applyAnswer(data, { cardId: id, correct: false, format: 'listening', now: NOW, noWeak: true });
+  assert.deepEqual(out, { credited: false, weak: false });
+  assert.equal(JSON.stringify(data.srs.decks.main.cards[id]), before);
+  assert.equal(applyAnswer(data, { cardId: id, correct: false, format: 'listening', now: NOW }).weak, true);
+});
+
+test('a completed round extends the streak (D35)', () => {
+  const data = deviceAfter(1);
+  data.stats.streak = 0;
+  recordRound(data, { gameId: 'speed-recall', score: 50, correct: 5, total: 6, now: NOW });
+  assert.equal(data.stats.streak, 1);
+  assert.equal(data.stats.lastStudyDay, studyDay(NOW, data.settings.dayRolloverHour));
+});

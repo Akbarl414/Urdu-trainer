@@ -13,7 +13,7 @@ import { studyDayEnd } from '../srs/queue.js';
 import { earnsGameCredit } from '../srs/gameCredit.js';
 import { review, markWeak, GRADE } from '../srs/fsrs.js';
 import { facetOf } from '../srs/facets.js';
-import { dayStats, recordReview } from '../srs/stats.js';
+import { dayStats, recordReview, touchStreak } from '../srs/stats.js';
 
 /**
  * @param {any} data  the storage blob (mutated)
@@ -21,12 +21,13 @@ import { dayStats, recordReview } from '../srs/stats.js';
  *   cardId null = nothing to update (a lesson exercise that has no card)
  * @returns {{ credited: boolean, weak: boolean }}
  */
-export function applyAnswer(data, { cardId, correct, format, now }) {
+export function applyAnswer(data, { cardId, correct, format, now, noWeak = false }) {
   const cards = data.srs.decks.main.cards;
   const card = cardId ? cards[cardId] : null;
   if (!card || card.retired) return { credited: false, weak: false };
   const rollover = data.settings.dayRolloverHour;
   if (!correct) {
+    if (noWeak) return { credited: false, weak: false }; // Listen & type in meaning mode: a missed paraphrase says nothing about the card
     cards[cardId] = markWeak(card, now, studyDayEnd(now, rollover));
     return { credited: false, weak: true };
   }
@@ -51,6 +52,7 @@ export const bestOf = (data, gameId) => asBest(data.stats.gameBests?.[gameId]);
 export function recordRound(data, { gameId, score, correct, total, now }) {
   const day = studyDay(now, data.settings.dayRolloverHour);
   dayStats(data, day).games += 1;
+  touchStreak(data, day); // any completed round counts towards the streak (D35)
   const prev = bestOf(data, gameId);
   const previousBest = prev && typeof prev.best === 'number' ? prev.best : null;
   const accuracy = total > 0 ? correct / total : 0;

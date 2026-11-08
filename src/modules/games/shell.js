@@ -79,13 +79,13 @@ export function playGame(container, spec) {
       now: () => performance.now(),
       isOver: () => t.over,
       /** Report one answer. Returns { credited, weak } (what it did to the schedule). */
-      answer({ key, cardId = null, correct, format, points = 10, miss = null, uncounted = false }) {
+      answer({ key, cardId = null, correct, format, points = 10, miss = null, uncounted = false, noWeak = false }) {
         if (t.over) return { credited: false, weak: false };
         if (!uncounted) t.total += 1; // uncounted: only marks the item (the second word of a wrong match)
         let out = { credited: false, weak: false };
         if (!answered.has(key)) {
           answered.add(key);
-          out = applyAnswer(store.data, { cardId, correct, format, now: Date.now() });
+          out = applyAnswer(store.data, { cardId, correct, format, now: Date.now(), noWeak });
           if (out.credited) t.credited += 1;
         }
         if (correct && !uncounted) {
