@@ -166,7 +166,7 @@ export function reviewCard({ id, content, show, onGraded }) {
     const graded = review(card, face.facet, g, now, id);
     const updated = face.format ? { ...graded, f: face.format } : graded; // the next review picks a different format
     cards[id] = updated;
-    recordReview(data, { now, previousState: card.st, seconds: (now - shownAt) / 1000 });
+    recordReview(data, { now, previousState: card.st, seconds: (now - shownAt) / 1000, correct: g !== GRADE.again });
     store.save(); // false = storage full: the banner is already showing and progress stays in memory
     onGraded(id, updated);
   }

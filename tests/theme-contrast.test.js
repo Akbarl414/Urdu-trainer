@@ -38,7 +38,7 @@ function mix(fg, pct, bg) {
   return '#' + a.map((c, i) => Math.round(c * pct + b[i] * (1 - pct)).toString(16).padStart(2, '0')).join('');
 }
 
-const REQUIRED = ['paper', 'surface', 'ink', 'ink-muted', 'line', 'edge', 'primary', 'primary-ink', 'accent', 'accent-ink', 'accent-text', 'good', 'bad', 'bad-ink', 'deco-1', 'deco-2', 'deco-3', 'focus', 'btn-edge'];
+const REQUIRED = ['paper', 'surface', 'ink', 'ink-muted', 'line', 'edge', 'primary', 'primary-ink', 'accent', 'accent-ink', 'accent-text', 'good', 'bad', 'bad-ink', 'deco-1', 'deco-2', 'deco-3', 'focus', 'btn-edge', 'game-right', 'game-right-ink', 'game-wrong', 'game-wrong-ink'];
 
 for (const theme of THEMES) {
   for (const mode of MODES) {
@@ -71,6 +71,9 @@ for (const theme of THEMES) {
         ['accent-ink on accent (warning banner)', t['accent-ink'], t.accent],
         ['bad-ink on bad (danger and record buttons)', t['bad-ink'], t.bad],
         ['ink on paper over the banner button', t.ink, t.paper],
+        ['game-right-ink on game-right (right answer buttons)', t['game-right-ink'], t['game-right']],
+        ['game-wrong-ink on game-wrong (wrong answer buttons)', t['game-wrong-ink'], t['game-wrong']],
+        ['ink on timer bar track (line)', t.ink, t.line],
         // feedback and emphasis colours used as text
         ['good on paper', t.good, t.paper],
         ['good on surface', t.good, t.surface],

@@ -8,7 +8,7 @@ const SECONDS_MIN = 2;
 const SECONDS_MAX = 60;
 const PACE_WEIGHT = 0.1; // exponential moving average
 
-export const emptyDay = () => ({ reviews: 0, newWords: 0, lessons: 0, games: 0, seconds: 0, scriptReviews: 0, scriptLessons: 0 });
+export const emptyDay = () => ({ reviews: 0, correct: 0, newWords: 0, lessons: 0, games: 0, seconds: 0, scriptReviews: 0, scriptLessons: 0 });
 
 /** Today's counters (created on first use). */
 export function dayStats(data, day) {
@@ -35,13 +35,16 @@ export function reviewsDoneToday(data, now) {
 /**
  * Record one graded review. A card's learning steps (Learning/Relearning repeats) don't count
  * against the daily cap again; the first answer of each cycle does.
- * @param {{ now: number, previousState: number, seconds?: number }} o
+ * @param {{ now: number, previousState: number, seconds?: number, correct?: boolean }} o  correct: answered right (not Again); feeds the accuracy trend (v6)
  */
-export function recordReview(data, { now, previousState, seconds }) {
+export function recordReview(data, { now, previousState, seconds, correct }) {
   const day = studyDay(now, data.settings.dayRolloverHour);
   const d = dayStats(data, day);
   const midLearning = previousState === CARD_STATE.learning || previousState === CARD_STATE.relearning;
-  if (!midLearning) d.reviews += 1;
+  if (!midLearning) {
+    d.reviews += 1;
+    if (correct && typeof d.correct === 'number') d.correct += 1; // null = a day from before v6: not recorded, never half-counted
+  }
   if (typeof seconds === 'number' && seconds >= 0) {
     const s = Math.min(SECONDS_MAX, Math.max(SECONDS_MIN, seconds));
     d.seconds += Math.round(s);

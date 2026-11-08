@@ -18,7 +18,7 @@
 import { DATA_KEY, SNAPSHOTS_KEY, recoveryKey, isRecoveryKey, isOwnKey } from './keys.js';
 import { studyDay } from './day.js';
 
-export const STORAGE_VERSION = 5;
+export const STORAGE_VERSION = 6;
 export const BACKUP_FORMAT = 'urdu-trainer-backup';
 
 const DAILY_SNAPSHOTS_KEPT = 3; // D15
@@ -65,6 +65,16 @@ export const MIGRATIONS = {
     settings: { ...(data.settings || {}), dailyReviewCap: data.settings?.dailyReviewCap === 60 ? 35 : data.settings?.dailyReviewCap, memoryTarget: data.settings?.memoryTarget ?? 'relaxed' },
     srs: migrateCardsToV5(data.srs),
   }),
+  // v5 → v6 (Phase 4c, PLAN D34): each study day gains `correct`, the reviews answered right, so the Stats page can draw an accuracy trend.
+  // Days written before this build have no such count and can't be reconstructed, so they get null ("not recorded"); the stats code
+  // skips null days and never adds to them. Nothing else changes: cards, lessons, flags, settings and `gameBests` are untouched.
+  5: (data) => {
+    const days = data.stats?.days;
+    if (!isPlainObject(days)) return data;
+    const out = {};
+    for (const [day, d] of Object.entries(days)) out[day] = isPlainObject(d) ? { ...d, correct: d.correct === undefined ? null : d.correct } : d;
+    return { ...data, stats: { ...data.stats, days: out } };
+  },
 };
 
 // The exercises flagged `sentence_card` when v5 shipped, frozen here on purpose: a migration must give the same result
@@ -178,9 +188,9 @@ export function defaultData(now = Date.now()) {
       streak: 0,
       bestStreak: 0,
       lastStudyDay: null,
-      days: {}, // 'YYYY-MM-DD' -> { reviews, newWords, lessons, games, seconds, scriptReviews, scriptLessons }
+      days: {}, // 'YYYY-MM-DD' -> { reviews, correct (v6; null on older days), newWords, lessons, games, seconds, scriptReviews, scriptLessons }
       pace: { reviewSec: 10, wordSec: 20, exerciseSec: 20, scriptReviewSec: 8 },
-      gameBests: {},
+      gameBests: {}, // gameId -> { best, bestAccuracy, bestDay, rounds, last: { score, correct, total, day } } (v6 writes it; before that the slot was empty)
     },
     flags: [], // "Report a mistake": { id, createdAt, target: { kind, id, field }, note, build }
     userContent: { words: [] }, // reserved (D9), included in export

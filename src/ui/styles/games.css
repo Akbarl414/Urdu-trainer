@@ -1,0 +1,119 @@
+/* Games, stats, settings and the tab bar (Phase 4c). Tokens only; the Truck Art flourishes are scoped at the bottom. */
+
+/* ---- tab bar ---- */
+:root { --tabbar-h: 62px; }
+body.has-tabbar { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom)); }
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--surface); border-top: max(1px, var(--border-w)) solid var(--edge-soft, var(--line)); padding-bottom: env(safe-area-inset-bottom); }
+.tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; min-height: var(--tabbar-h); color: var(--ink-muted); text-decoration: none; font-size: 0.72rem; font-weight: 600; font-family: var(--font-btn); }
+.tab-icon { font-size: 1.15rem; line-height: 1; }
+.tab.on { color: var(--primary); box-shadow: inset 0 3px 0 var(--primary); }
+[data-theme='truck-art'] .tab.on { box-shadow: inset 0 4px 0 var(--deco-2); }
+.page { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+
+/* ---- game shell ---- */
+.rules { margin: 0 0 8px; padding-left: 20px; }
+.game-hud { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: var(--tap); }
+.quit { display: inline-flex; align-items: center; justify-content: center; min-width: var(--tap); min-height: var(--tap); color: var(--ink-muted); text-decoration: none; font-size: 1.2rem; }
+.hud-score { font-size: 1.1rem; }
+.score { font-family: var(--font-head); font-size: 1.5rem; }
+.time { font-variant-numeric: tabular-nums; font-weight: 700; min-width: 3.2ch; text-align: right; }
+.bar.timer { margin: 2px 0 12px; }
+.bar.timer .bar-fill { transition: none; }
+.bar.timer.low .bar-fill { filter: saturate(1.4); animation: pulse 0.8s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.6; } }
+.stage { min-height: 50dvh; }
+.game-input { font-size: 1.2rem; min-height: 52px; margin: 10px 0 6px; }
+.game-feedback { min-height: 3.5rem; display: grid; gap: 6px; justify-items: center; text-align: center; margin-top: 6px; }
+.game-feedback .feedback { margin: 0; font-size: 1.1rem; }
+.game .two { margin: 6px 0; }
+
+/* chunky press-down answer buttons */
+.gbtn {
+  display: inline-flex; align-items: center; justify-content: center; text-align: center; min-height: 52px; padding: 8px 16px; width: 100%;
+  font: inherit; font-family: var(--font-btn); font-weight: 700; font-size: 1.05rem; line-height: 1.2; color: var(--primary-ink); background: var(--primary);
+  border: max(2px, var(--border-w)) solid var(--btn-edge, var(--primary)); border-radius: var(--radius-btn); box-shadow: var(--shadow-btn, 0 3px 0 var(--btn-edge)); cursor: pointer;
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease);
+  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+}
+.gbtn:active:not(:disabled) { transform: translateY(4px); box-shadow: var(--shadow-btn-press, none); }
+.gbtn:disabled { cursor: default; }
+.gbtn-go { min-height: 60px; font-size: 1.2rem; margin: 12px 0; }
+.gbtn-ghost { background: transparent; color: var(--primary); border-color: var(--primary); box-shadow: none; }
+.gbtn-ghost:disabled { opacity: 0.5; }
+.gbtn-tile { width: auto; min-height: var(--tap); padding: 6px 14px; background: var(--surface); color: var(--ink); border-color: var(--edge-soft, var(--line)); }
+.gbtn.tile-gap { color: transparent; border-style: dashed; box-shadow: none; background: transparent; }
+.gbtn.is-right { background: var(--game-right); color: var(--game-right-ink); border-color: var(--game-right-ink); }
+.gbtn.is-wrong { background: var(--game-wrong); color: var(--game-wrong-ink); border-color: var(--game-wrong-ink); }
+.gbtn.is-right:disabled, .gbtn.is-wrong:disabled { opacity: 1; }
+.gbtn.is-picked { outline: 3px solid var(--focus); outline-offset: 2px; transform: translateY(2px); }
+.game-line { min-height: 64px; }
+.game-line.is-correct { border: 3px solid var(--edge); background: color-mix(in srgb, var(--game-right) 22%, var(--surface)); }
+.game-line.is-wrong { border: 3px dashed var(--edge); background: color-mix(in srgb, var(--game-wrong) 14%, var(--surface)); }
+
+/* match pairs */
+.pairs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pair-col { display: grid; gap: 10px; align-content: start; }
+.gbtn-pair { min-height: 58px; font-size: 0.98rem; background: var(--surface); color: var(--ink); border-color: var(--edge-soft, var(--line)); overflow-wrap: anywhere; }
+.gbtn-pair.is-right, .gbtn-pair.is-wrong { transform: none; }
+.gbtn-pair.is-right:disabled { opacity: 0.55; box-shadow: none; transform: translateY(3px); }
+
+/* results */
+.results { text-align: center; position: relative; overflow: hidden; }
+.big-score { font-family: var(--font-head); font-weight: var(--head-weight); font-size: 4rem; line-height: 1; margin: 6px 0; }
+.results .stats { margin-top: 14px; }
+.results .flourish::after { margin-inline: auto; }
+.missed-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.missed-list li { display: flex; flex-direction: column; gap: 2px; }
+.burst { position: absolute; inset: 0; pointer-events: none; }
+.burst i { position: absolute; left: 50%; top: 80px; font-style: normal; font-size: 1.1rem; color: var(--deco-1); opacity: 0; animation: burst var(--d, 0.7s) var(--ease) 0.05s both; }
+.burst i:nth-child(3n+2) { color: var(--deco-2); }
+.burst i:nth-child(3n) { color: var(--deco-3); }
+@keyframes burst { 0% { transform: rotate(var(--a)) translateY(0) scale(0.4); opacity: 1; } 100% { transform: rotate(var(--a)) translateY(-130px) scale(1.2); opacity: 0; } }
+.results.is-record { border-color: var(--edge); box-shadow: 0 4px 0 var(--game-right); }
+
+/* hub and stats */
+.game-card { display: block; text-decoration: none; color: var(--ink); }
+a.game-card:active { transform: translateY(2px); }
+.game-card .btn { margin-top: 6px; }
+.game-card.locked { opacity: 0.7; }
+.game-row { margin: 0; }
+.game-row h2 { margin: 0; }
+.chart { width: 100%; height: auto; display: block; }
+.ch-grid { stroke: var(--line); stroke-width: 1; }
+.ch-text { fill: var(--ink-muted); font-size: 10px; font-family: var(--font-body); }
+.ch-ref { stroke: var(--accent-text); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.ch-ref-text { fill: var(--accent-text); font-weight: 700; }
+.ch-bar { fill: var(--primary); }
+.ch-over { fill: var(--accent); }
+.ch-line { stroke: var(--primary); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.ch-dot { fill: var(--surface); stroke: var(--primary); stroke-width: 2; }
+.unit-row { margin: 12px 0; }
+.unit-row .row { margin: 0 0 4px; }
+.bests { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.bests li { display: grid; grid-template-columns: 1fr auto; gap: 0 12px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.bests li strong { font-family: var(--font-head); font-size: 1.3rem; }
+.bests li .small { grid-column: 1 / -1; }
+.chart-card .small { margin-top: 6px; }
+
+/* ---- Truck Art: striped bar, diamonds, marigold / hot pink ---- */
+[data-theme='truck-art'] .bar.timer { height: 22px; border-width: 3px; }
+[data-theme='truck-art'] .gbtn { font-size: 1.15rem; box-shadow: 0 5px 0 var(--btn-edge); }
+[data-theme='truck-art'] .gbtn:active:not(:disabled) { transform: translateY(5px); box-shadow: 0 0 0 var(--btn-edge); }
+[data-theme='truck-art'] .gbtn-tile, [data-theme='truck-art'] .gbtn-pair { box-shadow: 0 4px 0 var(--edge); border-color: var(--edge); }
+[data-theme='truck-art'] .gbtn.is-right { box-shadow: 0 4px 0 var(--game-right-ink); }
+[data-theme='truck-art'] .gbtn.is-wrong { box-shadow: 0 4px 0 var(--game-wrong-ink); }
+[data-theme='truck-art'] .gbtn-ghost { box-shadow: none; }
+[data-theme='truck-art'] .game-card h2::before { content: '◆ '; color: var(--deco-2); }
+[data-theme='truck-art'] .game-card.stats-link { border-color: var(--deco-3); }
+[data-theme='truck-art'] .big-score { color: var(--primary); text-shadow: 3px 3px 0 var(--deco-2); }
+[data-theme='truck-art'] .ch-bar { rx: 5px; }
+[data-theme='truck-art'] .results.is-record { box-shadow: 0 5px 0 var(--game-right); }
+[data-theme='truck-art'] .tabbar { border-top-width: 3px; border-top-color: var(--edge); }
+[data-theme='jewel'] .big-score { color: var(--primary); }
+[data-theme='neon'] .big-score { letter-spacing: -0.03em; }
+
+/* the state colours win over each look's resting borders */
+.gbtn.gbtn-pair.is-right, .gbtn.gbtn-tile.is-right { border-color: var(--game-right-ink); }
+.gbtn.gbtn-pair.is-wrong, .gbtn.gbtn-tile.is-wrong { border-color: var(--game-wrong-ink); }
+[data-theme] .gbtn-pair.is-right, [data-theme] .gbtn-pair.is-wrong { border-color: var(--game-right-ink); }
+[data-theme] .gbtn-pair.is-wrong { border-color: var(--game-wrong-ink); }

@@ -10,6 +10,7 @@
  * Colour roles:   paper = page, surface = cards, ink / ink-muted = text, line = hairlines, edge = chunky borders,
  *   primary (+ primary-ink) = main buttons and links, accent (+ accent-ink) = fills such as the warning banner,
  *   accent-text = accent used as text, good / bad = feedback text and borders (bad-ink on a bad fill),
+ *   game-right / game-wrong (+ -ink) = fills for right and wrong game answers (Truck Art: marigold and hot pink; the others reuse good / bad); always paired with a ✓ / ✗ mark.
  *   deco-1..3 = decorative only (flourishes, bars): never carry meaning, no contrast requirement.
  */
 
@@ -33,6 +34,10 @@
   --deco-2: #f6b400;
   --deco-3: #0b8a7a;
   --focus: #12214a;
+  --game-right: #f6b400;
+  --game-right-ink: #12214a;
+  --game-wrong: #b5135a;
+  --game-wrong-ink: #ffffff;
   --bar-fill: var(--primary);
   --bg-pattern: none;
   color-scheme: light;
@@ -82,6 +87,10 @@
   --deco-3: #0b8a7a;
   --focus: #12214a;
   --btn-edge: #12214a;
+  --game-right: #f6b400;
+  --game-right-ink: #12214a;
+  --game-wrong: #b5135a;
+  --game-wrong-ink: #ffffff;
   color-scheme: light;
 }
 [data-theme='truck-art'][data-mode='dark'] {
@@ -104,6 +113,10 @@
   --deco-3: #2bc7ab;
   --focus: #ffc21a;
   --btn-edge: #0a1330;
+  --game-right: #ffc21a;
+  --game-right-ink: #0f1b3d;
+  --game-wrong: #ff74b1;
+  --game-wrong-ink: #0f1b3d;
   color-scheme: dark;
 }
 [data-theme='truck-art'] {
@@ -145,6 +158,10 @@
   --deco-3: #a31d3f;
   --focus: #0a6b4b;
   --btn-edge: #b8902f;
+  --game-right: #157447;
+  --game-right-ink: #ffffff;
+  --game-wrong: #b42318;
+  --game-wrong-ink: #ffffff;
   --bg-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23b8902f' stroke-opacity='.16' stroke-width='1'%3E%3Cpath d='M28 6l6 16 16 6-16 6-6 16-6-16-16-6 16-6z'/%3E%3Cpath d='M0 0l8 8M56 0l-8 8M0 56l8-8M56 56l-8-8'/%3E%3Ccircle cx='28' cy='28' r='3'/%3E%3C/g%3E%3C/svg%3E");
   color-scheme: light;
 }
@@ -168,6 +185,10 @@
   --deco-3: #ff6b85;
   --focus: #d9b350;
   --btn-edge: #d9b350;
+  --game-right: #5bd49a;
+  --game-right-ink: #04140d;
+  --game-wrong: #ff8b7e;
+  --game-wrong-ink: #1a0409;
   --bg-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23d9b350' stroke-opacity='.13' stroke-width='1'%3E%3Cpath d='M28 6l6 16 16 6-16 6-6 16-6-16-16-6 16-6z'/%3E%3Cpath d='M0 0l8 8M56 0l-8 8M0 56l8-8M56 56l-8-8'/%3E%3Ccircle cx='28' cy='28' r='3'/%3E%3C/g%3E%3C/svg%3E");
   color-scheme: dark;
 }
@@ -209,6 +230,10 @@
   --deco-3: #0a0a0f;
   --focus: #0a0a0f;
   --btn-edge: #c8ff2e;
+  --game-right: #0f7536;
+  --game-right-ink: #ffffff;
+  --game-wrong: #c4271b;
+  --game-wrong-ink: #ffffff;
   color-scheme: light;
 }
 [data-theme='neon'][data-mode='dark'] {
@@ -231,6 +256,10 @@
   --deco-3: #ffffff;
   --focus: #c8ff2e;
   --btn-edge: #08080b;
+  --game-right: #4be38a;
+  --game-right-ink: #08080b;
+  --game-wrong: #ff7a70;
+  --game-wrong-ink: #08080b;
   color-scheme: dark;
 }
 [data-theme='neon'] {

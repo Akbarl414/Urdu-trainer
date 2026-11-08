@@ -331,20 +331,24 @@ Lessons unlock strictly in curriculum order: lesson N+1 opens when lesson N has 
 
 ## 8. Games
 
-**SRS credit (D30):** games may count as reviews only through `earnsGameCredit()` and its three guards (§5.6). As the table stands, every game below picks from options or matches pairs, so none of them earns credit. Listen & pick needs a recall variant (hear it, answer from memory), and the games phase needs at least one typed or speed-recall round; otherwise the games reduce no reviews.
+**Built in Phase 4c (D34).** Four games, in Truck Art first (striped timer bar, chunky press-down buttons, marigold for right and hot pink for wrong, diamond flourishes) and working in all three looks. Pure logic lives in `src/games/` (a core folder: pool, catalog, credit outcome, clock, bests, stats numbers, English matching, match boards); screens in `src/modules/games/` (a shared round shell, one file per game, the hub, the play gate).
 
-Shared pool (`modules/games/pool.js`): items from completed lessons only, never retired ones. Weight = `(1 − R) × 3 + weak bonus 2 + recent bonus` (recent means introduced in the last 7 study days, bonus 1.5). Sampled without replacement. Games need a minimum pool and show "Unlocks after lesson N" until they have it.
+**SRS credit (D30):** every game sends its answers through `applyAnswer()` (`src/games/outcome.js`), which asks `earnsGameCredit()` and its three guards (§5.6) before crediting. Only the two recall games pass a credit-eligible format.
 
-| Game | Pool | Round | Feedback → SRS |
-|---|---|---|---|
-| **Match pairs** | words and phrases (`main` cards) | 6 pairs, 45 s timer, tap roman ↔ English; mismatches flash | wrong pair → weak on both items' `main` card |
-| **Gender sort** | nouns with `gender` unlocked | 10 nouns, tap/swipe ♂ / ♀; the reveal shows the plural | noun's `main` card |
-| **Sentence builder** | `reorder` exercises (any `answerOrders` accepted) | 5 sentences, tiles, English shown | that exercise card |
-| **Listen & pick** | words and phrases; **hidden without an Urdu voice or `audio` file** | 8 items, hear `ur`, pick from 4 English options | `main` card |
-| **Agreement snap** | (a) `choose-form` exercises tagged `agreement`; (b) generated phrases from rule-based fields only: variable adjective + learned noun (`acchaa laRkaa / acchii laRkii / acche laRke` from `gender`, `marked`, `plural`), and after `perfective` unlocks, noun + intransitive perfective (`laRkii gayii`) | 10 items, 3 forms each, fast | exercise card, or the noun's `main` card |
-| **Ne or no ne?** | unlocks with feature `ne`; authored `game_items` of type `ne` from Units 12+, plus `ne`-tagged exercises | two taps: "needs ne?" then pick the verb form | exercise card |
+Shared pool (`src/games/pool.js`): words and phrases of **completed lessons only**, never retired, that have a main card; sentences from `reorder` exercises of completed lessons (sentence cards and plain lesson exercises, 3–8 tiles, in the learner's gender, D23). Weight = `(1 − R) × 3 + weak bonus 2 + recent bonus 1.5` (recent = lesson first completed in the last 7 days), sampled without replacement, never an immediate repeat. Plurals are read only through `nounPlural()` (a test greps the games code for direct `.plural` / `oblique_pl`). Each game needs a minimum pool and otherwise shows "Unlocks after lesson N" (Listen & type also needs a voice).
 
-Generated phrases come only from fields the validator has checked. Games never compose free Urdu sentences. Picking from four English meanings uses distractors from the same pos and unit band.
+| Game | Pool | Round | Credit | Feedback → SRS |
+|---|---|---|---|---|
+| **Speed recall** | words, phrases | 90 s; English (or the situation, for phrases) shown, type the Urdu; 10 points, up to 15 if quick | eligible (`speed_recall`) | right → Good review if the guards pass; wrong → weak |
+| **Listen & type** | short words and phrases (≤5 tokens); hidden without a voice | 90 s; the voice says it, type the meaning (default) or the Urdu | eligible (`listening`) | as above |
+| **Sentence sprint** | reorder sentences | 120 s; tap tiles in order, the last tile checks it; 10 + 2 per tile | never (tiles are not recall) | wrong → weak on the sentence's card, if it has one |
+| **Match pairs** | words, phrases | 90 s; boards of six pairs, tap Urdu then English; 10 per pair, +20 per cleared board | never | a mismatch → weak on both words |
+
+Every round ends with score, accuracy, the personal best (a celebration when beaten; the first score just becomes the one to beat) and the items missed, which are marked weak. SRS effects apply once per item per round (the first answer), so a card that comes round again in a small pool is neither credited nor penalised twice. Leaving a round early keeps what answers already did to the schedule but records no score.
+
+**Later, if wanted** (not built): Gender sort, Agreement snap, Ne or no ne?. The earlier designs of those games, and the generated-phrase rules they needed, are kept in the git history of this file (Phase 4c commit).
+
+Generated phrases would come only from fields the validator has checked; games never compose free Urdu sentences.
 
 ---
 
@@ -420,6 +424,8 @@ D1–D4 and the curriculum/romanization changes were decided by you. The rest us
 | D31 | Interactive dialogues (Phase 4b) | Dialogues felt passive. Screens are now: the scene, one per line, then the whole exchange played through (`stepLength` = lines + 2; no run-format change, because old indexes still mean the same line). **The learner's lines:** built from tiles, or picked from options when the line has `options` (authored wrong answers, with an English note revealed after answering), always in the learner's own gender form (`learner_f`, which may also carry `options`). **Other speakers:** the line plays first and its text stays hidden until a comprehension question (`check`, required by the validator) is answered; with no voice the line is shown to read instead. Dialogue answers are not rated: they create no cards and don't touch the schedule. `DIALOGUE_LINE_SEC` went from 12 to 20. Logic in `src/lesson/dialogue.js`. No stored shape changed. Lessons 1–5 updated with `check` and `options`; no shipped id changed. |
 | D32 | Early first return (Phase 4b) | At Relaxed the scheduler alone first brought a new card back after about 8 days. A new word, phrase or sentence card from a lesson now first returns within 1–3 days at every memory target: `capFirstReturn` (`src/srs/fsrs.js`) limits a graduated card's first interval to 1, 2 or 3 days, chosen by card id so a lesson's cards spread out. FSRS stability is unchanged. "I already know this" words keep their longer first interval. **Warm-up:** the due new words of the lesson before the one being started come first, even if the daily cap left them out of the queue, then the variety rule (D28). No stored shape changed. |
 | D33 | Distractor rule (Phase 4b) | **Wrong options must be unambiguously wrong: wrong gender agreement, wrong person, wrong meaning or wrong word. A politeness or register variant is never marked wrong.** Respectful plural `haiN` for an elder brother and `hai` for one's own mum are both acceptable. Where the register choice matters, accept both and explain the difference after answering. Applies to dialogue options, choice exercises, error-spot sentences and typed answers. Schema: `acceptIndexes` on `multiple-choice` and `choose-form`, `accept: true` on a dialogue option (its English says how it differs); typed answers use `altAnswers` or extra `answers`. Lessons 1–5 corrected to match: no ids changed. Also recorded in `CONTENT_GUIDE.md` and the checklist in `CLAUDE.md`. |
+
+| D34 | Games and stats (Phase 4c) | **Games:** see §8. **Stats page** (`#/stats`, from the Games tab): reviews per day with the daily cap line, words learned over time (from lesson completion dates), accuracy trend (7-day rolling, with the memory-target line), per-unit progress, streak and best streak, personal bests. SVG drawn in `src/ui/charts.js` from theme tokens, no library. Each chart has a text summary. **Tab bar** (`src/ui/tabbar.js`): Today, Review, Games, Learn (placeholder), Settings; hidden in the lesson player, practice replay and game rounds. **Settings** (`#/settings`) holds the look and the memory target, moved off Today; Phase 5 extends it. **Stored data:** `STORAGE_VERSION` 6, `MIGRATIONS[5]`, `tests/fixtures/storage-v6.json`. Each study day gains `correct` (reviews answered not-Again) for the accuracy trend; days from before v6 get `null` (not recorded, never half-counted, left out of the trend). `stats.gameBests[gameId]` is `{ best, bestAccuracy, bestDay, rounds, last }` (the slot already existed and was empty; a bare number from an old fixture is read as the score). **Game credit** counts as one review towards the daily cap and the accuracy figure. **Streak:** a game round without credit does not extend the streak (only reviews and lessons do). **Colours:** new tokens `game-right` / `game-wrong` (+ `-ink`): marigold and hot pink in Truck Art, the look's good / bad elsewhere, contrast-tested, and always paired with a ✓ / ✗ mark. |
 
 ### Final load simulation (D29, D32)
 
@@ -556,7 +562,7 @@ Phase 1's validator also enforces now that all `ur` fields use Urdu code points 
 | 1 | Foundations: scaffold, storage + migrations + tests (including the script-deck slots, §13.6), content loader, schemas + validator, PWA + SW, deploy, CLAUDE.md, README.md, `#/debug/voices` |
 | 2 | SRS + Review: FSRS engine with facets, Review screen, normaliser, tests |
 | 3 | Lesson player + Unit 1 lessons 1–5: Today, lesson flow, auto-add to deck, TTS, script toggle. **Starts by removing the Phase 2 test cards (D21)** |
-| 4 | Games: the six games, learned items only |
+| 4 | Games: 4a themes ✅, 4b card redesign and interactive dialogues ✅, 4c games and stats ✅ (four games, Stats page, Settings, tab bar; the other three games are "later, if wanted") |
 | 5 | Library + Settings: grammar library, word list, mistake reports, all settings, export/import UI |
 | 6 | Content pipeline docs: CONTENT_GUIDE.md, then Unit 1 lessons 6–10 |
 | 7 | **Script track** (§13): alphabet chart + schema, 12 script lessons, script deck + "Practise script", Read / Spell / Trace / Letter match, review-lesson suggestions |

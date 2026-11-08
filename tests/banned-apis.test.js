@@ -55,7 +55,7 @@ test('no code reads or writes the German app\'s keys or imports from reference/'
 });
 
 test('core folders never import from modules/ or ui/ (PLAN §2)', () => {
-  const core = ['src/db/', 'src/srs/', 'src/lesson/', 'src/lang/', 'src/audio/', 'src/script/'];
+  const core = ['src/db/', 'src/srs/', 'src/lesson/', 'src/lang/', 'src/audio/', 'src/games/', 'src/script/'];
   const bad = sources.filter((s) => core.some((c) => s.path.startsWith(c)) && /from\s+['"][^'"]*\/(modules|ui)\//.test(s.code)).map((s) => s.path);
   assert.deepEqual(bad, []);
 });

@@ -3,7 +3,6 @@
 import { h } from '../../ui/dom.js';
 import { prose } from '../../ui/prose.js';
 import { scriptToggle } from '../../ui/scriptToggle.js';
-import { themeSwitcher } from '../../ui/theme.js';
 import { store } from '../../db/storage.js';
 import { getContent } from '../../db/contentLoader.js';
 import { todayState, todayQueue } from '../../lesson/path.js';
@@ -14,11 +13,6 @@ import { voiceRoute, onAudioChange, isAudioReady } from '../../audio/tts.js';
 let askLater = false; // "Not now" lasts until the app is reopened (memory only; nothing is stored)
 
 const GENDER_LABEL = { m: 'man’s', f: 'woman’s' };
-const MEMORY_NOTE = {
-  relaxed: 'Fewest reviews. You will remember about 80% of cards when they come back.',
-  balanced: 'More reviews. You will remember about 85% of cards when they come back.',
-  strong: 'Most reviews. You will remember about 90% of cards when they come back.',
-};
 
 function genderCard({ onAnswer, onLater, current }) {
   return h(
@@ -68,8 +62,6 @@ export function render(container) {
       h('p', { class: 'progress-line' }, bits.join(' · ')),
       gender,
       primaryCard(t, queue, now, cap),
-      themeSwitcher(),
-      memoryCard(),
       reviewCard(t, queue, cap),
       practiceCard(),
       h(
@@ -84,21 +76,6 @@ export function render(container) {
       ].filter(Boolean),
     );
     drawVoiceNote();
-  }
-
-  /** Memory target (PLAN D29), here until Settings (Phase 5) takes it over. */
-  function memoryCard() {
-    const current = data.settings.memoryTarget;
-    const seg = (value, label) =>
-      h('button', { class: `seg${current === value ? ' on' : ''}`, type: 'button', 'aria-pressed': current === value ? 'true' : 'false', onclick: () => (store.updateSettings({ memoryTarget: value }), draw()) }, label);
-    return h(
-      'section',
-      { class: 'card' },
-      h('h2', {}, 'Memory target'),
-      h('div', { class: 'segmented', role: 'group', 'aria-label': 'Memory target' }, seg('relaxed', 'Relaxed'), seg('balanced', 'Balanced'), seg('strong', 'Strong')),
-      h('p', { class: 'muted small' }, MEMORY_NOTE[current] ?? MEMORY_NOTE.relaxed),
-      h('p', { class: 'muted small' }, 'Applies from each card’s next review.'),
-    );
   }
 
   function answer(g) {

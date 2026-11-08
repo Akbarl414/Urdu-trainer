@@ -2,6 +2,7 @@ import './ui/styles/tokens.css';
 import './ui/styles/base.css';
 import './ui/styles/lesson.css';
 import './ui/styles/themes.css';
+import './ui/styles/games.css';
 import { store } from './db/storage.js';
 import { startRouter } from './router.js';
 import { showRecovery } from './ui/recovery.js';
@@ -14,6 +15,7 @@ import { configureAudio, initAudio } from './audio/tts.js';
 import { loanwordTokens } from './lesson/loanwords.js';
 import { applyScriptSetting } from './ui/scriptToggle.js';
 import { applyTheme, reapplyTheme } from './ui/theme.js';
+import { mountTabBar } from './ui/tabbar.js';
 
 const app = document.getElementById('app');
 
@@ -45,6 +47,7 @@ function boot() {
     else hideBanner('quota');
   });
 
+  mountTabBar();
   startRouter(app);
 }
 

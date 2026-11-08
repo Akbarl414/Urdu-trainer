@@ -43,4 +43,4 @@ One scheme everywhere, defined in `content/ROMANIZATION.md` and enforced by `src
 
 ## Layout rules
 
-Core folders (`src/db`, `srs`, `lesson`, `lang`, `audio`, `script`) never import from `src/modules` or `src/ui`; keep core logic pure so Node can test it. The service worker source is `src/sw/sw.js`, a template that `vite.config.js` fills in (build id + precache list) and emits as `dist/sw.js`. Updating the app must never touch storage.
+Core folders (`src/db`, `srs`, `lesson`, `lang`, `audio`, `games`, `script`) never import from `src/modules` or `src/ui`; keep core logic pure so Node can test it. The service worker source is `src/sw/sw.js`, a template that `vite.config.js` fills in (build id + precache list) and emits as `dist/sw.js`. Updating the app must never touch storage.
