@@ -1,4 +1,4 @@
-// WCAG AA for text in every theme variant (PLAN D26). Reads src/ui/styles/tokens.css directly, so a palette
+// WCAG AA for text in every theme variant (PLAN D27). Reads src/ui/styles/tokens.css directly, so a palette
 // edit that breaks contrast fails the build. Decorative colours (deco-*) are deliberately not checked.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

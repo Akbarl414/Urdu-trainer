@@ -39,7 +39,7 @@ export const MIGRATIONS = {
   // v2 → v3 (Phase 3a, PLAN D23): settings.learnerGender, so lessons show the learner's own lines
   // in the right form ('m' | 'f'). null = not chosen yet: the app asks once. Never overwrites a value.
   2: (data) => ({ ...data, settings: { ...(data.settings || {}), learnerGender: data.settings?.learnerGender ?? null } }),
-  // v3 → v4 (Phase 4a, PLAN D26): `settings.theme` changes meaning. Before, it held the colour mode
+  // v3 → v4 (Phase 4a, PLAN D27): `settings.theme` changes meaning. Before, it held the colour mode
   // ('system' | 'light' | 'dark'); now it names the look ('truck-art' | 'jewel' | 'neon') and the mode moves to
   // the new `settings.themeMode`. The old value is carried over into themeMode, so a device that chose dark
   // stays dark. Also: `answerMode` null ("no choice yet") becomes 'type', the new default; a saved

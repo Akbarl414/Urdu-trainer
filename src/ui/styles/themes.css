@@ -1,5 +1,5 @@
 /*
- * Decorative CSS for the three looks (PLAN D26). Everything structural comes from the tokens in tokens.css; this file
+ * Decorative CSS for the three looks (PLAN D27). Everything structural comes from the tokens in tokens.css; this file
  * only adds flourishes, and every rule is scoped to  [data-theme='x']  as a descendant selector. Never restyle layout here.
  * Colours come from tokens (masks and gradients), so a flourish follows light/dark automatically.
  * Keep it away from reading text: no pattern ever sits behind lesson prose except Jewel's faint page tiles, which cards cover.

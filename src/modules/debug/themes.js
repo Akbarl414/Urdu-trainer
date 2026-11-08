@@ -1,4 +1,4 @@
-// #/debug/themes — every component in the three looks side by side (PLAN D26). Reads and writes nothing in storage.
+// #/debug/themes — every component in the three looks side by side (PLAN D27). Reads and writes nothing in storage.
 // Each panel carries its own data-theme / data-mode, so it uses exactly the tokens and decorative CSS the real screens do.
 // The page itself drops the root theme (decorative CSS is scoped by descendant selectors, so nesting two looks would mix them).
 import { h } from '../../ui/dom.js';

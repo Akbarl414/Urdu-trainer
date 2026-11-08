@@ -10,7 +10,7 @@ import { memoryStorage } from './helpers/memoryStorage.js';
 const here = dirname(fileURLToPath(import.meta.url));
 const fixtureDir = join(here, 'fixtures');
 const v1 = JSON.parse(readFileSync(join(fixtureDir, 'storage-v1.json'), 'utf8'));
-// What the v1 fixture looks like once loaded: v3 → v4 deliberately moved the colour mode from settings.theme to settings.themeMode (PLAN D26).
+// What the v1 fixture looks like once loaded: v3 → v4 deliberately moved the colour mode from settings.theme to settings.themeMode (PLAN D27).
 const v1Loaded = { ...v1, settings: { ...v1.settings, theme: 'truck-art', themeMode: v1.settings.theme } };
 
 const quiet = () => {
@@ -117,7 +117,7 @@ test('every fixture snapshot survives migration to the current version', () => {
     // (When a future migration deliberately changes a shape, update THIS assertion for that version, never the fixture.)
     const expected = JSON.parse(JSON.stringify(fixture));
     if (fixture.version < 4) {
-      // v3 → v4 deliberately moved the old colour mode out of settings.theme into settings.themeMode (PLAN D26).
+      // v3 → v4 deliberately moved the old colour mode out of settings.theme into settings.themeMode (PLAN D27).
       expected.settings.themeMode = fixture.settings.theme;
       expected.settings.theme = 'truck-art';
     }
@@ -416,7 +416,7 @@ test('a device on v2 loads, is migrated to the current version with a pre-migrat
   assert.ok(snaps.some((s) => s.reason === 'pre-migration' && s.data.version === 2));
 });
 
-// ---------------------------------------------------------------- v3 → v4 (Phase 4a, PLAN D26)
+// ---------------------------------------------------------------- v3 → v4 (Phase 4a, PLAN D27)
 
 const v3fixture = () => JSON.parse(readFileSync(join(fixtureDir, 'storage-v3.json'), 'utf8'));
 

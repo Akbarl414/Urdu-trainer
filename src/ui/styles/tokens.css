@@ -1,5 +1,5 @@
 /*
- * Design tokens (PLAN D26). A theme is a token set plus a little decorative CSS (themes.css), never a fork of the
+ * Design tokens (PLAN D27). A theme is a token set plus a little decorative CSS (themes.css), never a fork of the
  * components. Three looks (data-theme) x light/dark (data-mode) = six variants. <html> carries both attributes.
  *
  * Rules for this file (tests/theme-contrast.test.js parses it, so keep the block shape):

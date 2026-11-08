@@ -1,4 +1,4 @@
-// Themes (PLAN D26): the look (settings.theme) and the colour mode (settings.themeMode) become two attributes on <html>.
+// Themes (PLAN D27): the look (settings.theme) and the colour mode (settings.themeMode) become two attributes on <html>.
 // All the styling is in src/ui/styles/tokens.css + themes.css; this file only picks the variant and offers the switcher.
 import { h } from './dom.js';
 import { store } from '../db/storage.js';
